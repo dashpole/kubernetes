@@ -605,6 +605,12 @@ function start-kubelet {
   if [[ -n "${EVICTION_HARD:-}" ]]; then
     flags+=" --eviction-hard=${EVICTION_HARD}"
   fi
+  if [[ -n "${KUBE_RESERVED:-}" ]]; then
+    flags+=" --kube-reserved=${KUBE_RESERVED}"
+  fi
+  if [[ -n "${SYSTEM_RESERVED:-}" ]]; then
+    flags+=" --system-reserved=${SYSTEM_RESERVED}"
+  fi
   if [[ -n "${FEATURE_GATES:-}" ]]; then
     flags+=" --feature-gates=${FEATURE_GATES}"
   fi
