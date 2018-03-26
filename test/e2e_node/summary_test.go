@@ -68,7 +68,7 @@ var _ = framework.KubeDescribe("Summary API", func() {
 			}, time.Minute, 5*time.Second).Should(BeNil())
 
 			// Wait for cAdvisor to collect 2 stats points
-			time.Sleep(15 * time.Second)
+			time.Sleep(30 * time.Second)
 
 			// Setup expectations.
 			const (
