@@ -73,6 +73,7 @@ import (
 const (
 	metricsPath         = "/metrics"
 	cadvisorMetricsPath = "/metrics/cadvisor"
+	coreMetricsPath     = "/metrics/core"
 	proberMetricsPath   = "/metrics/probes"
 	specPath            = "/spec/"
 	statsPath           = "/stats/"
@@ -306,6 +307,12 @@ func (s *Server) InstallDefaultHandlers() {
 	r.MustRegister(metrics.NewPrometheusCollector(prometheusHostAdapter{s.host}, containerPrometheusLabelsFunc(s.host), includedMetrics))
 	s.restfulCont.Handle(cadvisorMetricsPath,
 		promhttp.HandlerFor(r, promhttp.HandlerOpts{ErrorHandling: promhttp.ContinueOnError}),
+	)
+
+	r2 := prometheus.NewRegistry()
+	r2.MustRegister(stats.NewPrometheusCoreCollector(s.resourceAnalyzer))
+	s.restfulCont.Handle(coreMetricsPath,
+		promhttp.HandlerFor(r2, promhttp.HandlerOpts{ErrorHandling: promhttp.ContinueOnError}),
 	)
 
 	// prober metrics are exposed under a different endpoint
