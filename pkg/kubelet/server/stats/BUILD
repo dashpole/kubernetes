@@ -6,6 +6,7 @@ go_library(
         "doc.go",
         "fs_resource_analyzer.go",
         "handler.go",
+        "prometheus.go",
         "resource_analyzer.go",
         "summary.go",
         "summary_sys_containers.go",
@@ -28,6 +29,7 @@ go_library(
         "//vendor/github.com/emicklei/go-restful:go_default_library",
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
         "//vendor/k8s.io/klog:go_default_library",
+        "//vendor/github.com/prometheus/client_golang/prometheus:go_default_library",
     ],
 )
 

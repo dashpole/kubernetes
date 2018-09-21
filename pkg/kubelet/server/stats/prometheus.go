@@ -19,8 +19,8 @@ package stats
 import (
 	"time"
 
-	"github.com/golang/glog"
 	"github.com/prometheus/client_golang/prometheus"
+	"k8s.io/klog"
 
 	statsapi "k8s.io/kubernetes/pkg/kubelet/apis/stats/v1alpha1"
 )
@@ -75,7 +75,7 @@ func (pc *coreCollector) Collect(ch chan<- prometheus.Metric) {
 	summary, err := pc.provider.Get(false)
 	if err != nil {
 		pc.errors.Set(1)
-		glog.Warningf("Error getting summary for core prometheus endpoint: %v", err)
+		klog.Warningf("Error getting summary for core prometheus endpoint: %v", err)
 		return
 	}
 	pc.errors.Collect(ch)

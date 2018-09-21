@@ -57,6 +57,7 @@ import (
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	api "k8s.io/kubernetes/pkg/apis/core"
 	"k8s.io/kubernetes/pkg/apis/core/v1/validation"
+	corestats "k8s.io/kubernetes/pkg/kubelet/apis/corestats/v1alpha1"
 	"k8s.io/kubernetes/pkg/kubelet/apis/podresources"
 	podresourcesapi "k8s.io/kubernetes/pkg/kubelet/apis/podresources/v1alpha1"
 	kubecontainer "k8s.io/kubernetes/pkg/kubelet/container"
@@ -77,6 +78,7 @@ const (
 	proberMetricsPath   = "/metrics/probes"
 	specPath            = "/spec/"
 	statsPath           = "/stats/"
+	coreStatsPath       = "/stats/core"
 	logsPath            = "/logs/"
 )
 
@@ -321,6 +323,10 @@ func (s *Server) InstallDefaultHandlers() {
 	s.restfulCont.Handle(proberMetricsPath,
 		promhttp.HandlerFor(p, promhttp.HandlerOpts{ErrorHandling: promhttp.ContinueOnError}),
 	)
+
+	coreStatsGRPCServer := grpc.NewServer()
+	corestats.RegisterCoreStatsServer(coreStatsGRPCServer, stats.NewGRPCCoreStatsProvider(s.resourceAnalyzer))
+	s.restfulCont.Handle(coreStatsPath, coreStatsGRPCServer)
 
 	ws = new(restful.WebService)
 	ws.
