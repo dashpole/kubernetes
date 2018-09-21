@@ -18,7 +18,6 @@ go_library(
         "//pkg/api/legacyscheme:go_default_library",
         "//pkg/apis/core:go_default_library",
         "//pkg/apis/core/v1/validation:go_default_library",
-        "//pkg/kubelet/apis/corestats/v1alpha1:go_default_library",
         "//pkg/kubelet/apis/podresources:go_default_library",
         "//pkg/kubelet/apis/podresources/v1alpha1:go_default_library",
         "//pkg/kubelet/container:go_default_library",
