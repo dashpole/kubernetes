@@ -21,6 +21,7 @@ go_library(
     deps = [
         "//pkg/features:go_default_library",
         "//pkg/kubelet/apis/config:go_default_library",
+        "//pkg/kubelet/apis/corestats:go_default_library",
         "//pkg/kubelet/apis/corestats/v1alpha1:go_default_library",
         "//pkg/kubelet/apis/cri:go_default_library",
         "//pkg/kubelet/apis/cri/runtime/v1alpha2:go_default_library",
@@ -54,7 +55,6 @@ go_library(
         "//vendor/github.com/onsi/gomega:go_default_library",
         "//vendor/github.com/prometheus/common/model:go_default_library",
         "//vendor/golang.org/x/net/context:go_default_library",
-        "//vendor/google.golang.org/grpc:go_default_library",
         "//vendor/k8s.io/klog:go_default_library",
     ] + select({
         "@io_bazel_rules_go//go/platform:linux": [

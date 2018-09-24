@@ -28,7 +28,6 @@ import (
 	"time"
 
 	"golang.org/x/net/context"
-	"google.golang.org/grpc"
 	"k8s.io/klog"
 
 	apiv1 "k8s.io/api/core/v1"
@@ -39,7 +38,8 @@ import (
 	kubeletconfigv1beta1 "k8s.io/kubelet/config/v1beta1"
 	"k8s.io/kubernetes/pkg/features"
 	kubeletconfig "k8s.io/kubernetes/pkg/kubelet/apis/config"
-	corestats "k8s.io/kubernetes/pkg/kubelet/apis/corestats/v1alpha1"
+	"k8s.io/kubernetes/pkg/kubelet/apis/corestats"
+	corestatsapi "k8s.io/kubernetes/pkg/kubelet/apis/corestats/v1alpha1"
 	internalapi "k8s.io/kubernetes/pkg/kubelet/apis/cri"
 	"k8s.io/kubernetes/pkg/kubelet/apis/podresources"
 	podresourcesapi "k8s.io/kubernetes/pkg/kubelet/apis/podresources/v1alpha1"
@@ -118,16 +118,15 @@ func getNodeDevices() (*podresourcesapi.ListPodResourcesResponse, error) {
 	return resp, nil
 }
 
-func getGRPCCoreStats() (*corestats.StatsResponse, error) {
-	conn, err := grpc.Dial("127.0.0.1:1234", grpc.WithInsecure())
+func getGRPCCoreStats() (*corestatsapi.StatsResponse, error) {
+	client, conn, err := corestats.GetClient("127.0.0.1:1234")
 	if err != nil {
-		return nil, fmt.Errorf("Error dialing addres %s: %v", "127.0.0.1:1234", err)
+		return nil, fmt.Errorf("Error getting grpc client: %v", err)
 	}
 	defer conn.Close()
-	client := corestats.NewCoreStatsClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	resp, err := client.Get(ctx, &corestats.StatsRequest{})
+	resp, err := client.Get(ctx, &corestatsapi.StatsRequest{})
 	if err != nil {
 		return nil, fmt.Errorf("%v.Get(_) = _, %v", client, err)
 	}

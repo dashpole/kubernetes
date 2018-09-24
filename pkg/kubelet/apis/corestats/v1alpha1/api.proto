@@ -14,9 +14,10 @@ option (gogoproto.unmarshaler_all) = true;
 option (gogoproto.goproto_unrecognized_all) = false;
 
 message Usage {
-	uint64 cpu_usage_core_nano_seconds = 1;
-	uint64 memory_working_set_bytes = 2;
-	uint64 ephemeral_storage_usage_bytes = 3;
+	int64 time = 1;
+	uint64 cpu_usage_core_nano_seconds = 2;
+	uint64 memory_working_set_bytes = 3;
+	uint64 ephemeral_storage_usage_bytes = 4;
 }
 
 message PodUsage {
