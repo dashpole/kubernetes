@@ -15,7 +15,7 @@ option (gogoproto.goproto_unrecognized_all) = false;
 
 message Usage {
 	int64 time = 1;
-	uint64 cpu_usage_core_nano_seconds = 2;
+	uint64 cpu_usage_nano_cores = 2;
 	uint64 memory_working_set_bytes = 3;
 	uint64 ephemeral_storage_usage_bytes = 4;
 }

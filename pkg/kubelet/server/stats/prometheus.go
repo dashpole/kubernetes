@@ -33,7 +33,7 @@ const (
 var (
 	cpuUsageDesc = prometheus.NewDesc(
 		prometheus.BuildFQName("", "",
-			"cpu_usage_seconds_total"),
+			"cpu_usage_seconds"),
 		"Cumulative cpu time consumed in seconds",
 		[]string{"container_name", "pod_name", "pod_namespace"}, nil)
 	memoryUsageDesc = prometheus.NewDesc(
@@ -101,13 +101,13 @@ func (pc *coreCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 func collectCPU(ch chan<- prometheus.Metric, stats *statsapi.CPUStats, labelValues ...string) {
-	if stats.UsageCoreNanoSeconds == nil {
+	if stats.UsageNanoCores == nil {
 		return
 	}
 	ch <- prometheus.MustNewConstMetric(
 		cpuUsageDesc,
 		prometheus.GaugeValue,
-		float64(*stats.UsageCoreNanoSeconds)/float64(time.Second),
+		float64(*stats.UsageNanoCores)/float64(time.Second),
 		labelValues...)
 }
 

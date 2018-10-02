@@ -64,8 +64,8 @@ func (g *grpcCoreStatsProvider) Get(ctx context.Context, req *coreapi.StatsReque
 
 func summaryStatsToCoreUsage(cpu *statsapi.CPUStats, memory *statsapi.MemoryStats, ephemeralStorage *statsapi.FsStats) *coreapi.Usage {
 	return &coreapi.Usage{
-		Time: cpu.Time.Time.UnixNano(),
-		CpuUsageCoreNanoSeconds:    *cpu.UsageCoreNanoSeconds,
+		Time:                       cpu.Time.Time.UnixNano(),
+		CpuUsageNanoCores:          *cpu.UsageNanoCores,
 		MemoryWorkingSetBytes:      *memory.WorkingSetBytes,
 		EphemeralStorageUsageBytes: *ephemeralStorage.UsedBytes,
 	}

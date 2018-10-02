@@ -74,8 +74,8 @@ var _ = framework.KubeDescribe("GRPCMetrics API [NodeConformance]", func() {
 			memoryLimit := memoryCapacity.Value()
 			// Expectations for system containers.
 			usageExpectations := ptrMatchAllFields(gstruct.Fields{
-				"CpuUsageCoreNanoSeconds": And(
-					BeNumerically(">=", 10000000),
+				"CpuUsageNanoCores": And(
+					BeNumerically(">=", 10000),
 					BeNumerically("<=", 1E15)),
 				"MemoryWorkingSetBytes": And(
 					BeNumerically(">=", 1*framework.Kb),
