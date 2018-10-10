@@ -16,6 +16,17 @@ limitations under the License.
 
 package events
 
+import (
+	"github.com/golang/glog"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/tools/record"
+	ref "k8s.io/client-go/tools/reference"
+	"k8s.io/kubernetes/pkg/api/legacyscheme"
+	"k8s.io/kubernetes/pkg/kubelet/metrics"
+)
+
 const (
 	// Container event reason list
 	CreatedContainer        = "Created"
@@ -95,3 +106,43 @@ const (
 	FailedPreStopHook     = "FailedPreStopHook"
 	UnfinishedPreStopHook = "UnfinishedPreStopHook"
 )
+
+// kubeletRecorder is a wrapper around EventRecorder that produces metrics about events
+type kubeletRecorder struct {
+	recorder record.EventRecorder
+}
+
+func (k *kubeletRecorder) Event(object runtime.Object, eventtype, reason, message string) {
+	eventMetric(object, reason)
+	k.recorder.Event(object, eventtype, reason, message)
+}
+
+// Eventf is just like Event, but with Sprintf for the message field.
+func (k *kubeletRecorder) Eventf(object runtime.Object, eventtype, reason, messageFmt string, args ...interface{}) {
+	eventMetric(object, reason)
+	k.recorder.Eventf(object, eventtype, reason, messageFmt, args)
+}
+
+// PastEventf is just like Eventf, but with an option to specify the event's 'timestamp' field.
+func (k *kubeletRecorder) PastEventf(object runtime.Object, timestamp metav1.Time, eventtype, reason, messageFmt string, args ...interface{}) {
+	eventMetric(object, reason)
+	k.PastEventf(object, timestamp, eventtype, reason, messageFmt, args)
+}
+
+func (k *kubeletRecorder) AnnotatedEventf(object runtime.Object, annotations map[string]string, eventtype, reason, messageFmt string, args ...interface{}) {
+	eventMetric(object, reason)
+	k.AnnotatedEventf(object, annotations, eventtype, reason, messageFmt, args)
+}
+
+func NewKubeletRecorder(recorder record.EventRecorder) record.EventRecorder {
+	return &kubeletRecorder{recorder: recorder}
+}
+
+func eventMetric(object runtime.Object, reason string) {
+	ref, err := ref.GetReference(legacyscheme.Scheme, object)
+	if err != nil {
+		glog.Errorf("Could not construct reference to: '%#v' due to: '%v'. Will not report event: '%v'", object, err, reason)
+		return
+	}
+	metrics.Events.WithLabelValues(reason, ref.Kind).Inc()
+}

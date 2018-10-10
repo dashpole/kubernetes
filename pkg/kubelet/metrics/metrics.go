@@ -48,6 +48,7 @@ const (
 	RuntimeOperationsKey        = "runtime_operations"
 	RuntimeOperationsLatencyKey = "runtime_operations_latency_microseconds"
 	RuntimeOperationsErrorsKey  = "runtime_operations_errors"
+	EventsKey                   = "events"
 	// Metrics keys of device plugin operations
 	DevicePluginRegistrationCountKey = "device_plugin_registration_count"
 	DevicePluginAllocationLatencyKey = "device_plugin_alloc_latency_microseconds"
@@ -165,6 +166,14 @@ var (
 		},
 		[]string{"resource_name"},
 	)
+	Events = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Subsystem: KubeletSubsystem,
+			Name:      EventsKey,
+			Help:      "Cumulative number of events produced by the kubelet",
+		},
+		[]string{"reason", "involvedObject"},
+	)
 
 	// Metrics for node config
 
@@ -221,6 +230,7 @@ func Register(containerCache kubecontainer.RuntimeCache, collectors ...prometheu
 		prometheus.MustRegister(EvictionStatsAge)
 		prometheus.MustRegister(DevicePluginRegistrationCount)
 		prometheus.MustRegister(DevicePluginAllocationLatency)
+		prometheus.MustRegister(Events)
 		if utilfeature.DefaultFeatureGate.Enabled(features.DynamicKubeletConfig) {
 			prometheus.MustRegister(AssignedConfig)
 			prometheus.MustRegister(ActiveConfig)

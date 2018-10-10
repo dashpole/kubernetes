@@ -261,7 +261,7 @@ type Dependencies struct {
 
 // makePodSourceConfig creates a config.PodConfig from the given
 // KubeletConfiguration or returns an error.
-func makePodSourceConfig(kubeCfg *kubeletconfiginternal.KubeletConfiguration, kubeDeps *Dependencies, nodeName types.NodeName, bootstrapCheckpointPath string) (*config.PodConfig, error) {
+func makePodSourceConfig(kubeCfg *kubeletconfiginternal.KubeletConfiguration, kubeClient clientset.Interface, recorder record.EventRecorder, nodeName types.NodeName, bootstrapCheckpointPath string) (*config.PodConfig, error) {
 	manifestURLHeader := make(http.Header)
 	if len(kubeCfg.StaticPodURLHeader) > 0 {
 		for k, v := range kubeCfg.StaticPodURLHeader {
@@ -272,7 +272,7 @@ func makePodSourceConfig(kubeCfg *kubeletconfiginternal.KubeletConfiguration, ku
 	}
 
 	// source of all configuration
-	cfg := config.NewPodConfig(config.PodConfigNotificationIncremental, kubeDeps.Recorder)
+	cfg := config.NewPodConfig(config.PodConfigNotificationIncremental, recorder)
 
 	// define file config source
 	if kubeCfg.StaticPodPath != "" {
@@ -300,12 +300,12 @@ func makePodSourceConfig(kubeCfg *kubeletconfiginternal.KubeletConfiguration, ku
 		}
 	}
 
-	if kubeDeps.KubeClient != nil {
+	if kubeClient != nil {
 		glog.Infof("Watching apiserver")
 		if updatechannel == nil {
 			updatechannel = cfg.Channel(kubetypes.ApiserverSource)
 		}
-		config.NewSourceApiserver(kubeDeps.KubeClient, nodeName, updatechannel)
+		config.NewSourceApiserver(kubeClient, nodeName, updatechannel)
 	}
 	return cfg, nil
 }
@@ -395,9 +395,11 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		glog.V(2).Infof("cloud provider determined current node name to be %s", nodeName)
 	}
 
+	recorder := events.NewKubeletRecorder(kubeDeps.Recorder)
+
 	if kubeDeps.PodConfig == nil {
 		var err error
-		kubeDeps.PodConfig, err = makePodSourceConfig(kubeCfg, kubeDeps, nodeName, bootstrapCheckpointPath)
+		kubeDeps.PodConfig, err = makePodSourceConfig(kubeCfg, kubeDeps.KubeClient, recorder, nodeName, bootstrapCheckpointPath)
 		if err != nil {
 			return nil, err
 		}
@@ -465,7 +467,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 
 	containerRefManager := kubecontainer.NewRefManager()
 
-	oomWatcher := NewOOMWatcher(kubeDeps.CAdvisorInterface, kubeDeps.Recorder)
+	oomWatcher := NewOOMWatcher(kubeDeps.CAdvisorInterface, recorder)
 
 	clusterDNS := make([]net.IP, 0, len(kubeCfg.ClusterDNS))
 	for _, ipEntry := range kubeCfg.ClusterDNS {
@@ -498,12 +500,12 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		registerNode:                   registerNode,
 		registerWithTaints:             registerWithTaints,
 		registerSchedulable:            registerSchedulable,
-		dnsConfigurer:                  dns.NewConfigurer(kubeDeps.Recorder, nodeRef, parsedNodeIP, clusterDNS, kubeCfg.ClusterDomain, kubeCfg.ResolverConfig),
+		dnsConfigurer:                  dns.NewConfigurer(recorder, nodeRef, parsedNodeIP, clusterDNS, kubeCfg.ClusterDomain, kubeCfg.ResolverConfig),
 		serviceLister:                  serviceLister,
 		nodeInfo:                       nodeInfo,
 		masterServiceNamespace:         masterServiceNamespace,
 		streamingConnectionIdleTimeout: kubeCfg.StreamingConnectionIdleTimeout.Duration,
-		recorder:                       kubeDeps.Recorder,
+		recorder:                       recorder,
 		cadvisor:                       kubeDeps.CAdvisorInterface,
 		cloud:                          kubeDeps.Cloud,
 		externalCloudProvider:     cloudprovider.IsExternal(cloudProvider),
@@ -662,7 +664,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 	}
 
 	runtime, err := kuberuntime.NewKubeGenericRuntimeManager(
-		kubecontainer.FilterEventRecorder(kubeDeps.Recorder),
+		kubecontainer.FilterEventRecorder(recorder),
 		klet.livenessManager,
 		seccompProfileRoot,
 		containerRefManager,
@@ -730,7 +732,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 	klet.containerDeletor = newPodContainerDeletor(klet.containerRuntime, integer.IntMax(containerGCPolicy.MaxPerPodContainer, minDeadContainerInPod))
 
 	// setup imageManager
-	imageManager, err := images.NewImageGCManager(klet.containerRuntime, klet.StatsProvider, kubeDeps.Recorder, nodeRef, imageGCPolicy, crOptions.PodSandboxImage)
+	imageManager, err := images.NewImageGCManager(klet.containerRuntime, klet.StatsProvider, recorder, nodeRef, imageGCPolicy, crOptions.PodSandboxImage)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize image manager: %v", err)
 	}
@@ -772,7 +774,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		klet.livenessManager,
 		klet.runner,
 		containerRefManager,
-		kubeDeps.Recorder)
+		recorder)
 
 	tokenManager := token.NewManager(kubeDeps.KubeClient)
 
@@ -809,19 +811,19 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		klet.containerRuntime,
 		kubeDeps.Mounter,
 		klet.getPodsDir(),
-		kubeDeps.Recorder,
+		recorder,
 		experimentalCheckNodeCapabilitiesBeforeMount,
 		keepTerminatedPodVolumes)
 
 	klet.reasonCache = NewReasonCache()
 	klet.workQueue = queue.NewBasicWorkQueue(klet.clock)
-	klet.podWorkers = newPodWorkers(klet.syncPod, kubeDeps.Recorder, klet.workQueue, klet.resyncInterval, backOffPeriod, klet.podCache)
+	klet.podWorkers = newPodWorkers(klet.syncPod, recorder, klet.workQueue, klet.resyncInterval, backOffPeriod, klet.podCache)
 
 	klet.backOff = flowcontrol.NewBackOff(backOffPeriod, MaxContainerBackOff)
 	klet.podKillingCh = make(chan *kubecontainer.PodPair, podKillingChannelCapacity)
 
 	// setup eviction manager
-	evictionManager, evictionAdmitHandler := eviction.NewManager(klet.resourceAnalyzer, evictionConfig, killPodNow(klet.podWorkers, kubeDeps.Recorder), klet.imageManager, klet.containerGC, kubeDeps.Recorder, nodeRef, klet.clock)
+	evictionManager, evictionAdmitHandler := eviction.NewManager(klet.resourceAnalyzer, evictionConfig, killPodNow(klet.podWorkers, recorder), klet.imageManager, klet.containerGC, recorder, nodeRef, klet.clock)
 
 	klet.evictionManager = evictionManager
 	klet.admitHandlers.AddPodAdmitHandler(evictionAdmitHandler)
@@ -845,14 +847,14 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 	}
 
 	// enable active deadline handler
-	activeDeadlineHandler, err := newActiveDeadlineHandler(klet.statusManager, kubeDeps.Recorder, klet.clock)
+	activeDeadlineHandler, err := newActiveDeadlineHandler(klet.statusManager, recorder, klet.clock)
 	if err != nil {
 		return nil, err
 	}
 	klet.AddPodSyncLoopHandler(activeDeadlineHandler)
 	klet.AddPodSyncHandler(activeDeadlineHandler)
 
-	criticalPodAdmissionHandler := preemption.NewCriticalPodAdmissionHandler(klet.GetActivePods, killPodNow(klet.podWorkers, kubeDeps.Recorder), kubeDeps.Recorder)
+	criticalPodAdmissionHandler := preemption.NewCriticalPodAdmissionHandler(klet.GetActivePods, killPodNow(klet.podWorkers, recorder), recorder)
 	klet.admitHandlers.AddPodAdmitHandler(lifecycle.NewPredicateAdmitHandler(klet.getNodeAnyWay, criticalPodAdmissionHandler, klet.containerManager.UpdatePluginResources))
 	// apply functional Option's
 	for _, opt := range kubeDeps.Options {
