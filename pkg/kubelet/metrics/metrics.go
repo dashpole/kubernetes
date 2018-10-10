@@ -25,6 +25,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	corev1 "k8s.io/api/core/v1"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
+	"k8s.io/client-go/tools/record"
 	"k8s.io/kubernetes/pkg/features"
 	kubecontainer "k8s.io/kubernetes/pkg/kubelet/container"
 )
@@ -231,6 +232,7 @@ func Register(containerCache kubecontainer.RuntimeCache, collectors ...prometheu
 			prometheus.MustRegister(collector)
 		}
 	})
+	record.RegisterMetrics()
 }
 
 // Gets the time since the specified start in microseconds.

@@ -19,8 +19,10 @@ package record
 import (
 	"fmt"
 	"math/rand"
+	"sync"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -268,6 +270,8 @@ func (recorder *recorderImpl) generateEvent(object runtime.Object, annotations m
 	event := recorder.makeEvent(ref, annotations, eventtype, reason, message)
 	event.Source = recorder.source
 
+	EventMetric.WithLabelValues(reason, ref.Kind).Inc()
+
 	go func() {
 		// NOTE: events should be a non-blocking operation
 		defer utilruntime.HandleCrash()
@@ -319,4 +323,22 @@ func (recorder *recorderImpl) makeEvent(ref *v1.ObjectReference, annotations map
 		Count:          1,
 		Type:           eventtype,
 	}
+}
+
+var (
+	registerMetrics sync.Once
+
+	EventMetric = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "events",
+			Help: "Cumulative number of events produced",
+		},
+		[]string{"reason", "involvedObject"},
+	)
+)
+
+func RegisterMetrics() {
+	registerMetrics.Do(func() {
+		prometheus.MustRegister(EventMetric)
+	})
 }
