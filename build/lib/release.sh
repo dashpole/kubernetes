@@ -365,7 +365,10 @@ function kube::release::create_docker_images_for_server() {
         ln "${KUBE_ROOT}/build/nsswitch.conf" "${docker_build_path}/nsswitch.conf"
         chmod 0644 "${docker_build_path}/nsswitch.conf"
         cat <<EOF > "${docker_file_path}"
+FROM alpine:latest as certs
+RUN apk --update add ca-certificates
 FROM ${base_image}
+COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY ${binary_name} /usr/local/bin/${binary_name}
 EOF
         # ensure /etc/nsswitch.conf exists so go's resolver respects /etc/hosts
