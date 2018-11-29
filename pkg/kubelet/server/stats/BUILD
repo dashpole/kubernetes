@@ -5,6 +5,7 @@ go_library(
     srcs = [
         "doc.go",
         "fs_resource_analyzer.go",
+        "grpc.go",
         "handler.go",
         "resource_analyzer.go",
         "summary.go",
@@ -15,6 +16,7 @@ go_library(
     importpath = "k8s.io/kubernetes/pkg/kubelet/server/stats",
     visibility = ["//visibility:public"],
     deps = [
+        "//pkg/kubelet/apis/corestats/v1alpha1:go_default_library",
         "//pkg/kubelet/apis/stats/v1alpha1:go_default_library",
         "//pkg/kubelet/cm:go_default_library",
         "//pkg/kubelet/container:go_default_library",
@@ -26,6 +28,7 @@ go_library(
         "//staging/src/k8s.io/apimachinery/pkg/util/wait:go_default_library",
         "//vendor/github.com/emicklei/go-restful:go_default_library",
         "//vendor/github.com/google/cadvisor/info/v1:go_default_library",
+        "//vendor/golang.org/x/net/context:go_default_library",
         "//vendor/k8s.io/klog:go_default_library",
     ],
 )

@@ -31,6 +31,8 @@ import (
 	"sync/atomic"
 	"time"
 
+	"google.golang.org/grpc"
+
 	cadvisorapi "github.com/google/cadvisor/info/v1"
 	cadvisorapiv2 "github.com/google/cadvisor/info/v2"
 	"k8s.io/api/core/v1"
@@ -58,6 +60,7 @@ import (
 	api "k8s.io/kubernetes/pkg/apis/core"
 	"k8s.io/kubernetes/pkg/features"
 	kubeletconfiginternal "k8s.io/kubernetes/pkg/kubelet/apis/config"
+	corestats "k8s.io/kubernetes/pkg/kubelet/apis/corestats/v1alpha1"
 	internalapi "k8s.io/kubernetes/pkg/kubelet/apis/cri"
 	pluginwatcherapi "k8s.io/kubernetes/pkg/kubelet/apis/pluginregistration/v1"
 	"k8s.io/kubernetes/pkg/kubelet/apis/podresources"
@@ -195,6 +198,7 @@ type Bootstrap interface {
 	ListenAndServe(address net.IP, port uint, tlsOptions *server.TLSOptions, auth server.AuthInterface, enableDebuggingHandlers, enableContentionProfiling bool)
 	ListenAndServeReadOnly(address net.IP, port uint)
 	ListenAndServePodResources()
+	ListenAndServeGRPC(port uint)
 	Run(<-chan kubetypes.PodUpdate)
 	RunOnce(<-chan kubetypes.PodUpdate) ([]RunPodResult, error)
 }
@@ -2237,6 +2241,16 @@ func (kl *Kubelet) ListenAndServeReadOnly(address net.IP, port uint) {
 // ListenAndServePodResources runs the kubelet podresources grpc service
 func (kl *Kubelet) ListenAndServePodResources() {
 	server.ListenAndServePodResources(util.LocalEndpoint(kl.getPodResourcesDir(), podresources.Socket), kl.podManager, kl.containerManager)
+}
+
+func (kl *Kubelet) ListenAndServeGRPC(port uint) {
+	coreStatsGRPCServer := grpc.NewServer()
+	corestats.RegisterCoreStatsServer(coreStatsGRPCServer, serverstats.NewGRPCCoreStatsProvider(kl.resourceAnalyzer))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+	if err != nil {
+		klog.Fatalf("failed to listen: %v", err)
+	}
+	coreStatsGRPCServer.Serve(lis)
 }
 
 // Delete the eligible dead container instances in a pod. Depending on the configuration, the latest dead containers may be kept around.

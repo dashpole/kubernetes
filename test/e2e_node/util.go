@@ -38,6 +38,8 @@ import (
 	kubeletconfigv1beta1 "k8s.io/kubelet/config/v1beta1"
 	"k8s.io/kubernetes/pkg/features"
 	kubeletconfig "k8s.io/kubernetes/pkg/kubelet/apis/config"
+	"k8s.io/kubernetes/pkg/kubelet/apis/corestats"
+	corestatsapi "k8s.io/kubernetes/pkg/kubelet/apis/corestats/v1alpha1"
 	internalapi "k8s.io/kubernetes/pkg/kubelet/apis/cri"
 	"k8s.io/kubernetes/pkg/kubelet/apis/podresources"
 	podresourcesapi "k8s.io/kubernetes/pkg/kubelet/apis/podresources/v1alpha1"
@@ -110,6 +112,21 @@ func getNodeDevices() (*podresourcesapi.ListPodResourcesResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	resp, err := client.List(ctx, &podresourcesapi.ListPodResourcesRequest{})
+	if err != nil {
+		return nil, fmt.Errorf("%v.Get(_) = _, %v", client, err)
+	}
+	return resp, nil
+}
+
+func getGRPCCoreStats() (*corestatsapi.StatsResponse, error) {
+	client, conn, err := corestats.GetClient("127.0.0.1:1234")
+	if err != nil {
+		return nil, fmt.Errorf("Error getting grpc client: %v", err)
+	}
+	defer conn.Close()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	resp, err := client.Get(ctx, &corestatsapi.StatsRequest{})
 	if err != nil {
 		return nil, fmt.Errorf("%v.Get(_) = _, %v", client, err)
 	}
