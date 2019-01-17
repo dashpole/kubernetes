@@ -17,6 +17,7 @@ limitations under the License.
 package stats
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -33,7 +34,7 @@ const (
 var (
 	cpuUsageDesc = prometheus.NewDesc(
 		prometheus.BuildFQName("", "",
-			"cpu_usage_seconds"),
+			"cpu_usage_millicore_seconds"),
 		"Cumulative cpu time consumed in seconds",
 		[]string{"container_name", "pod_name", "pod_namespace"}, nil)
 	memoryUsageDesc = prometheus.NewDesc(
@@ -80,55 +81,39 @@ func (pc *coreCollector) Collect(ch chan<- prometheus.Metric) {
 	}
 	pc.errors.Collect(ch)
 
-	collectCPU(ch, summary.Node.CPU, nodeContainerName, "", "")
-	collectMemory(ch, summary.Node.Memory, nodeContainerName, "", "")
-	collectEphemeralStorage(ch, summary.Node.Fs, nodeContainerName, "", "")
-
+	collectMetrics(ch, summary.Node.CPU, summary.Node.Memory, summary.Node.Fs, nodeContainerName, "", "")
 	for _, pod := range summary.Pods {
-
-		collectCPU(ch, pod.CPU, podContainerName, pod.PodRef.Name, pod.PodRef.Namespace)
-		collectMemory(ch, pod.Memory, podContainerName, pod.PodRef.Name, pod.PodRef.Namespace)
-		collectEphemeralStorage(ch, pod.EphemeralStorage, podContainerName, pod.PodRef.Name, pod.PodRef.Namespace)
-
+		collectMetrics(ch, pod.CPU, pod.Memory, pod.EphemeralStorage, podContainerName, pod.PodRef.Name, pod.PodRef.Namespace)
 		for _, container := range pod.Containers {
-
-			collectCPU(ch, container.CPU, container.Name, pod.PodRef.Name, pod.PodRef.Namespace)
-			collectMemory(ch, container.Memory, container.Name, pod.PodRef.Name, pod.PodRef.Namespace)
-			collectEphemeralStorage(ch, container.Rootfs, container.Name, pod.PodRef.Name, pod.PodRef.Namespace)
-
+			// TODO REMOVE BEFORE PUSHING dashpole
+			for i := 0; i < 100; i++ {
+				collectMetrics(ch, container.CPU, container.Memory, container.Rootfs, fmt.Sprintf("%s%d", container.Name, i), pod.PodRef.Name, pod.PodRef.Namespace)
+			}
 		}
 	}
 }
 
-func collectCPU(ch chan<- prometheus.Metric, stats *statsapi.CPUStats, labelValues ...string) {
-	if stats.UsageNanoCores == nil {
-		return
+func collectMetrics(ch chan<- prometheus.Metric, cpu *statsapi.CPUStats, memory *statsapi.MemoryStats, disk *statsapi.FsStats, labelValues ...string) {
+	if cpu.UsageNanoCores != nil {
+		ch <- prometheus.MustNewConstMetric(
+			cpuUsageDesc,
+			prometheus.GaugeValue,
+			float64(*cpu.UsageNanoCores)/float64(time.Millisecond),
+			labelValues...)
 	}
-	ch <- prometheus.MustNewConstMetric(
-		cpuUsageDesc,
-		prometheus.GaugeValue,
-		float64(*stats.UsageNanoCores)/float64(time.Second),
-		labelValues...)
-}
 
-func collectMemory(ch chan<- prometheus.Metric, stats *statsapi.MemoryStats, labelValues ...string) {
-	if stats.WorkingSetBytes == nil {
-		return
+	if memory.WorkingSetBytes != nil {
+		ch <- prometheus.MustNewConstMetric(
+			memoryUsageDesc,
+			prometheus.GaugeValue,
+			float64(*memory.WorkingSetBytes),
+			labelValues...)
 	}
-	ch <- prometheus.MustNewConstMetric(
-		memoryUsageDesc,
-		prometheus.GaugeValue,
-		float64(*stats.WorkingSetBytes),
-		labelValues...)
-}
-
-func collectEphemeralStorage(ch chan<- prometheus.Metric, stats *statsapi.FsStats, labelValues ...string) {
-	if stats.UsedBytes == nil {
-		return
+	if disk.UsedBytes != nil {
+		ch <- prometheus.MustNewConstMetric(
+			ephemeralStorageUsageDesc,
+			prometheus.GaugeValue,
+			float64(*disk.UsedBytes),
+			labelValues...)
 	}
-	ch <- prometheus.MustNewConstMetric(
-		ephemeralStorageUsageDesc,
-		prometheus.GaugeValue,
-		float64(*stats.UsedBytes),
-		labelValues...)
 }

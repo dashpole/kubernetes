@@ -17,6 +17,8 @@ limitations under the License.
 package stats
 
 import (
+	"fmt"
+
 	"golang.org/x/net/context"
 
 	coreapi "k8s.io/kubernetes/pkg/kubelet/apis/corestats/v1alpha1"
@@ -42,11 +44,12 @@ func (g *grpcCoreStatsProvider) Get(ctx context.Context, req *coreapi.StatsReque
 
 		containersStats := []*coreapi.ContainerUsage{}
 		for _, container := range pod.Containers {
-
-			containersStats = append(containersStats, &coreapi.ContainerUsage{
-				Name:  container.Name,
-				Usage: summaryStatsToCoreUsage(container.CPU, container.Memory, container.Rootfs),
-			})
+			for i := 0; i < 100; i++ {
+				containersStats = append(containersStats, &coreapi.ContainerUsage{
+					Name:  fmt.Sprintf("%s%d", container.Name, i),
+					Usage: summaryStatsToCoreUsage(container.CPU, container.Memory, container.Rootfs),
+				})
+			}
 		}
 
 		podsUsage = append(podsUsage, &coreapi.PodUsage{
