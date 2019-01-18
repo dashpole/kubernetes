@@ -49,13 +49,13 @@ spec:
       serviceAccountName: metrics-server
       containers:
       - name: metrics-server
-        image: gcr.io/dashpole-gke-dev/metrics-server-amd64-grpc:v3
+        image: gcr.io/dashpole-gke-dev/metrics-server-amd64-slow-prometheus:v1
         command:
         - /metrics-server
         - --metric-resolution=1s
         # These are needed for GKE, which doesn't support secure communication yet.
         # Remove these lines for non-GKE clusters, and when GKE supports token-based auth.
-        - --kubelet-port=1234
+        - --kubelet-port=10255
         - --deprecated-kubelet-completely-insecure=true
         ports:
         - containerPort: 443
@@ -85,7 +85,7 @@ spec:
         command:
           - /pod_nanny
           - --config-dir=/etc/config
-          - --cpu=1800m
+          - --cpu=1700m
           - --extra-cpu=0m
           - --memory=4000Mi
           - --extra-memory=0Mi

@@ -85,7 +85,6 @@ func (pc *coreCollector) Collect(ch chan<- prometheus.Metric) {
 	for _, pod := range summary.Pods {
 		collectMetrics(ch, pod.CPU, pod.Memory, pod.EphemeralStorage, podContainerName, pod.PodRef.Name, pod.PodRef.Namespace)
 		for _, container := range pod.Containers {
-			// TODO REMOVE BEFORE PUSHING dashpole
 			for i := 0; i < 100; i++ {
 				collectMetrics(ch, container.CPU, container.Memory, container.Rootfs, fmt.Sprintf("%s%d", container.Name, i), pod.PodRef.Name, pod.PodRef.Namespace)
 			}

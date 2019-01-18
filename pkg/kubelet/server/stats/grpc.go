@@ -18,7 +18,6 @@ package stats
 
 import (
 	"fmt"
-
 	"golang.org/x/net/context"
 
 	coreapi "k8s.io/kubernetes/pkg/kubelet/apis/corestats/v1alpha1"
@@ -66,10 +65,17 @@ func (g *grpcCoreStatsProvider) Get(ctx context.Context, req *coreapi.StatsReque
 }
 
 func summaryStatsToCoreUsage(cpu *statsapi.CPUStats, memory *statsapi.MemoryStats, ephemeralStorage *statsapi.FsStats) *coreapi.Usage {
-	return &coreapi.Usage{
-		Time:                       cpu.Time.Time.UnixNano(),
-		CpuUsageNanoCores:          *cpu.UsageNanoCores,
-		MemoryWorkingSetBytes:      *memory.WorkingSetBytes,
-		EphemeralStorageUsageBytes: *ephemeralStorage.UsedBytes,
+	usage := &coreapi.Usage{
+		Time: cpu.Time.Time.UnixNano(),
 	}
+	if cpu.UsageNanoCores != nil {
+		usage.CpuUsageNanoCores = *cpu.UsageNanoCores
+	}
+	if memory.WorkingSetBytes != nil {
+		usage.MemoryWorkingSetBytes = *memory.WorkingSetBytes
+	}
+	if ephemeralStorage.UsedBytes != nil {
+		usage.EphemeralStorageUsageBytes = *ephemeralStorage.UsedBytes
+	}
+	return usage
 }
