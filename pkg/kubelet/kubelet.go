@@ -181,7 +181,7 @@ const (
 // SyncHandler is an interface implemented by Kubelet, for testability
 type SyncHandler interface {
 	HandlePodAdditions(pods []*v1.Pod)
-	HandlePodUpdates(pods []*v1.Pod)
+	HandlePodUpdates(pods []*v1.Pod) []*v1.Pod
 	HandlePodRemoves(pods []*v1.Pod)
 	HandlePodReconcile(pods []*v1.Pod)
 	HandlePodSyncs(pods []*v1.Pod)
@@ -1903,7 +1903,15 @@ func (kl *Kubelet) syncLoopIteration(configCh <-chan kubetypes.PodUpdate, handle
 			handler.HandlePodAdditions(u.Pods)
 		case kubetypes.UPDATE:
 			klog.V(2).Infof("SyncLoop (UPDATE, %q): %q", u.Source, format.PodsWithDeletionTimestamps(u.Pods))
-			handler.HandlePodUpdates(u.Pods)
+			retryPods := handler.HandlePodUpdates(u.Pods)
+			go func() {
+				time.Sleep(10 * time.Second)
+				configCh <- kubetypes.PodUpdate{
+					Pods:   retryPods,
+					Op:     kubetypes.UPDATE,
+					Source: u.Source,
+				}
+			}()
 		case kubetypes.REMOVE:
 			klog.V(2).Infof("SyncLoop (REMOVE, %q): %q", u.Source, format.Pods(u.Pods))
 			handler.HandlePodRemoves(u.Pods)
@@ -1913,7 +1921,15 @@ func (kl *Kubelet) syncLoopIteration(configCh <-chan kubetypes.PodUpdate, handle
 		case kubetypes.DELETE:
 			klog.V(2).Infof("SyncLoop (DELETE, %q): %q", u.Source, format.Pods(u.Pods))
 			// DELETE is treated as a UPDATE because of graceful deletion.
-			handler.HandlePodUpdates(u.Pods)
+			retryPods := handler.HandlePodUpdates(u.Pods)
+			go func() {
+				time.Sleep(10 * time.Second)
+				configCh <- kubetypes.PodUpdate{
+					Pods:   retryPods,
+					Op:     kubetypes.DELETE,
+					Source: u.Source,
+				}
+			}()
 		case kubetypes.RESTORE:
 			klog.V(2).Infof("SyncLoop (RESTORE, %q): %q", u.Source, format.Pods(u.Pods))
 			// These are pods restored from the checkpoint. Treat them as new
@@ -2077,13 +2093,22 @@ func (kl *Kubelet) HandlePodAdditions(pods []*v1.Pod) {
 
 // HandlePodUpdates is the callback in the SyncHandler interface for pods
 // being updated from a config source.
-func (kl *Kubelet) HandlePodUpdates(pods []*v1.Pod) {
+func (kl *Kubelet) HandlePodUpdates(pods []*v1.Pod) (retryPods []*v1.Pod) {
 	start := kl.clock.Now()
 	// Responsible for checking limits in resolv.conf
 	if kl.dnsConfigurer != nil && kl.dnsConfigurer.ResolverConfig != "" {
 		kl.dnsConfigurer.CheckLimitsForResolvConf()
 	}
 	for _, pod := range pods {
+		existingPods := kl.podManager.GetPods()
+
+		// Check if we can admit the pod; if not, reject it.
+		if ok, reason, message := kl.canAdmitPod(filterOutPod(existingPods, pod), pod); !ok {
+			retryPods = append(retryPods, pod)
+			continue
+		}
+
+		// TODO(dashpole) make sure the pod is newer than the one in the pod manager
 		kl.podManager.UpdatePod(pod)
 		if kubepod.IsMirrorPod(pod) {
 			kl.handleMirrorPod(pod, start)
@@ -2094,6 +2119,15 @@ func (kl *Kubelet) HandlePodUpdates(pods []*v1.Pod) {
 		mirrorPod, _ := kl.podManager.GetMirrorPodByPod(pod)
 		kl.dispatchWork(pod, kubetypes.SyncPodUpdate, mirrorPod, start)
 	}
+}
+
+func filterOutPod(existingPods []*v1.Pod, pod *v1.Pod) (returnPods []*v1.Pod) {
+	for _, p := range existingPods {
+		if p.UID != pod.UID {
+			returnPods = append(returnPods, p)
+		}
+	}
+	return
 }
 
 // HandlePodRemoves is the callback in the SyncHandler interface for pods
