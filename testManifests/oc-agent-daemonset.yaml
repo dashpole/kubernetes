@@ -1,0 +1,68 @@
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oc-agent-conf
+  labels:
+    app: opencensus
+    component: oc-agent-conf
+data:
+  oc-agent-config: |
+    receivers:
+      opencensus: {}
+    exporters:
+      zipkin:  # THIS MUST BE TAKEN FROM THE ZIPKIN SERVICE
+        endpoint: "http://35.239.240.86:9411/api/v2/spans"
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: ocagent-trace
+  name: ocagent-trace
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: ocagent-trace
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ocagent-trace
+    spec:
+      hostNetwork: true
+      containers:
+      - image: omnition/opencensus-agent:0.1.0
+        imagePullPolicy: IfNotPresent
+        name: ocagent-trace
+        command:
+          - "/ocagent_linux"
+          - "--config=/conf/oc-agent-config.yaml"
+        ports:
+        - containerPort: 55678
+          protocol: TCP
+        - containerPort: 55679
+          protocol: TCP
+        resources:
+          requests:
+            cpu: "0m"
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - name: oc-agent-config-vol
+          mountPath: /conf
+      volumes:
+        - configMap:
+            name: oc-agent-conf
+            items:
+              - key: oc-agent-config
+                path: oc-agent-config.yaml
+          name: oc-agent-config-vol
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
