@@ -142,7 +142,7 @@ func invokeTest(f *framework.Framework, client clientset.Interface, namespace st
 	ginkgo.By("Creating pod to attach PV to the node")
 	// Create pod to attach Volume to Node
 	podSpec := getVSpherePodSpecWithClaim(pvclaim.Name, nodeKeyValueLabel, "while true ; do sleep 2 ; done")
-	pod, err := client.CoreV1().Pods(namespace).Create(podSpec)
+	pod, err := client.CoreV1().Pods(namespace).Create(context.Background(), podSpec)
 	framework.ExpectNoError(err)
 
 	ginkgo.By("Waiting for pod to be running")

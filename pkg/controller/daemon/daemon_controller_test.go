@@ -25,6 +25,7 @@ import (
 	"testing"
 	"time"
 
+	"go.opencensus.io/trace"
 	apps "k8s.io/api/apps/v1"
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -275,10 +276,10 @@ func (f *fakePodControl) CreatePodsOnNode(nodeName, namespace string, template *
 	return nil
 }
 
-func (f *fakePodControl) CreatePodsWithControllerRef(namespace string, template *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error {
+func (f *fakePodControl) CreatePodsWithControllerRef(ctx *trace.SpanContext, namespace string, template *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error {
 	f.Lock()
 	defer f.Unlock()
-	if err := f.FakePodControl.CreatePodsWithControllerRef(namespace, template, object, controllerRef); err != nil {
+	if err := f.FakePodControl.CreatePodsWithControllerRef(ctx, namespace, template, object, controllerRef); err != nil {
 		return fmt.Errorf("failed to create pod for DaemonSet")
 	}
 

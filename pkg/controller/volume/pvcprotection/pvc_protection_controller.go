@@ -17,6 +17,7 @@ limitations under the License.
 package pvcprotection
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -248,7 +249,7 @@ func (c *Controller) askInformer(pvc *v1.PersistentVolumeClaim) (bool, error) {
 func (c *Controller) askAPIServer(pvc *v1.PersistentVolumeClaim) (bool, error) {
 	klog.V(4).Infof("Looking for Pods using PVC %s/%s with a live list", pvc.Namespace, pvc.Name)
 
-	podsList, err := c.client.CoreV1().Pods(pvc.Namespace).List(metav1.ListOptions{})
+	podsList, err := c.client.CoreV1().Pods(pvc.Namespace).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		return false, fmt.Errorf("live list of pods failed: %s", err.Error())
 	}

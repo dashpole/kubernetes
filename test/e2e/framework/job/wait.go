@@ -17,6 +17,7 @@ limitations under the License.
 package job
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"time"
@@ -107,7 +108,7 @@ func WaitForJobGone(c clientset.Interface, ns, jobName string, timeout time.Dura
 func EnsureAllJobPodsRunning(c clientset.Interface, ns, jobName string, parallelism int32) error {
 	label := labels.SelectorFromSet(labels.Set(map[string]string{JobSelectorKey: jobName}))
 	options := metav1.ListOptions{LabelSelector: label.String()}
-	pods, err := c.CoreV1().Pods(ns).List(options)
+	pods, err := c.CoreV1().Pods(ns).List(context.Background(), options)
 	if err != nil {
 		return err
 	}

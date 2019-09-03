@@ -389,12 +389,12 @@ func runKubernetesServiceTestContainer(c clientset.Interface, ns string) {
 		return
 	}
 	p.Namespace = ns
-	if _, err := c.CoreV1().Pods(ns).Create(p); err != nil {
+	if _, err := c.CoreV1().Pods(ns).Create(context.Background(), p); err != nil {
 		e2elog.Logf("Failed to create %v: %v", p.Name, err)
 		return
 	}
 	defer func() {
-		if err := c.CoreV1().Pods(ns).Delete(p.Name, nil); err != nil {
+		if err := c.CoreV1().Pods(ns).Delete(context.Background(), p.Name, nil); err != nil {
 			e2elog.Logf("Failed to delete pod %v: %v", p.Name, err)
 		}
 	}()
@@ -574,7 +574,7 @@ func kubectlLogPod(c clientset.Interface, pod v1.Pod, containerNameSubstr string
 
 // LogFailedContainers runs `kubectl logs` on a failed containers.
 func LogFailedContainers(c clientset.Interface, ns string, logFunc func(ftm string, args ...interface{})) {
-	podList, err := c.CoreV1().Pods(ns).List(metav1.ListOptions{})
+	podList, err := c.CoreV1().Pods(ns).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		logFunc("Error getting pods in namespace '%s': %v", ns, err)
 		return
@@ -1690,7 +1690,7 @@ func (f *Framework) MatchContainerOutput(
 	podErr := e2epod.WaitForPodSuccessInNamespace(f.ClientSet, createdPod.Name, ns)
 
 	// Grab its logs.  Get host first.
-	podStatus, err := podClient.Get(createdPod.Name, metav1.GetOptions{})
+	podStatus, err := podClient.Get(context.Background(), createdPod.Name, metav1.GetOptions{})
 	if err != nil {
 		return fmt.Errorf("failed to get pod status: %v", err)
 	}
@@ -2570,7 +2570,7 @@ func waitForApiserverRestarted(c clientset.Interface, initialRestartCount int32)
 func getApiserverRestartCount(c clientset.Interface) (int32, error) {
 	label := labels.SelectorFromSet(labels.Set(map[string]string{"component": "kube-apiserver"}))
 	listOpts := metav1.ListOptions{LabelSelector: label.String()}
-	pods, err := c.CoreV1().Pods(metav1.NamespaceSystem).List(listOpts)
+	pods, err := c.CoreV1().Pods(metav1.NamespaceSystem).List(context.Background(), listOpts)
 	if err != nil {
 		return -1, err
 	}
@@ -2899,7 +2899,7 @@ func CheckConnectivityToHost(f *Framework, nodeName, podName, host string, port,
 		},
 	}
 	podClient := f.ClientSet.CoreV1().Pods(f.Namespace.Name)
-	_, err := podClient.Create(pod)
+	_, err := podClient.Create(context.Background(), pod)
 	if err != nil {
 		return err
 	}
@@ -2998,7 +2998,7 @@ func WaitForStableCluster(c clientset.Interface, masterNodes sets.String) int {
 	timeout := 10 * time.Minute
 	startTime := time.Now()
 
-	allPods, err := c.CoreV1().Pods(metav1.NamespaceAll).List(metav1.ListOptions{})
+	allPods, err := c.CoreV1().Pods(metav1.NamespaceAll).List(context.Background(), metav1.ListOptions{})
 	ExpectNoError(err)
 	// API server returns also Pods that succeeded. We need to filter them out.
 	currentPods := make([]v1.Pod, 0, len(allPods.Items))
@@ -3013,7 +3013,7 @@ func WaitForStableCluster(c clientset.Interface, masterNodes sets.String) int {
 	for len(currentlyNotScheduledPods) != 0 {
 		time.Sleep(2 * time.Second)
 
-		allPods, err := c.CoreV1().Pods(metav1.NamespaceAll).List(metav1.ListOptions{})
+		allPods, err := c.CoreV1().Pods(metav1.NamespaceAll).List(context.Background(), metav1.ListOptions{})
 		ExpectNoError(err)
 		scheduledPods, currentlyNotScheduledPods = e2epod.GetPodsScheduled(masterNodes, allPods)
 
@@ -3292,7 +3292,7 @@ func PrintSummaries(summaries []TestDataSummary, testBaseName string) {
 
 // DumpDebugInfo dumps debug info of tests.
 func DumpDebugInfo(c clientset.Interface, ns string) {
-	sl, _ := c.CoreV1().Pods(ns).List(metav1.ListOptions{LabelSelector: labels.Everything().String()})
+	sl, _ := c.CoreV1().Pods(ns).List(context.Background(), metav1.ListOptions{LabelSelector: labels.Everything().String()})
 	for _, s := range sl.Items {
 		desc, _ := RunKubectl("describe", "po", s.Name, fmt.Sprintf("--namespace=%v", ns))
 		e2elog.Logf("\nOutput of kubectl describe %v:\n%v", s.Name, desc)

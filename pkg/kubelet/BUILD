@@ -108,6 +108,7 @@ go_library(
         "//pkg/util/removeall:go_default_library",
         "//pkg/util/selinux:go_default_library",
         "//pkg/util/taints:go_default_library",
+        "//pkg/util/trace:go_default_library",
         "//pkg/volume:go_default_library",
         "//pkg/volume/csi:go_default_library",
         "//pkg/volume/util:go_default_library",

@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
+	"context"
 
 	"github.com/onsi/ginkgo"
 
@@ -211,7 +212,7 @@ var _ = SIGDescribe("[Feature:DynamicAudit]", func() {
 					_, err = f.PodClient().List(metav1.ListOptions{})
 					framework.ExpectNoError(err, "failed to list pods")
 
-					_, err = f.PodClient().Patch(pod.Name, types.JSONPatchType, patch)
+					_, err = f.PodClient().Patch(context.Background(), pod.Name, types.JSONPatchType, patch)
 					framework.ExpectNoError(err, "failed to patch pod")
 
 					f.PodClient().DeleteSync(pod.Name, &metav1.DeleteOptions{}, framework.DefaultPodDeletionTimeout)

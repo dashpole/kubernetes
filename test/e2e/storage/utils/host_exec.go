@@ -17,6 +17,7 @@ limitations under the License.
 package utils
 
 import (
+	"context"
 	"fmt"
 
 	"k8s.io/api/core/v1"
@@ -76,7 +77,7 @@ func (h *hostExecutor) launchNodeExecPod(node string) *v1.Pod {
 			return &privileged
 		}(true),
 	}
-	pod, err := cs.CoreV1().Pods(ns.Name).Create(hostExecPod)
+	pod, err := cs.CoreV1().Pods(ns.Name).Create(context.Background(), hostExecPod)
 	framework.ExpectNoError(err)
 	err = e2epod.WaitForPodRunningInNamespace(cs, pod)
 	framework.ExpectNoError(err)

@@ -75,7 +75,7 @@ func ClusterLevelLoggingWithKibana(f *framework.Framework) {
 	ginkgo.By("Checking to make sure the Kibana pods are running")
 	label := labels.SelectorFromSet(labels.Set(map[string]string{kibanaKey: kibanaValue}))
 	options := metav1.ListOptions{LabelSelector: label.String()}
-	pods, err := f.ClientSet.CoreV1().Pods(metav1.NamespaceSystem).List(options)
+	pods, err := f.ClientSet.CoreV1().Pods(metav1.NamespaceSystem).List(context.Background(), options)
 	framework.ExpectNoError(err)
 	for _, pod := range pods.Items {
 		err = e2epod.WaitForPodRunningInNamespace(f.ClientSet, &pod)

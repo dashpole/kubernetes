@@ -42,6 +42,7 @@ import (
 	"k8s.io/apiserver/pkg/storage/value"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	utiltrace "k8s.io/utils/trace"
+	traceutil "go.opencensus.io/trace"
 )
 
 // authenticatedDataString satisfies the value.Context interface. It uses the key to
@@ -239,6 +240,10 @@ func (s *store) GuaranteedUpdate(
 	trace := utiltrace.New("GuaranteedUpdate etcd3", utiltrace.Field{"type", getTypeName(out)})
 	defer trace.LogIfLong(500 * time.Millisecond)
 
+	var span *traceutil.Span
+	ctx, span = traceutil.StartSpan(ctx, "kube-apiserver.GuaranteedUpdate")
+	defer span.End()
+
 	v, err := conversion.EnforcePtr(out)
 	if err != nil {
 		return fmt.Errorf("unable to convert output object to pointer: %v", err)
@@ -369,6 +374,11 @@ func (s *store) GetToList(ctx context.Context, key string, resourceVersion strin
 		utiltrace.Field{"limit", pred.Limit},
 		utiltrace.Field{"continue", pred.Continue})
 	defer trace.LogIfLong(500 * time.Millisecond)
+
+	var span *traceutil.Span
+	ctx, span = traceutil.StartSpan(ctx, "kube-apiserver.GetToList")
+	defer span.End()
+
 	listPtr, err := meta.GetItemsPtr(listObj)
 	if err != nil {
 		return err
@@ -477,6 +487,11 @@ func (s *store) List(ctx context.Context, key, resourceVersion string, pred stor
 		utiltrace.Field{"resourceVersion", resourceVersion},
 		utiltrace.Field{"limit", pred.Limit},
 		utiltrace.Field{"continue", pred.Continue})
+
+	var span *traceutil.Span
+	ctx, span = traceutil.StartSpan(ctx, "kube-apiserver.List")
+	defer span.End()
+
 	defer trace.LogIfLong(500 * time.Millisecond)
 	listPtr, err := meta.GetItemsPtr(listObj)
 	if err != nil {

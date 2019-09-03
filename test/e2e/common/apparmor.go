@@ -17,6 +17,7 @@ limitations under the License.
 package common
 
 import (
+	"context"
 	"fmt"
 
 	v1 "k8s.io/api/core/v1"
@@ -128,7 +129,7 @@ done`, testCmd)
 		framework.ExpectNoError(e2epod.WaitForPodSuccessInNamespace(
 			f.ClientSet, pod.Name, f.Namespace.Name))
 		var err error
-		pod, err = f.PodClient().Get(pod.Name, metav1.GetOptions{})
+		pod, err = f.PodClient().Get(context.Background(), pod.Name, metav1.GetOptions{})
 		framework.ExpectNoError(err)
 	} else {
 		pod = f.PodClient().CreateSync(pod)

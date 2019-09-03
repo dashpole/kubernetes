@@ -51,6 +51,7 @@ import (
 	"k8s.io/kube-openapi/pkg/handler"
 	openapiutil "k8s.io/kube-openapi/pkg/util"
 	openapiproto "k8s.io/kube-openapi/pkg/util/proto"
+	"k8s.io/kubernetes/pkg/util/trace"
 )
 
 // Info about an API group.
@@ -288,6 +289,7 @@ func (s *GenericAPIServer) PrepareRun() preparedGenericAPIServer {
 			Config: s.openAPIConfig,
 		}.Install(s.Handler.GoRestfulContainer, s.Handler.NonGoRestfulMux)
 	}
+	traceutil.InitializeExporter(traceutil.ServiceScheduler)
 
 	s.installHealthz()
 	s.installLivez()

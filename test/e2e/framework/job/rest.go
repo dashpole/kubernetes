@@ -17,6 +17,7 @@ limitations under the License.
 package job
 
 import (
+	"context"
 	"fmt"
 
 	batchv1 "k8s.io/api/batch/v1"
@@ -37,7 +38,7 @@ func GetJob(c clientset.Interface, ns, name string) (*batchv1.Job, error) {
 func GetJobPods(c clientset.Interface, ns, jobName string) (*v1.PodList, error) {
 	label := labels.SelectorFromSet(labels.Set(map[string]string{JobSelectorKey: jobName}))
 	options := metav1.ListOptions{LabelSelector: label.String()}
-	return c.CoreV1().Pods(ns).List(options)
+	return c.CoreV1().Pods(ns).List(context.Background(), options)
 }
 
 // CreateJob uses c to create job in namespace ns. If the returned error is nil, the returned Job is valid and has

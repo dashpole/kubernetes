@@ -17,6 +17,7 @@ limitations under the License.
 package daemon
 
 import (
+	"context"
 	"bytes"
 	"fmt"
 	"reflect"
@@ -219,7 +220,7 @@ func (dsc *DaemonSetsController) dedupCurHistories(ds *apps.DaemonSet, curHistor
 					toUpdate.Labels = make(map[string]string)
 				}
 				toUpdate.Labels[apps.DefaultDaemonSetUniqueLabelKey] = keepCur.Labels[apps.DefaultDaemonSetUniqueLabelKey]
-				_, err = dsc.kubeClient.CoreV1().Pods(ds.Namespace).Update(toUpdate)
+				_, err = dsc.kubeClient.CoreV1().Pods(ds.Namespace).Update(context.Background(), toUpdate)
 				if err != nil {
 					return nil, err
 				}

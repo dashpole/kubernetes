@@ -17,6 +17,7 @@ limitations under the License.
 package utils
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
@@ -265,9 +266,9 @@ func TestVolumeUnmountsFromDeletedPodWithForceOption(c clientset.Interface, f *f
 
 	ginkgo.By(fmt.Sprintf("Deleting Pod %q", clientPod.Name))
 	if forceDelete {
-		err = c.CoreV1().Pods(clientPod.Namespace).Delete(clientPod.Name, metav1.NewDeleteOptions(0))
+		err = c.CoreV1().Pods(clientPod.Namespace).Delete(context.Background(), clientPod.Name, metav1.NewDeleteOptions(0))
 	} else {
-		err = c.CoreV1().Pods(clientPod.Namespace).Delete(clientPod.Name, &metav1.DeleteOptions{})
+		err = c.CoreV1().Pods(clientPod.Namespace).Delete(context.Background(), clientPod.Name, &metav1.DeleteOptions{})
 	}
 	framework.ExpectNoError(err)
 
@@ -341,9 +342,9 @@ func TestVolumeUnmapsFromDeletedPodWithForceOption(c clientset.Interface, f *fra
 
 	ginkgo.By(fmt.Sprintf("Deleting Pod %q", clientPod.Name))
 	if forceDelete {
-		err = c.CoreV1().Pods(clientPod.Namespace).Delete(clientPod.Name, metav1.NewDeleteOptions(0))
+		err = c.CoreV1().Pods(clientPod.Namespace).Delete(context.Background(), clientPod.Name, metav1.NewDeleteOptions(0))
 	} else {
-		err = c.CoreV1().Pods(clientPod.Namespace).Delete(clientPod.Name, &metav1.DeleteOptions{})
+		err = c.CoreV1().Pods(clientPod.Namespace).Delete(context.Background(), clientPod.Name, &metav1.DeleteOptions{})
 	}
 	framework.ExpectNoError(err, "Failed to delete pod.")
 
@@ -418,7 +419,7 @@ func RunInPodWithVolume(c clientset.Interface, ns, claimName, command string) {
 			},
 		},
 	}
-	pod, err := c.CoreV1().Pods(ns).Create(pod)
+	pod, err := c.CoreV1().Pods(ns).Create(context.Background(), pod)
 	framework.ExpectNoError(err, "Failed to create pod: %v", err)
 	defer func() {
 		e2epod.DeletePodOrFail(c, ns, pod.Name)
@@ -488,13 +489,13 @@ func StartExternalProvisioner(c clientset.Interface, ns string, externalPluginNa
 			},
 		},
 	}
-	provisionerPod, err := podClient.Create(provisionerPod)
+	provisionerPod, err := podClient.Create(context.Background(), provisionerPod)
 	framework.ExpectNoError(err, "Failed to create %s pod: %v", provisionerPod.Name, err)
 
 	framework.ExpectNoError(e2epod.WaitForPodRunningInNamespace(c, provisionerPod))
 
 	ginkgo.By("locating the provisioner pod")
-	pod, err := podClient.Get(provisionerPod.Name, metav1.GetOptions{})
+	pod, err := podClient.Get(context.Background(), provisionerPod.Name, metav1.GetOptions{})
 	framework.ExpectNoError(err, "Cannot locate the provisioner pod %v: %v", provisionerPod.Name, err)
 
 	return pod

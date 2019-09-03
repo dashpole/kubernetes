@@ -18,6 +18,7 @@ package framework
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"math"
 	"sort"
@@ -272,7 +273,7 @@ func NewResourceUsageGatherer(c clientset.Interface, options ResourceGathererOpt
 	// Tracks kube-system pods if no valid PodList is passed in.
 	var err error
 	if pods == nil {
-		pods, err = c.CoreV1().Pods("kube-system").List(metav1.ListOptions{})
+		pods, err = c.CoreV1().Pods("kube-system").List(context.Background(), metav1.ListOptions{})
 		if err != nil {
 			e2elog.Logf("Error while listing Pods: %v", err)
 			return nil, err

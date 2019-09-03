@@ -20,6 +20,7 @@ package v1
 
 import (
 	"time"
+	"context"
 
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -37,17 +38,17 @@ type PodsGetter interface {
 
 // PodInterface has methods to work with Pod resources.
 type PodInterface interface {
-	Create(*v1.Pod) (*v1.Pod, error)
-	Update(*v1.Pod) (*v1.Pod, error)
-	UpdateStatus(*v1.Pod) (*v1.Pod, error)
-	Delete(name string, options *metav1.DeleteOptions) error
-	DeleteCollection(options *metav1.DeleteOptions, listOptions metav1.ListOptions) error
-	Get(name string, options metav1.GetOptions) (*v1.Pod, error)
-	List(opts metav1.ListOptions) (*v1.PodList, error)
-	Watch(opts metav1.ListOptions) (watch.Interface, error)
-	Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.Pod, err error)
-	GetEphemeralContainers(podName string, options metav1.GetOptions) (*v1.EphemeralContainers, error)
-	UpdateEphemeralContainers(podName string, ephemeralContainers *v1.EphemeralContainers) (*v1.EphemeralContainers, error)
+	Create(context.Context, *v1.Pod) (*v1.Pod, error)
+	Update(context.Context, *v1.Pod) (*v1.Pod, error)
+	UpdateStatus(context.Context, *v1.Pod) (*v1.Pod, error)
+	Delete(ctx context.Context, name string, options *metav1.DeleteOptions) error
+	DeleteCollection(ctx context.Context, options *metav1.DeleteOptions, listOptions metav1.ListOptions) error
+	Get(ctx context.Context, name string, options metav1.GetOptions) (*v1.Pod, error)
+	List(ctx context.Context, opts metav1.ListOptions) (*v1.PodList, error)
+	Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.Pod, err error)
+	GetEphemeralContainers(ctx context.Context, podName string, options metav1.GetOptions) (*v1.EphemeralContainers, error)
+	UpdateEphemeralContainers(ctx context.Context, podName string, ephemeralContainers *v1.EphemeralContainers) (*v1.EphemeralContainers, error)
 
 	PodExpansion
 }
@@ -67,20 +68,21 @@ func newPods(c *CoreV1Client, namespace string) *pods {
 }
 
 // Get takes name of the pod, and returns the corresponding pod object, and an error if there is any.
-func (c *pods) Get(name string, options metav1.GetOptions) (result *v1.Pod, err error) {
+func (c *pods) Get(ctx context.Context, name string, options metav1.GetOptions) (result *v1.Pod, err error) {
 	result = &v1.Pod{}
 	err = c.client.Get().
 		Namespace(c.ns).
 		Resource("pods").
 		Name(name).
 		VersionedParams(&options, scheme.ParameterCodec).
+		Context(ctx).
 		Do().
 		Into(result)
 	return
 }
 
 // List takes label and field selectors, and returns the list of Pods that match those selectors.
-func (c *pods) List(opts metav1.ListOptions) (result *v1.PodList, err error) {
+func (c *pods) List(ctx context.Context, opts metav1.ListOptions) (result *v1.PodList, err error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
@@ -90,6 +92,7 @@ func (c *pods) List(opts metav1.ListOptions) (result *v1.PodList, err error) {
 		Namespace(c.ns).
 		Resource("pods").
 		VersionedParams(&opts, scheme.ParameterCodec).
+		Context(ctx).
 		Timeout(timeout).
 		Do().
 		Into(result)
@@ -97,7 +100,7 @@ func (c *pods) List(opts metav1.ListOptions) (result *v1.PodList, err error) {
 }
 
 // Watch returns a watch.Interface that watches the requested pods.
-func (c *pods) Watch(opts metav1.ListOptions) (watch.Interface, error) {
+func (c *pods) Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
@@ -107,30 +110,33 @@ func (c *pods) Watch(opts metav1.ListOptions) (watch.Interface, error) {
 		Namespace(c.ns).
 		Resource("pods").
 		VersionedParams(&opts, scheme.ParameterCodec).
+		Context(ctx).
 		Timeout(timeout).
 		Watch()
 }
 
 // Create takes the representation of a pod and creates it.  Returns the server's representation of the pod, and an error, if there is any.
-func (c *pods) Create(pod *v1.Pod) (result *v1.Pod, err error) {
+func (c *pods) Create(ctx context.Context, pod *v1.Pod) (result *v1.Pod, err error) {
 	result = &v1.Pod{}
 	err = c.client.Post().
 		Namespace(c.ns).
 		Resource("pods").
 		Body(pod).
+		Context(ctx).
 		Do().
 		Into(result)
 	return
 }
 
 // Update takes the representation of a pod and updates it. Returns the server's representation of the pod, and an error, if there is any.
-func (c *pods) Update(pod *v1.Pod) (result *v1.Pod, err error) {
+func (c *pods) Update(ctx context.Context, pod *v1.Pod) (result *v1.Pod, err error) {
 	result = &v1.Pod{}
 	err = c.client.Put().
 		Namespace(c.ns).
 		Resource("pods").
 		Name(pod.Name).
 		Body(pod).
+		Context(ctx).
 		Do().
 		Into(result)
 	return
@@ -139,7 +145,7 @@ func (c *pods) Update(pod *v1.Pod) (result *v1.Pod, err error) {
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
 
-func (c *pods) UpdateStatus(pod *v1.Pod) (result *v1.Pod, err error) {
+func (c *pods) UpdateStatus(ctx context.Context, pod *v1.Pod) (result *v1.Pod, err error) {
 	result = &v1.Pod{}
 	err = c.client.Put().
 		Namespace(c.ns).
@@ -147,24 +153,26 @@ func (c *pods) UpdateStatus(pod *v1.Pod) (result *v1.Pod, err error) {
 		Name(pod.Name).
 		SubResource("status").
 		Body(pod).
+		Context(ctx).
 		Do().
 		Into(result)
 	return
 }
 
 // Delete takes name of the pod and deletes it. Returns an error if one occurs.
-func (c *pods) Delete(name string, options *metav1.DeleteOptions) error {
+func (c *pods) Delete(ctx context.Context, name string, options *metav1.DeleteOptions) error {
 	return c.client.Delete().
 		Namespace(c.ns).
 		Resource("pods").
 		Name(name).
 		Body(options).
+		Context(ctx).
 		Do().
 		Error()
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *pods) DeleteCollection(options *metav1.DeleteOptions, listOptions metav1.ListOptions) error {
+func (c *pods) DeleteCollection(ctx context.Context, options *metav1.DeleteOptions, listOptions metav1.ListOptions) error {
 	var timeout time.Duration
 	if listOptions.TimeoutSeconds != nil {
 		timeout = time.Duration(*listOptions.TimeoutSeconds) * time.Second
@@ -175,12 +183,13 @@ func (c *pods) DeleteCollection(options *metav1.DeleteOptions, listOptions metav
 		VersionedParams(&listOptions, scheme.ParameterCodec).
 		Timeout(timeout).
 		Body(options).
+		Context(ctx).
 		Do().
 		Error()
 }
 
 // Patch applies the patch and returns the patched pod.
-func (c *pods) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.Pod, err error) {
+func (c *pods) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, subresources ...string) (result *v1.Pod, err error) {
 	result = &v1.Pod{}
 	err = c.client.Patch(pt).
 		Namespace(c.ns).
@@ -188,13 +197,14 @@ func (c *pods) Patch(name string, pt types.PatchType, data []byte, subresources 
 		SubResource(subresources...).
 		Name(name).
 		Body(data).
+		Context(ctx).
 		Do().
 		Into(result)
 	return
 }
 
 // GetEphemeralContainers takes name of the pod, and returns the corresponding v1.EphemeralContainers object, and an error if there is any.
-func (c *pods) GetEphemeralContainers(podName string, options metav1.GetOptions) (result *v1.EphemeralContainers, err error) {
+func (c *pods) GetEphemeralContainers(ctx context.Context, podName string, options metav1.GetOptions) (result *v1.EphemeralContainers, err error) {
 	result = &v1.EphemeralContainers{}
 	err = c.client.Get().
 		Namespace(c.ns).
@@ -202,13 +212,14 @@ func (c *pods) GetEphemeralContainers(podName string, options metav1.GetOptions)
 		Name(podName).
 		SubResource("ephemeralcontainers").
 		VersionedParams(&options, scheme.ParameterCodec).
+		Context(ctx).
 		Do().
 		Into(result)
 	return
 }
 
 // UpdateEphemeralContainers takes the top resource name and the representation of a ephemeralContainers and updates it. Returns the server's representation of the ephemeralContainers, and an error, if there is any.
-func (c *pods) UpdateEphemeralContainers(podName string, ephemeralContainers *v1.EphemeralContainers) (result *v1.EphemeralContainers, err error) {
+func (c *pods) UpdateEphemeralContainers(ctx context.Context, podName string, ephemeralContainers *v1.EphemeralContainers) (result *v1.EphemeralContainers, err error) {
 	result = &v1.EphemeralContainers{}
 	err = c.client.Put().
 		Namespace(c.ns).
@@ -216,6 +227,7 @@ func (c *pods) UpdateEphemeralContainers(podName string, ephemeralContainers *v1
 		Name(podName).
 		SubResource("ephemeralcontainers").
 		Body(ephemeralContainers).
+		Context(ctx).
 		Do().
 		Into(result)
 	return

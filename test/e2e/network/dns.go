@@ -17,6 +17,7 @@ limitations under the License.
 package network
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"time"
@@ -404,12 +405,12 @@ var _ = SIGDescribe("DNS", func() {
 			Nameservers: []string{testServerIP},
 			Searches:    []string{testSearchPath},
 		}
-		testAgnhostPod, err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Create(testAgnhostPod)
+		testAgnhostPod, err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Create(context.Background(), testAgnhostPod)
 		framework.ExpectNoError(err, "failed to create pod: %s", testAgnhostPod.Name)
 		e2elog.Logf("Created pod %v", testAgnhostPod)
 		defer func() {
 			e2elog.Logf("Deleting pod %s...", testAgnhostPod.Name)
-			if err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Delete(testAgnhostPod.Name, metav1.NewDeleteOptions(0)); err != nil {
+			if err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Delete(context.Background(), testAgnhostPod.Name, metav1.NewDeleteOptions(0)); err != nil {
 				e2elog.Failf("ginkgo.Failed to delete pod %s: %v", testAgnhostPod.Name, err)
 			}
 		}()
@@ -453,12 +454,12 @@ var _ = SIGDescribe("DNS", func() {
 		testServerPod := generateDNSServerPod(map[string]string{
 			testDNSNameFull: testInjectedIP,
 		})
-		testServerPod, err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Create(testServerPod)
+		testServerPod, err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Create(context.Background(), testServerPod)
 		framework.ExpectNoError(err, "failed to create pod: %s", testServerPod.Name)
 		e2elog.Logf("Created pod %v", testServerPod)
 		defer func() {
 			e2elog.Logf("Deleting pod %s...", testServerPod.Name)
-			if err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Delete(testServerPod.Name, metav1.NewDeleteOptions(0)); err != nil {
+			if err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Delete(context.Background(), testServerPod.Name, metav1.NewDeleteOptions(0)); err != nil {
 				e2elog.Failf("ginkgo.Failed to delete pod %s: %v", testServerPod.Name, err)
 			}
 		}()
@@ -466,7 +467,7 @@ var _ = SIGDescribe("DNS", func() {
 		framework.ExpectNoError(err, "failed to wait for pod %s to be running", testServerPod.Name)
 
 		// Retrieve server pod IP.
-		testServerPod, err = f.ClientSet.CoreV1().Pods(f.Namespace.Name).Get(testServerPod.Name, metav1.GetOptions{})
+		testServerPod, err = f.ClientSet.CoreV1().Pods(f.Namespace.Name).Get(context.Background(), testServerPod.Name, metav1.GetOptions{})
 		framework.ExpectNoError(err, "failed to get pod %v", testServerPod.Name)
 		testServerIP := testServerPod.Status.PodIP
 		e2elog.Logf("testServerIP is %s", testServerIP)
@@ -485,12 +486,12 @@ var _ = SIGDescribe("DNS", func() {
 				},
 			},
 		}
-		testUtilsPod, err = f.ClientSet.CoreV1().Pods(f.Namespace.Name).Create(testUtilsPod)
+		testUtilsPod, err = f.ClientSet.CoreV1().Pods(f.Namespace.Name).Create(context.Background(), testUtilsPod)
 		framework.ExpectNoError(err, "failed to create pod: %s", testUtilsPod.Name)
 		e2elog.Logf("Created pod %v", testUtilsPod)
 		defer func() {
 			e2elog.Logf("Deleting pod %s...", testUtilsPod.Name)
-			if err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Delete(testUtilsPod.Name, metav1.NewDeleteOptions(0)); err != nil {
+			if err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Delete(context.Background(), testUtilsPod.Name, metav1.NewDeleteOptions(0)); err != nil {
 				e2elog.Failf("ginkgo.Failed to delete pod %s: %v", testUtilsPod.Name, err)
 			}
 		}()

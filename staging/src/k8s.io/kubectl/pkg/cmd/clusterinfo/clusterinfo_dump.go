@@ -17,6 +17,7 @@ limitations under the License.
 package clusterinfo
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -242,7 +243,7 @@ func (o *ClusterInfoDumpOptions) Run() error {
 			return err
 		}
 
-		pods, err := o.CoreClient.Pods(namespace).List(metav1.ListOptions{})
+		pods, err := o.CoreClient.Pods(namespace).List(context.Background(), metav1.ListOptions{})
 		if err != nil {
 			return err
 		}

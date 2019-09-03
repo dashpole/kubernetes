@@ -20,6 +20,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"context"
 	"time"
 
 	appsv1 "k8s.io/api/apps/v1"
@@ -95,7 +96,7 @@ var _ = SIGDescribe("Advanced Audit [DisabledForLargeClusters][Flaky]", func() {
 		_, err = f.PodClient().List(metav1.ListOptions{})
 		framework.ExpectNoError(err, "failed to list pods")
 
-		_, err = f.PodClient().Patch(pod.Name, types.JSONPatchType, patch)
+		_, err = f.PodClient().Patch(context.Background(), pod.Name, types.JSONPatchType, patch)
 		framework.ExpectNoError(err, "failed to patch pod")
 
 		f.PodClient().DeleteSync(pod.Name, &metav1.DeleteOptions{}, framework.DefaultPodDeletionTimeout)

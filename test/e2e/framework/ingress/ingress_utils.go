@@ -18,6 +18,7 @@ package ingress
 
 import (
 	"bytes"
+	"context"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/tls"
@@ -849,7 +850,7 @@ func (cont *NginxIngressController) Init() {
 	framework.Logf("waiting for pods with label %v", rc.Spec.Selector)
 	sel := labels.SelectorFromSet(labels.Set(rc.Spec.Selector))
 	framework.ExpectNoError(testutils.WaitForPodsWithLabelRunning(cont.Client, cont.Ns, sel))
-	pods, err := cont.Client.CoreV1().Pods(cont.Ns).List(metav1.ListOptions{LabelSelector: sel.String()})
+	pods, err := cont.Client.CoreV1().Pods(cont.Ns).List(context.Background(), metav1.ListOptions{LabelSelector: sel.String()})
 	framework.ExpectNoError(err)
 	if len(pods.Items) == 0 {
 		framework.Failf("Failed to find nginx ingress controller pods with selector %v", sel)

@@ -18,8 +18,10 @@ package status
 
 import (
 	"fmt"
+	"encoding/base64"
 	"sort"
 	"sync"
+	"context"
 	"time"
 
 	clientset "k8s.io/client-go/kubernetes"
@@ -29,6 +31,8 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"go.opencensus.io/trace/propagation"
+	"go.opencensus.io/trace"
 	"k8s.io/apimachinery/pkg/util/diff"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/klog"
@@ -38,6 +42,7 @@ import (
 	kubetypes "k8s.io/kubernetes/pkg/kubelet/types"
 	"k8s.io/kubernetes/pkg/kubelet/util/format"
 	statusutil "k8s.io/kubernetes/pkg/util/pod"
+	"k8s.io/kubernetes/pkg/util/trace"
 )
 
 // A wrapper around v1.PodStatus that includes a version to enforce that stale pod statuses are
@@ -518,7 +523,7 @@ func (m *manager) syncPod(uid types.UID, status versionedPodStatus) {
 	}
 
 	// TODO: make me easier to express from client code
-	pod, err := m.kubeClient.CoreV1().Pods(status.podNamespace).Get(status.podName, metav1.GetOptions{})
+	pod, err := m.kubeClient.CoreV1().Pods(status.podNamespace).Get(context.Background(), status.podName, metav1.GetOptions{})
 	if errors.IsNotFound(err) {
 		klog.V(3).Infof("Pod %q (%s) does not exist on the server", status.podName, uid)
 		// If the Pod is deleted the status will be cleared in
@@ -539,7 +544,31 @@ func (m *manager) syncPod(uid types.UID, status versionedPodStatus) {
 	}
 
 	oldStatus := pod.Status.DeepCopy()
-	newPod, patchBytes, err := statusutil.PatchPodStatus(m.kubeClient, pod.Namespace, pod.Name, *oldStatus, mergePodStatus(*oldStatus, status.status))
+	newMergedStatus := mergePodStatus(*oldStatus, status.status)
+
+	ctx := context.Background()
+
+	_, oldCondition := podutil.GetPodConditionFromList(oldStatus.Conditions, v1.PodReady)
+	_, newCondition := podutil.GetPodConditionFromList(newMergedStatus.Conditions, v1.PodReady)
+	oldTraceContext := pod.Annotations["trace.kubernetes.io/context"]
+	newTraceContext := oldTraceContext
+	resetTraceContext := oldCondition.Status == v1.ConditionFalse && newCondition.Status == v1.ConditionTrue
+	if resetTraceContext {
+		// New Span Context
+		var span *trace.Span
+		ctx, span, err = traceutil.SpanFromEncodedContext(pod, "")
+		p, ok := m.podManager.GetPodByUID(pod.UID)
+		if !ok {
+			klog.Warningf("Failed to update status for pod %q.  Pod not found in pod manager: %v", format.Pod(pod), err)
+			return	
+		}
+		newTraceContext = base64.StdEncoding.EncodeToString(propagation.Binary(span.SpanContext()))
+		p.Annotations["trace.kubernetes.io/context"] = newTraceContext
+		m.podManager.UpdatePod(p)
+	} else {
+		ctx, _ = trace.StartSpan(ctx, "")
+	}
+	newPod, patchBytes, err := statusutil.PatchPodStatus(ctx, m.kubeClient, pod.Namespace, pod.Name, *oldStatus, newMergedStatus, oldTraceContext, newTraceContext)
 	klog.V(3).Infof("Patch status for pod %q with %q", format.Pod(pod), patchBytes)
 	if err != nil {
 		klog.Warningf("Failed to update status for pod %q: %v", format.Pod(pod), err)
@@ -555,7 +584,7 @@ func (m *manager) syncPod(uid types.UID, status versionedPodStatus) {
 		deleteOptions := metav1.NewDeleteOptions(0)
 		// Use the pod UID as the precondition for deletion to prevent deleting a newly created pod with the same name and namespace.
 		deleteOptions.Preconditions = metav1.NewUIDPreconditions(string(pod.UID))
-		err = m.kubeClient.CoreV1().Pods(pod.Namespace).Delete(pod.Name, deleteOptions)
+		err = m.kubeClient.CoreV1().Pods(pod.Namespace).Delete(context.Background(), pod.Name, deleteOptions)
 		if err != nil {
 			klog.Warningf("Failed to delete status for pod %q: %v", format.Pod(pod), err)
 			return

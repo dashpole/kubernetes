@@ -66,7 +66,7 @@ func removePtr(replicas *int32) int32 {
 
 func WaitUntilPodIsScheduled(c clientset.Interface, name, namespace string, timeout time.Duration) (*v1.Pod, error) {
 	// Wait until it's scheduled
-	p, err := c.CoreV1().Pods(namespace).Get(name, metav1.GetOptions{ResourceVersion: "0"})
+	p, err := c.CoreV1().Pods(namespace).Get(context.Background(), name, metav1.GetOptions{ResourceVersion: "0"})
 	if err == nil && p.Spec.NodeName != "" {
 		return p, nil
 	}
@@ -74,7 +74,7 @@ func WaitUntilPodIsScheduled(c clientset.Interface, name, namespace string, time
 	startTime := time.Now()
 	for startTime.Add(timeout).After(time.Now()) {
 		time.Sleep(pollingPeriod)
-		p, err := c.CoreV1().Pods(namespace).Get(name, metav1.GetOptions{ResourceVersion: "0"})
+		p, err := c.CoreV1().Pods(namespace).Get(context.Background(), name, metav1.GetOptions{ResourceVersion: "0"})
 		if err == nil && p.Spec.NodeName != "" {
 			return p, nil
 		}
@@ -835,7 +835,7 @@ func (config *RCConfig) start() error {
 	if oldRunning != config.Replicas {
 		// List only pods from a given replication controller.
 		options := metav1.ListOptions{LabelSelector: label.String()}
-		if pods, err := config.Client.CoreV1().Pods(config.Namespace).List(options); err == nil {
+		if pods, err := config.Client.CoreV1().Pods(config.Namespace).List(context.Background(), options); err == nil {
 			for _, pod := range pods.Items {
 				config.RCConfigLog("Pod %s\t%s\t%s\t%s", pod.Name, pod.Spec.NodeName, pod.Status.Phase, pod.DeletionTimestamp)
 			}

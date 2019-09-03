@@ -17,6 +17,7 @@ limitations under the License.
 package kuberuntime
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -25,6 +26,7 @@ import (
 	cadvisorapi "github.com/google/cadvisor/info/v1"
 	"k8s.io/klog"
 
+	"go.opencensus.io/trace"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	kubetypes "k8s.io/apimachinery/pkg/types"
@@ -50,6 +52,7 @@ import (
 	"k8s.io/kubernetes/pkg/kubelet/util/cache"
 	"k8s.io/kubernetes/pkg/kubelet/util/format"
 	"k8s.io/kubernetes/pkg/kubelet/util/logreduction"
+	"k8s.io/kubernetes/pkg/util/trace"
 )
 
 const (
@@ -695,9 +698,13 @@ func (m *kubeGenericRuntimeManager) SyncPod(pod *v1.Pod, podStatus *kubecontaine
 		podIPs = podStatus.IPs
 	}
 
+	ctx, _ := traceutil.SpanContextFromEncodedContext(pod)
+
 	// Step 4: Create a sandbox for the pod if necessary.
 	podSandboxID := podContainerChanges.SandboxID
 	if podContainerChanges.CreateSandbox {
+		_, createSandboxSpan := trace.StartSpanWithRemoteParent(context.Background(), "kubelet.CreatePodSandbox", ctx)
+
 		var msg string
 		var err error
 
@@ -716,6 +723,7 @@ func (m *kubeGenericRuntimeManager) SyncPod(pod *v1.Pod, podStatus *kubecontaine
 			return
 		}
 		klog.V(4).Infof("Created PodSandbox %q for pod %q", podSandboxID, format.Pod(pod))
+		createSandboxSpan.Annotate([]trace.Attribute{trace.StringAttribute("podSandboxId", podSandboxID)}, "Runtime manager sandbox creation succeeded")
 
 		podSandboxStatus, err := m.runtimeService.PodSandboxStatus(podSandboxID)
 		if err != nil {
@@ -736,6 +744,8 @@ func (m *kubeGenericRuntimeManager) SyncPod(pod *v1.Pod, podStatus *kubecontaine
 			podIPs = m.determinePodSandboxIPs(pod.Namespace, pod.Name, podSandboxStatus)
 			klog.V(4).Infof("Determined the ip %v for pod %q after sandbox changed", podIPs, format.Pod(pod))
 		}
+
+		createSandboxSpan.End()
 	}
 
 	// the start containers routines depend on pod ip(as in primary pod ip)

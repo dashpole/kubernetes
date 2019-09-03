@@ -115,6 +115,7 @@ import (
 	nodeutil "k8s.io/kubernetes/pkg/util/node"
 	"k8s.io/kubernetes/pkg/util/oom"
 	"k8s.io/kubernetes/pkg/util/selinux"
+	"k8s.io/kubernetes/pkg/util/trace"
 	"k8s.io/kubernetes/pkg/volume"
 	"k8s.io/kubernetes/pkg/volume/csi"
 	"k8s.io/kubernetes/pkg/volume/util/hostutil"
@@ -386,6 +387,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 	if err != nil {
 		return nil, err
 	}
+	traceutil.InitializeExporter(traceutil.ServiceKubelet)
 	// Query the cloud provider for our node name, default to hostname
 	nodeName := types.NodeName(hostname)
 	if kubeDeps.Cloud != nil {

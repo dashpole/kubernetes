@@ -17,6 +17,7 @@ limitations under the License.
 package node
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 	"time"
@@ -68,7 +69,7 @@ func WaitForTotalHealthy(c clientset.Interface, timeout time.Duration) error {
 				notReady = append(notReady, node)
 			}
 		}
-		pods, err := c.CoreV1().Pods(metav1.NamespaceAll).List(metav1.ListOptions{ResourceVersion: "0"})
+		pods, err := c.CoreV1().Pods(metav1.NamespaceAll).List(context.Background(), metav1.ListOptions{ResourceVersion: "0"})
 		if err != nil {
 			return false, err
 		}

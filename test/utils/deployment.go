@@ -17,6 +17,7 @@ limitations under the License.
 package utils
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -51,7 +52,7 @@ func LogReplicaSetsOfDeployment(deployment *apps.Deployment, allOldRSs []*apps.R
 func LogPodsOfDeployment(c clientset.Interface, deployment *apps.Deployment, rsList []*apps.ReplicaSet, logf LogfFn) {
 	minReadySeconds := deployment.Spec.MinReadySeconds
 	podListFunc := func(namespace string, options metav1.ListOptions) (*v1.PodList, error) {
-		return c.CoreV1().Pods(namespace).List(options)
+		return c.CoreV1().Pods(namespace).List(context.Background(), options)
 	}
 
 	podList, err := deploymentutil.ListPods(deployment, rsList, podListFunc)

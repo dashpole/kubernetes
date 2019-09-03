@@ -17,6 +17,7 @@ limitations under the License.
 package node
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"time"
@@ -426,7 +427,7 @@ func isNodeSchedulable(node *v1.Node) bool {
 func PodNodePairs(c clientset.Interface, ns string) ([]PodNode, error) {
 	var result []PodNode
 
-	podList, err := c.CoreV1().Pods(ns).List(metav1.ListOptions{})
+	podList, err := c.CoreV1().Pods(ns).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		return result, err
 	}

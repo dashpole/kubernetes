@@ -18,6 +18,7 @@ package network
 
 import (
 	"encoding/json"
+	"context"
 	v1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -855,7 +856,7 @@ var _ = SIGDescribe("NetworkPolicy [LinuxOnly]", func() {
 			podClient := createNetworkClientPod(f, f.Namespace, "client-a", service, allowedPort)
 			defer func() {
 				ginkgo.By(fmt.Sprintf("Cleaning up the pod %s", podClient.Name))
-				if err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Delete(podClient.Name, nil); err != nil {
+				if err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Delete(context.Background(), podClient.Name, nil); err != nil {
 					e2elog.Failf("unable to cleanup pod %v: %v", podClient.Name, err)
 				}
 			}()
@@ -1195,7 +1196,7 @@ var _ = SIGDescribe("NetworkPolicy [LinuxOnly]", func() {
 			protocolUDP := v1.ProtocolUDP
 
 			// Getting podServer's status to get podServer's IP, to create the CIDR
-			podServerStatus, err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Get(podServer.Name, metav1.GetOptions{})
+			podServerStatus, err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Get(context.Background(), podServer.Name, metav1.GetOptions{})
 			if err != nil {
 				framework.ExpectNoError(err, "Error occurred while getting pod status.")
 			}
@@ -1388,7 +1389,7 @@ func testCanConnect(f *framework.Framework, ns *v1.Namespace, podName string, se
 	podClient := createNetworkClientPod(f, ns, podName, service, targetPort)
 	defer func() {
 		ginkgo.By(fmt.Sprintf("Cleaning up the pod %s", podClient.Name))
-		if err := f.ClientSet.CoreV1().Pods(ns.Name).Delete(podClient.Name, nil); err != nil {
+		if err := f.ClientSet.CoreV1().Pods(ns.Name).Delete(context.Background(), podClient.Name, nil); err != nil {
 			e2elog.Failf("unable to cleanup pod %v: %v", podClient.Name, err)
 		}
 	}()
@@ -1400,7 +1401,7 @@ func testCannotConnect(f *framework.Framework, ns *v1.Namespace, podName string,
 	podClient := createNetworkClientPod(f, ns, podName, service, targetPort)
 	defer func() {
 		ginkgo.By(fmt.Sprintf("Cleaning up the pod %s", podClient.Name))
-		if err := f.ClientSet.CoreV1().Pods(ns.Name).Delete(podClient.Name, nil); err != nil {
+		if err := f.ClientSet.CoreV1().Pods(ns.Name).Delete(context.Background(), podClient.Name, nil); err != nil {
 			e2elog.Failf("unable to cleanup pod %v: %v", podClient.Name, err)
 		}
 	}()
@@ -1530,7 +1531,7 @@ func createServerPodAndService(f *framework.Framework, namespace *v1.Namespace, 
 	}
 
 	ginkgo.By(fmt.Sprintf("Creating a server pod %s in namespace %s", podName, namespace.Name))
-	pod, err := f.ClientSet.CoreV1().Pods(namespace.Name).Create(&v1.Pod{
+	pod, err := f.ClientSet.CoreV1().Pods(namespace.Name).Create(context.Background(), &v1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			GenerateName: podName + "-",
 			Labels: map[string]string{
@@ -1566,7 +1567,7 @@ func createServerPodAndService(f *framework.Framework, namespace *v1.Namespace, 
 
 func cleanupServerPodAndService(f *framework.Framework, pod *v1.Pod, service *v1.Service) {
 	ginkgo.By("Cleaning up the server.")
-	if err := f.ClientSet.CoreV1().Pods(pod.Namespace).Delete(pod.Name, nil); err != nil {
+	if err := f.ClientSet.CoreV1().Pods(pod.Namespace).Delete(context.Background(), pod.Name, nil); err != nil {
 		e2elog.Failf("unable to cleanup pod %v: %v", pod.Name, err)
 	}
 	ginkgo.By("Cleaning up the server's service.")
@@ -1579,7 +1580,7 @@ func cleanupServerPodAndService(f *framework.Framework, pod *v1.Pod, service *v1
 // This client will attempt a one-shot connection, then die, without restarting the pod.
 // Test can then be asserted based on whether the pod quit with an error or not.
 func createNetworkClientPod(f *framework.Framework, namespace *v1.Namespace, podName string, targetService *v1.Service, targetPort int) *v1.Pod {
-	pod, err := f.ClientSet.CoreV1().Pods(namespace.Name).Create(&v1.Pod{
+	pod, err := f.ClientSet.CoreV1().Pods(namespace.Name).Create(context.Background(), &v1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			GenerateName: podName + "-",
 			Labels: map[string]string{
@@ -1622,7 +1623,7 @@ func updateNetworkClientPodLabel(f *framework.Framework, namespace *v1.Namespace
 	payloadBytes, err := json.Marshal(payload)
 	framework.ExpectNoError(err)
 
-	pod, err := f.ClientSet.CoreV1().Pods(namespace.Name).Patch(podName, types.JSONPatchType, payloadBytes)
+	pod, err := f.ClientSet.CoreV1().Pods(namespace.Name).Patch(context.Background(), podName, types.JSONPatchType, payloadBytes)
 	framework.ExpectNoError(err)
 
 	return pod

@@ -50,6 +50,7 @@ filegroup(
         "//pkg/util/tail:all-srcs",
         "//pkg/util/taints:all-srcs",
         "//pkg/util/tolerations:all-srcs",
+        "//pkg/util/trace:all-srcs",
         "//pkg/util/workqueue/prometheus:all-srcs",
     ],
     tags = ["automanaged"],

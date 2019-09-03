@@ -17,6 +17,7 @@ limitations under the License.
 package vsphere
 
 import (
+	"context"
 	"fmt"
 	"sync"
 
@@ -149,7 +150,7 @@ func PerformVolumeLifeCycleInParallel(f *framework.Framework, client clientset.I
 		framework.ExpectNoError(err)
 
 		// Get the copy of the Pod to know the assigned node name.
-		pod, err = client.CoreV1().Pods(namespace).Get(pod.Name, metav1.GetOptions{})
+		pod, err = client.CoreV1().Pods(namespace).Get(context.Background(), pod.Name, metav1.GetOptions{})
 		framework.ExpectNoError(err)
 
 		ginkgo.By(fmt.Sprintf("%v Verifing the volume: %v is attached to the node VM: %v", logPrefix, persistentvolumes[0].Spec.VsphereVolume.VolumePath, pod.Spec.NodeName))

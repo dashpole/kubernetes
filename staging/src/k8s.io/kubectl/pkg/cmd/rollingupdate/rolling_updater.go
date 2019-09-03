@@ -17,6 +17,7 @@ limitations under the License.
 package rollingupdate
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"strconv"
@@ -433,7 +434,7 @@ func (r *RollingUpdater) readyPods(oldRc, newRc *corev1.ReplicationController, m
 		controller := controllers[i]
 		selector := labels.Set(controller.Spec.Selector).AsSelector()
 		options := metav1.ListOptions{LabelSelector: selector.String()}
-		pods, err := r.podClient.Pods(controller.Namespace).List(options)
+		pods, err := r.podClient.Pods(controller.Namespace).List(context.Background(), options)
 		if err != nil {
 			return 0, 0, err
 		}
@@ -719,7 +720,7 @@ func AddDeploymentKeyToReplicationController(oldRc *corev1.ReplicationController
 	// TODO: extract the code from the label command and re-use it here.
 	selector := labels.SelectorFromSet(oldRc.Spec.Selector)
 	options := metav1.ListOptions{LabelSelector: selector.String()}
-	podList, err := podClient.Pods(namespace).List(options)
+	podList, err := podClient.Pods(namespace).List(context.Background(), options)
 	if err != nil {
 		return nil, err
 	}
@@ -755,13 +756,13 @@ func AddDeploymentKeyToReplicationController(oldRc *corev1.ReplicationController
 	// we've finished re-adopting existing pods to the rc.
 	selector = labels.SelectorFromSet(oldRc.Spec.Selector)
 	options = metav1.ListOptions{LabelSelector: selector.String()}
-	if podList, err = podClient.Pods(namespace).List(options); err != nil {
+	if podList, err = podClient.Pods(namespace).List(context.Background(), options); err != nil {
 		return nil, err
 	}
 	for ix := range podList.Items {
 		pod := &podList.Items[ix]
 		if value, found := pod.Labels[deploymentKey]; !found || value != deploymentValue {
-			if err := podClient.Pods(namespace).Delete(pod.Name, nil); err != nil {
+			if err := podClient.Pods(namespace).Delete(context.Background(), pod.Name, nil); err != nil {
 				return nil, err
 			}
 		}
@@ -813,11 +814,11 @@ func updatePodWithRetries(podClient corev1client.PodsGetter, namespace string, p
 	err := retry.RetryOnConflict(retry.DefaultBackoff, func() (e error) {
 		// Apply the update, then attempt to push it to the apiserver.
 		applyUpdate(pod)
-		if pod, e = podClient.Pods(namespace).Update(pod); e == nil {
+		if pod, e = podClient.Pods(namespace).Update(context.Background(), pod); e == nil {
 			return
 		}
 		updateErr := e
-		if pod, e = podClient.Pods(namespace).Get(oldPod.Name, metav1.GetOptions{}); e != nil {
+		if pod, e = podClient.Pods(namespace).Get(context.Background(), oldPod.Name, metav1.GetOptions{}); e != nil {
 			pod = oldPod
 		}
 		// Only return the error from update

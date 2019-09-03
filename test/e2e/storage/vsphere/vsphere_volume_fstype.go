@@ -17,6 +17,7 @@ limitations under the License.
 package vsphere
 
 import (
+	"context"
 	"strings"
 	"time"
 
@@ -180,7 +181,7 @@ func createPodAndVerifyVolumeAccessible(client clientset.Interface, namespace st
 
 // detachVolume delete the volume passed in the argument and wait until volume is detached from the node,
 func detachVolume(f *framework.Framework, client clientset.Interface, pod *v1.Pod, volPath string) {
-	pod, err := f.ClientSet.CoreV1().Pods(pod.Namespace).Get(pod.Name, metav1.GetOptions{})
+	pod, err := f.ClientSet.CoreV1().Pods(pod.Namespace).Get(context.Background(), pod.Name, metav1.GetOptions{})
 	gomega.Expect(err).To(gomega.BeNil())
 	nodeName := pod.Spec.NodeName
 	ginkgo.By("Deleting pod")

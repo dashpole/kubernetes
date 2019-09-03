@@ -26,6 +26,7 @@ import (
 	"fmt"
 	"time"
 
+	"go.opencensus.io/trace"
 	apps "k8s.io/api/apps/v1"
 	autoscalingv1 "k8s.io/api/autoscaling/v1"
 	"k8s.io/api/core/v1"
@@ -326,12 +327,12 @@ func (pc podControlAdapter) CreatePodsOnNode(nodeName, namespace string, templat
 	return errors.New("CreatePodsOnNode() is not implemented for podControlAdapter")
 }
 
-func (pc podControlAdapter) CreatePodsWithControllerRef(namespace string, template *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error {
+func (pc podControlAdapter) CreatePodsWithControllerRef(ctx *trace.SpanContext, namespace string, template *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error {
 	rc, err := convertRStoRC(object.(*apps.ReplicaSet))
 	if err != nil {
 		return err
 	}
-	return pc.PodControlInterface.CreatePodsWithControllerRef(namespace, template, rc, controllerRef)
+	return pc.PodControlInterface.CreatePodsWithControllerRef(ctx, namespace, template, rc, controllerRef)
 }
 
 func (pc podControlAdapter) DeletePod(namespace string, podID string, object runtime.Object) error {

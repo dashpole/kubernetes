@@ -17,6 +17,7 @@ limitations under the License.
 package vsphere
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 
@@ -152,7 +153,7 @@ var _ = utils.SIGDescribe("vcp at scale [Feature:vsphere] ", func() {
 				nodeVolumeMap[node] = append(nodeVolumeMap[node], volumeList...)
 			}
 		}
-		podList, err := client.CoreV1().Pods(namespace).List(metav1.ListOptions{})
+		podList, err := client.CoreV1().Pods(namespace).List(context.Background(), metav1.ListOptions{})
 		for _, pod := range podList.Items {
 			pvcClaimList = append(pvcClaimList, getClaimsForPod(&pod, volumesPerPod)...)
 			ginkgo.By("Deleting pod")

@@ -17,6 +17,7 @@ limitations under the License.
 package top
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"time"
@@ -233,7 +234,7 @@ func getMetricsFromMetricsAPI(metricsClient metricsclientset.Interface, namespac
 
 func verifyEmptyMetrics(o TopPodOptions, selector labels.Selector) error {
 	if len(o.ResourceName) > 0 {
-		pod, err := o.PodClient.Pods(o.Namespace).Get(o.ResourceName, metav1.GetOptions{})
+		pod, err := o.PodClient.Pods(o.Namespace).Get(context.Background(), o.ResourceName, metav1.GetOptions{})
 		if err != nil {
 			return err
 		}
@@ -241,7 +242,7 @@ func verifyEmptyMetrics(o TopPodOptions, selector labels.Selector) error {
 			return err
 		}
 	} else {
-		pods, err := o.PodClient.Pods(o.Namespace).List(metav1.ListOptions{
+		pods, err := o.PodClient.Pods(o.Namespace).List(context.Background(), metav1.ListOptions{
 			LabelSelector: selector.String(),
 		})
 		if err != nil {

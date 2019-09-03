@@ -88,7 +88,7 @@ func NewProxyResponseChecker(c clientset.Interface, ns string, label labels.Sele
 func (r ProxyResponseChecker) CheckAllResponses() (done bool, err error) {
 	successes := 0
 	options := metav1.ListOptions{LabelSelector: r.label.String()}
-	currentPods, err := r.c.CoreV1().Pods(r.ns).List(options)
+	currentPods, err := r.c.CoreV1().Pods(r.ns).List(context.Background(), options)
 	expectNoError(err, "Failed to get list of currentPods in namespace: %s", r.ns)
 	for i, pod := range r.pods.Items {
 		// Check that the replica list remains unchanged, otherwise we have problems.
@@ -151,7 +151,7 @@ func (r ProxyResponseChecker) CheckAllResponses() (done bool, err error) {
 // CountRemainingPods queries the server to count number of remaining pods, and number of pods that had a missing deletion timestamp.
 func CountRemainingPods(c clientset.Interface, namespace string) (int, int, error) {
 	// check for remaining pods
-	pods, err := c.CoreV1().Pods(namespace).List(metav1.ListOptions{})
+	pods, err := c.CoreV1().Pods(namespace).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		return 0, 0, err
 	}
@@ -199,7 +199,7 @@ func Initialized(pod *v1.Pod) (ok bool, failed bool, err error) {
 
 func podRunning(c clientset.Interface, podName, namespace string) wait.ConditionFunc {
 	return func() (bool, error) {
-		pod, err := c.CoreV1().Pods(namespace).Get(podName, metav1.GetOptions{})
+		pod, err := c.CoreV1().Pods(namespace).Get(context.Background(), podName, metav1.GetOptions{})
 		if err != nil {
 			return false, err
 		}
@@ -215,7 +215,7 @@ func podRunning(c clientset.Interface, podName, namespace string) wait.Condition
 
 func podCompleted(c clientset.Interface, podName, namespace string) wait.ConditionFunc {
 	return func() (bool, error) {
-		pod, err := c.CoreV1().Pods(namespace).Get(podName, metav1.GetOptions{})
+		pod, err := c.CoreV1().Pods(namespace).Get(context.Background(), podName, metav1.GetOptions{})
 		if err != nil {
 			return false, err
 		}
@@ -229,7 +229,7 @@ func podCompleted(c clientset.Interface, podName, namespace string) wait.Conditi
 
 func podRunningAndReady(c clientset.Interface, podName, namespace string) wait.ConditionFunc {
 	return func() (bool, error) {
-		pod, err := c.CoreV1().Pods(namespace).Get(podName, metav1.GetOptions{})
+		pod, err := c.CoreV1().Pods(namespace).Get(context.Background(), podName, metav1.GetOptions{})
 		if err != nil {
 			return false, err
 		}
@@ -245,7 +245,7 @@ func podRunningAndReady(c clientset.Interface, podName, namespace string) wait.C
 
 func podNotPending(c clientset.Interface, podName, namespace string) wait.ConditionFunc {
 	return func() (bool, error) {
-		pod, err := c.CoreV1().Pods(namespace).Get(podName, metav1.GetOptions{})
+		pod, err := c.CoreV1().Pods(namespace).Get(context.Background(), podName, metav1.GetOptions{})
 		if err != nil {
 			return false, err
 		}
@@ -271,7 +271,7 @@ func PodsCreatedByLabel(c clientset.Interface, ns, name string, replicas int32, 
 		options := metav1.ListOptions{LabelSelector: label.String()}
 
 		// List the pods, making sure we observe all the replicas.
-		pods, err := c.CoreV1().Pods(ns).List(options)
+		pods, err := c.CoreV1().Pods(ns).List(context.Background(), options)
 		if err != nil {
 			return nil, err
 		}
@@ -346,7 +346,7 @@ func podsRunning(c clientset.Interface, pods *v1.PodList) []error {
 
 // DumpAllPodInfo logs basic info for all pods.
 func DumpAllPodInfo(c clientset.Interface) {
-	pods, err := c.CoreV1().Pods("").List(metav1.ListOptions{})
+	pods, err := c.CoreV1().Pods("").List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		e2elog.Logf("unable to fetch pod debug info: %v", err)
 	}
@@ -408,7 +408,7 @@ func LogPodTerminationMessages(pods []v1.Pod) {
 
 // DumpAllPodInfoForNamespace logs all pod information for a given namespace.
 func DumpAllPodInfoForNamespace(c clientset.Interface, namespace string) {
-	pods, err := c.CoreV1().Pods(namespace).List(metav1.ListOptions{})
+	pods, err := c.CoreV1().Pods(namespace).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		e2elog.Logf("unable to fetch pod debug info: %v", err)
 	}
@@ -468,7 +468,7 @@ func NewExecPodSpec(ns, name string, hostNetwork bool) *v1.Pod {
 // until it's Running
 func LaunchHostExecPod(client clientset.Interface, ns, name string) *v1.Pod {
 	hostExecPod := NewExecPodSpec(ns, name, true)
-	pod, err := client.CoreV1().Pods(ns).Create(hostExecPod)
+	pod, err := client.CoreV1().Pods(ns).Create(context.Background(), hostExecPod)
 	expectNoError(err)
 	err = WaitForPodRunningInNamespace(client, pod)
 	expectNoError(err)
@@ -505,10 +505,10 @@ func CreateExecPodOrFail(client clientset.Interface, ns, generateName string, tw
 	if tweak != nil {
 		tweak(pod)
 	}
-	execPod, err := client.CoreV1().Pods(ns).Create(pod)
+	execPod, err := client.CoreV1().Pods(ns).Create(context.Background(), pod)
 	expectNoError(err, "failed to create new exec pod in namespace: %s", ns)
 	err = wait.PollImmediate(poll, 5*time.Minute, func() (bool, error) {
-		retrievedPod, err := client.CoreV1().Pods(execPod.Namespace).Get(execPod.Name, metav1.GetOptions{})
+		retrievedPod, err := client.CoreV1().Pods(execPod.Namespace).Get(context.Background(), execPod.Name, metav1.GetOptions{})
 		if err != nil {
 			if testutils.IsRetryableAPIError(err) {
 				return false, nil
@@ -543,7 +543,7 @@ func CreatePodOrFail(c clientset.Interface, ns, name string, labels map[string]s
 			},
 		},
 	}
-	_, err := c.CoreV1().Pods(ns).Create(pod)
+	_, err := c.CoreV1().Pods(ns).Create(context.Background(), pod)
 	expectNoError(err, "failed to create pod %s in namespace %s", name, ns)
 }
 
@@ -624,7 +624,7 @@ func getPodLogsInternal(c clientset.Interface, namespace, podName, containerName
 
 // GetPodsInNamespace returns the pods in the given namespace.
 func GetPodsInNamespace(c clientset.Interface, ns string, ignoreLabels map[string]string) ([]*v1.Pod, error) {
-	pods, err := c.CoreV1().Pods(ns).List(metav1.ListOptions{})
+	pods, err := c.CoreV1().Pods(ns).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		return []*v1.Pod{}, err
 	}

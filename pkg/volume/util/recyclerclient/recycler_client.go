@@ -17,6 +17,7 @@ limitations under the License.
 package recyclerclient
 
 import (
+	"context"
 	"fmt"
 	"sync"
 
@@ -177,15 +178,15 @@ type realRecyclerClient struct {
 }
 
 func (c *realRecyclerClient) CreatePod(pod *v1.Pod) (*v1.Pod, error) {
-	return c.client.CoreV1().Pods(pod.Namespace).Create(pod)
+	return c.client.CoreV1().Pods(pod.Namespace).Create(context.Background(), pod)
 }
 
 func (c *realRecyclerClient) GetPod(name, namespace string) (*v1.Pod, error) {
-	return c.client.CoreV1().Pods(namespace).Get(name, metav1.GetOptions{})
+	return c.client.CoreV1().Pods(namespace).Get(context.Background(), name, metav1.GetOptions{})
 }
 
 func (c *realRecyclerClient) DeletePod(name, namespace string) error {
-	return c.client.CoreV1().Pods(namespace).Delete(name, nil)
+	return c.client.CoreV1().Pods(namespace).Delete(context.Background(), name, nil)
 }
 
 func (c *realRecyclerClient) Event(eventtype, message string) {
@@ -204,7 +205,7 @@ func (c *realRecyclerClient) WatchPod(name, namespace string, stopChannel chan s
 		Watch:         true,
 	}
 
-	podWatch, err := c.client.CoreV1().Pods(namespace).Watch(options)
+	podWatch, err := c.client.CoreV1().Pods(namespace).Watch(context.Background(), options)
 	if err != nil {
 		return nil, err
 	}

@@ -17,6 +17,7 @@ limitations under the License.
 package deletion
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 	"sync"
@@ -557,7 +558,7 @@ func (d *namespacedResourcesDeleter) estimateGracefulTerminationForPods(ns strin
 	if podsGetter == nil || reflect.ValueOf(podsGetter).IsNil() {
 		return estimate, fmt.Errorf("unexpected: podsGetter is nil. Cannot estimate grace period seconds for pods")
 	}
-	items, err := podsGetter.Pods(ns).List(metav1.ListOptions{})
+	items, err := podsGetter.Pods(ns).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		return estimate, err
 	}

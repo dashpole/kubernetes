@@ -17,6 +17,7 @@ limitations under the License.
 package framework
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -547,12 +548,12 @@ func (config *NetworkingTestConfig) createTestPods() {
 	ExpectNoError(config.f.WaitForPodRunning(hostTestContainerPod.Name))
 
 	var err error
-	config.TestContainerPod, err = config.getPodClient().Get(testContainerPod.Name, metav1.GetOptions{})
+	config.TestContainerPod, err = config.getPodClient().Get(context.Background(), testContainerPod.Name, metav1.GetOptions{})
 	if err != nil {
 		Failf("Failed to retrieve %s pod: %v", testContainerPod.Name, err)
 	}
 
-	config.HostTestContainerPod, err = config.getPodClient().Get(hostTestContainerPod.Name, metav1.GetOptions{})
+	config.HostTestContainerPod, err = config.getPodClient().Get(context.Background(), hostTestContainerPod.Name, metav1.GetOptions{})
 	if err != nil {
 		Failf("Failed to retrieve %s pod: %v", hostTestContainerPod.Name, err)
 	}
@@ -658,7 +659,7 @@ func (config *NetworkingTestConfig) createNetProxyPods(podName string, selector 
 	runningPods := make([]*v1.Pod, 0, len(nodes))
 	for _, p := range createdPods {
 		ExpectNoError(config.f.WaitForPodReady(p.Name))
-		rp, err := config.getPodClient().Get(p.Name, metav1.GetOptions{})
+		rp, err := config.getPodClient().Get(context.Background(), p.Name, metav1.GetOptions{})
 		ExpectNoError(err)
 		runningPods = append(runningPods, rp)
 	}
@@ -669,7 +670,7 @@ func (config *NetworkingTestConfig) createNetProxyPods(podName string, selector 
 // DeleteNetProxyPod deletes the first endpoint pod and waits for it being removed.
 func (config *NetworkingTestConfig) DeleteNetProxyPod() {
 	pod := config.EndpointPods[0]
-	config.getPodClient().Delete(pod.Name, metav1.NewDeleteOptions(0))
+	config.getPodClient().Delete(context.Background(), pod.Name, metav1.NewDeleteOptions(0))
 	config.EndpointPods = config.EndpointPods[1:]
 	// wait for pod being deleted.
 	err := e2epod.WaitForPodToDisappear(config.f.ClientSet, config.Namespace, pod.Name, labels.Everything(), time.Second, wait.ForeverTestTimeout)

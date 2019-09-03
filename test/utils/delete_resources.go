@@ -19,6 +19,7 @@ limitations under the License.
 package utils
 
 import (
+	"context"
 	"fmt"
 
 	apierrs "k8s.io/apimachinery/pkg/api/errors"
@@ -34,7 +35,7 @@ import (
 func deleteResource(c clientset.Interface, kind schema.GroupKind, namespace, name string, options *metav1.DeleteOptions) error {
 	switch kind {
 	case api.Kind("Pod"):
-		return c.CoreV1().Pods(namespace).Delete(name, options)
+		return c.CoreV1().Pods(namespace).Delete(context.Background(), name, options)
 	case api.Kind("ReplicationController"):
 		return c.CoreV1().ReplicationControllers(namespace).Delete(name, options)
 	case extensionsinternal.Kind("ReplicaSet"), appsinternal.Kind("ReplicaSet"):

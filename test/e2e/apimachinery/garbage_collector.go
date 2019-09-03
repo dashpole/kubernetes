@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"sync/atomic"
 	"time"
+	"context"
 
 	appsv1 "k8s.io/api/apps/v1"
 	batchv1 "k8s.io/api/batch/v1"
@@ -738,7 +739,7 @@ var _ = SIGDescribe("Garbage collector", func() {
 		patch := fmt.Sprintf(`{"metadata":{"ownerReferences":[{"apiVersion":"v1","kind":"ReplicationController","name":"%s","uid":"%s"}]}}`, rc2.ObjectMeta.Name, rc2.ObjectMeta.UID)
 		for i := 0; i < halfReplicas; i++ {
 			pod := pods.Items[i]
-			_, err := podClient.Patch(pod.Name, types.StrategicMergePatchType, []byte(patch))
+			_, err := podClient.Patch(context.Background(), pod.Name, types.StrategicMergePatchType, []byte(patch))
 			framework.ExpectNoError(err, "failed to apply to pod %s in namespace %s, a strategic merge patch: %s", pod.Name, f.Namespace.Name, patch)
 		}
 
@@ -828,15 +829,15 @@ var _ = SIGDescribe("Garbage collector", func() {
 			return []byte(fmt.Sprintf(`{"metadata":{"ownerReferences":[{"apiVersion":"v1","kind":"Pod","name":"%s","uid":"%s","controller":true,"blockOwnerDeletion":true}]}}`, name, uid))
 		}
 		patch1 := addRefPatch(pod3.Name, pod3.UID)
-		pod1, err = podClient.Patch(pod1.Name, types.StrategicMergePatchType, patch1)
+		pod1, err = podClient.Patch(context.Background(), pod1.Name, types.StrategicMergePatchType, patch1)
 		framework.ExpectNoError(err, "failed to apply to pod %s in namespace %s, a strategic merge patch: %s", pod1.Name, f.Namespace.Name, patch1)
 		e2elog.Logf("pod1.ObjectMeta.OwnerReferences=%#v", pod1.ObjectMeta.OwnerReferences)
 		patch2 := addRefPatch(pod1.Name, pod1.UID)
-		pod2, err = podClient.Patch(pod2.Name, types.StrategicMergePatchType, patch2)
+		pod2, err = podClient.Patch(context.Background(), pod2.Name, types.StrategicMergePatchType, patch2)
 		framework.ExpectNoError(err, "failed to apply to pod %s in namespace %s, a strategic merge patch: %s", pod2.Name, f.Namespace.Name, patch2)
 		e2elog.Logf("pod2.ObjectMeta.OwnerReferences=%#v", pod2.ObjectMeta.OwnerReferences)
 		patch3 := addRefPatch(pod2.Name, pod2.UID)
-		pod3, err = podClient.Patch(pod3.Name, types.StrategicMergePatchType, patch3)
+		pod3, err = podClient.Patch(context.Background(), pod3.Name, types.StrategicMergePatchType, patch3)
 		framework.ExpectNoError(err, "failed to apply to pod %s in namespace %s, a strategic merge patch: %s", pod3.Name, f.Namespace.Name, patch3)
 		e2elog.Logf("pod3.ObjectMeta.OwnerReferences=%#v", pod3.ObjectMeta.OwnerReferences)
 		// delete one pod, should result in the deletion of all pods

@@ -17,6 +17,7 @@ limitations under the License.
 package network
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -150,7 +151,7 @@ var _ = SIGDescribe("NoSNAT [Feature:NoSNAT] [Slow]", func() {
 
 			// target Pod at Node and feed Pod Node's InternalIP
 			pod := newTestPod(node.Name, inIP)
-			_, err = pc.Create(pod)
+			_, err = pc.Create(context.Background(), pod)
 			framework.ExpectNoError(err)
 		}
 
@@ -171,12 +172,12 @@ var _ = SIGDescribe("NoSNAT [Feature:NoSNAT] [Slow]", func() {
 		framework.ExpectNoError(err)
 		proxyNodeIP := extIP + ":" + strconv.Itoa(testProxyPort)
 
-		_, err = pc.Create(newTestProxyPod(node.Name))
+		_, err = pc.Create(context.Background(), newTestProxyPod(node.Name))
 		framework.ExpectNoError(err)
 
 		ginkgo.By("waiting for all of the no-snat-test pods to be scheduled and running")
 		err = wait.PollImmediate(10*time.Second, 1*time.Minute, func() (bool, error) {
-			pods, err := pc.List(metav1.ListOptions{LabelSelector: "no-snat-test"})
+			pods, err := pc.List(context.Background(), metav1.ListOptions{LabelSelector: "no-snat-test"})
 			if err != nil {
 				return false, err
 			}
@@ -196,7 +197,7 @@ var _ = SIGDescribe("NoSNAT [Feature:NoSNAT] [Slow]", func() {
 
 		ginkgo.By("waiting for the no-snat-test-proxy Pod to be scheduled and running")
 		err = wait.PollImmediate(10*time.Second, 1*time.Minute, func() (bool, error) {
-			pod, err := pc.Get("no-snat-test-proxy", metav1.GetOptions{})
+			pod, err := pc.Get(context.Background(), "no-snat-test-proxy", metav1.GetOptions{})
 			if err != nil {
 				return false, err
 			}
@@ -211,7 +212,7 @@ var _ = SIGDescribe("NoSNAT [Feature:NoSNAT] [Slow]", func() {
 		framework.ExpectNoError(err)
 
 		ginkgo.By("sending traffic from each pod to the others and checking that SNAT does not occur")
-		pods, err := pc.List(metav1.ListOptions{LabelSelector: "no-snat-test"})
+		pods, err := pc.List(context.Background(), metav1.ListOptions{LabelSelector: "no-snat-test"})
 		framework.ExpectNoError(err)
 
 		// collect pod IPs

@@ -17,6 +17,7 @@ limitations under the License.
 package cronjob
 
 import (
+	"context"
 	"fmt"
 	"sync"
 
@@ -217,11 +218,11 @@ type realPodControl struct {
 var _ podControlInterface = &realPodControl{}
 
 func (r realPodControl) ListPods(namespace string, opts metav1.ListOptions) (*v1.PodList, error) {
-	return r.KubeClient.CoreV1().Pods(namespace).List(opts)
+	return r.KubeClient.CoreV1().Pods(namespace).List(context.Background(), opts)
 }
 
 func (r realPodControl) DeletePod(namespace string, name string) error {
-	return r.KubeClient.CoreV1().Pods(namespace).Delete(name, nil)
+	return r.KubeClient.CoreV1().Pods(namespace).Delete(context.Background(), name, nil)
 }
 
 type fakePodControl struct {

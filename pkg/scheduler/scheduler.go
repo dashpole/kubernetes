@@ -45,6 +45,7 @@ import (
 	internalqueue "k8s.io/kubernetes/pkg/scheduler/internal/queue"
 	"k8s.io/kubernetes/pkg/scheduler/metrics"
 	"k8s.io/kubernetes/pkg/scheduler/volumebinder"
+	"k8s.io/kubernetes/pkg/util/trace"
 )
 
 const (
@@ -247,6 +248,8 @@ func New(client clientset.Interface,
 
 	// Create the scheduler.
 	sched := NewFromConfig(config)
+
+	traceutil.InitializeExporter(traceutil.ServiceScheduler)
 
 	AddAllEventHandlers(sched, options.schedulerName, nodeInformer, podInformer, pvInformer, pvcInformer, serviceInformer, storageClassInformer, csiNodeInformer)
 	return sched, nil
@@ -528,6 +531,9 @@ func (sched *Scheduler) scheduleOne() {
 	}
 
 	klog.V(3).Infof("Attempting to schedule pod: %v/%v", pod.Namespace, pod.Name)
+
+	_, schedulePodSpan, _ := traceutil.SpanFromEncodedContext(pod, "kube-scheduler.SchedulePod")
+	defer schedulePodSpan.End()
 
 	// Synchronously attempt to find a fit for the pod.
 	start := time.Now()

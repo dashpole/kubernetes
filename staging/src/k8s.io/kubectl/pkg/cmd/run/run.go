@@ -516,11 +516,11 @@ func waitForPod(podClient corev1client.PodsGetter, ns, name string, exitConditio
 	lw := &cache.ListWatch{
 		ListFunc: func(options metav1.ListOptions) (runtime.Object, error) {
 			options.FieldSelector = fieldSelector
-			return podClient.Pods(ns).List(options)
+			return podClient.Pods(ns).List(context.Background(), options)
 		},
 		WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
 			options.FieldSelector = fieldSelector
-			return podClient.Pods(ns).Watch(options)
+			return podClient.Pods(ns).Watch(context.Background(), options)
 		},
 	}
 

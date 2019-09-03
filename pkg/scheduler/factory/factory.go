@@ -19,6 +19,7 @@ limitations under the License.
 package factory
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -578,7 +579,7 @@ func MakeDefaultErrorFunc(client clientset.Interface, podQueue internalqueue.Sch
 			// Get the pod again; it may have changed/been scheduled already.
 			getBackoff := initialGetBackoff
 			for {
-				pod, err := client.CoreV1().Pods(podID.Namespace).Get(podID.Name, metav1.GetOptions{})
+				pod, err := client.CoreV1().Pods(podID.Namespace).Get(context.Background(), podID.Name, metav1.GetOptions{})
 				if err == nil {
 					if len(pod.Spec.NodeName) == 0 {
 						if err := podQueue.AddUnschedulableIfNotPresent(pod, podSchedulingCycle); err != nil {
@@ -618,7 +619,7 @@ type podConditionUpdater struct {
 func (p *podConditionUpdater) Update(pod *v1.Pod, condition *v1.PodCondition) error {
 	klog.V(3).Infof("Updating pod condition for %s/%s to (%s==%s, Reason=%s)", pod.Namespace, pod.Name, condition.Type, condition.Status, condition.Reason)
 	if podutil.UpdatePodCondition(&pod.Status, condition) {
-		_, err := p.Client.CoreV1().Pods(pod.Namespace).UpdateStatus(pod)
+		_, err := p.Client.CoreV1().Pods(pod.Namespace).UpdateStatus(context.Background(), pod)
 		return err
 	}
 	return nil
@@ -629,17 +630,17 @@ type podPreemptor struct {
 }
 
 func (p *podPreemptor) GetUpdatedPod(pod *v1.Pod) (*v1.Pod, error) {
-	return p.Client.CoreV1().Pods(pod.Namespace).Get(pod.Name, metav1.GetOptions{})
+	return p.Client.CoreV1().Pods(pod.Namespace).Get(context.Background(), pod.Name, metav1.GetOptions{})
 }
 
 func (p *podPreemptor) DeletePod(pod *v1.Pod) error {
-	return p.Client.CoreV1().Pods(pod.Namespace).Delete(pod.Name, &metav1.DeleteOptions{})
+	return p.Client.CoreV1().Pods(pod.Namespace).Delete(context.Background(),pod.Name, &metav1.DeleteOptions{})
 }
 
 func (p *podPreemptor) SetNominatedNodeName(pod *v1.Pod, nominatedNodeName string) error {
 	podCopy := pod.DeepCopy()
 	podCopy.Status.NominatedNodeName = nominatedNodeName
-	_, err := p.Client.CoreV1().Pods(pod.Namespace).UpdateStatus(podCopy)
+	_, err := p.Client.CoreV1().Pods(pod.Namespace).UpdateStatus(context.Background(), podCopy)
 	return err
 }
 

@@ -17,6 +17,7 @@ limitations under the License.
 package elasticsearch
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -76,7 +77,7 @@ func (p *esLogProvider) Init() error {
 	e2elog.Logf("Checking to make sure the Elasticsearch pods are running")
 	labelSelector := fields.SelectorFromSet(fields.Set(map[string]string{"k8s-app": "elasticsearch-logging"})).String()
 	options := meta_v1.ListOptions{LabelSelector: labelSelector}
-	pods, err := f.ClientSet.CoreV1().Pods(api.NamespaceSystem).List(options)
+	pods, err := f.ClientSet.CoreV1().Pods(api.NamespaceSystem).List(context.Background(), options)
 	if err != nil {
 		return err
 	}

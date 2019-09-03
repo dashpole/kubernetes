@@ -19,6 +19,7 @@ limitations under the License.
 package utils
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -68,7 +69,7 @@ func CreatePodWithRetries(c clientset.Interface, namespace string, obj *v1.Pod) 
 		return fmt.Errorf("Object provided to create is empty")
 	}
 	createFunc := func() (bool, error) {
-		_, err := c.CoreV1().Pods(namespace).Create(obj)
+		_, err := c.CoreV1().Pods(namespace).Create(context.Background(), obj)
 		if err == nil || apierrs.IsAlreadyExists(err) {
 			return true, nil
 		}

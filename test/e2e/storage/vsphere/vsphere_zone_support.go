@@ -17,6 +17,7 @@ limitations under the License.
 package vsphere
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"time"
@@ -413,7 +414,7 @@ func verifyPodAndPvcCreationFailureOnWaitForFirstConsumerMode(client clientset.I
 
 	ginkgo.By("Creating a pod")
 	pod := e2epod.MakePod(namespace, nil, pvclaims, false, "")
-	pod, err = client.CoreV1().Pods(namespace).Create(pod)
+	pod, err = client.CoreV1().Pods(namespace).Create(context.Background(), pod)
 	framework.ExpectNoError(err)
 	defer e2epod.DeletePodWithWait(client, pod)
 

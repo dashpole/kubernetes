@@ -35,6 +35,7 @@ import (
 	"sync"
 	"time"
 
+	"go.opencensus.io/trace"
 	apps "k8s.io/api/apps/v1"
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -57,6 +58,7 @@ import (
 	podutil "k8s.io/kubernetes/pkg/api/v1/pod"
 	"k8s.io/kubernetes/pkg/controller"
 	"k8s.io/kubernetes/pkg/util/metrics"
+	"k8s.io/kubernetes/pkg/util/trace"
 	"k8s.io/utils/integer"
 )
 
@@ -107,6 +109,7 @@ type ReplicaSetController struct {
 
 // NewReplicaSetController configures a replica set controller with the specified event recorder
 func NewReplicaSetController(rsInformer appsinformers.ReplicaSetInformer, podInformer coreinformers.PodInformer, kubeClient clientset.Interface, burstReplicas int) *ReplicaSetController {
+	traceutil.InitializeExporter(traceutil.ServiceControllerManager)
 	eventBroadcaster := record.NewBroadcaster()
 	eventBroadcaster.StartLogging(klog.Infof)
 	eventBroadcaster.StartRecordingToSink(&v1core.EventSinkImpl{Interface: kubeClient.CoreV1().Events("")})
@@ -468,6 +471,13 @@ func (rsc *ReplicaSetController) manageReplicas(filteredPods []*v1.Pod, rs *apps
 		if diff > rsc.burstReplicas {
 			diff = rsc.burstReplicas
 		}
+		var ctx *trace.SpanContext
+		_, span, err := traceutil.SpanFromEncodedContext(rs, "")
+		if err == nil {
+			spanctx := span.SpanContext()
+			ctx = &spanctx
+		}
+
 		// TODO: Track UIDs of creates just like deletes. The problem currently
 		// is we'd need to wait on the result of a create to record the pod's
 		// UID, which would require locking *across* the create, which will turn
@@ -484,7 +494,7 @@ func (rsc *ReplicaSetController) manageReplicas(filteredPods []*v1.Pod, rs *apps
 		// after one of its pods fails.  Conveniently, this also prevents the
 		// event spam that those failures would generate.
 		successfulCreations, err := slowStartBatch(diff, controller.SlowStartInitialBatchSize, func() error {
-			err := rsc.podControl.CreatePodsWithControllerRef(rs.Namespace, &rs.Spec.Template, rs, metav1.NewControllerRef(rs, rsc.GroupVersionKind))
+			err := rsc.podControl.CreatePodsWithControllerRef(ctx, rs.Namespace, &rs.Spec.Template, rs, metav1.NewControllerRef(rs, rsc.GroupVersionKind))
 			if err != nil && errors.IsTimeout(err) {
 				// Pod is created but its initialization has timed out.
 				// If the initialization is successful eventually, the
@@ -610,6 +620,10 @@ func (rsc *ReplicaSetController) syncReplicaSet(key string) error {
 	}
 	rs = rs.DeepCopy()
 	newStatus := calculateStatus(rs, filteredPods, manageReplicasErr)
+
+	if rs.Spec.Replicas != nil && *rs.Spec.Replicas == newStatus.AvailableReplicas && *rs.Spec.Replicas != rs.Status.AvailableReplicas {
+		traceutil.EndRootObjectTraceWithName(rs, traceutil.ServiceControllerManager, "kube-apiserver.CreateReplicaSet")
+	}
 
 	// Always updates status as pods come up or die.
 	updatedRS, err := updateReplicaSetStatus(rsc.kubeClient.AppsV1().ReplicaSets(rs.Namespace), rs, newStatus)

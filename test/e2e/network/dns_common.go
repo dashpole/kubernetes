@@ -68,7 +68,7 @@ func (t *dnsTestCommon) init() {
 	options := metav1.ListOptions{LabelSelector: label.String()}
 
 	namespace := "kube-system"
-	pods, err := t.f.ClientSet.CoreV1().Pods(namespace).List(options)
+	pods, err := t.f.ClientSet.CoreV1().Pods(namespace).List(context.Background(), options)
 	framework.ExpectNoError(err, "failed to list pods in namespace: %s", namespace)
 	gomega.Expect(len(pods.Items)).Should(gomega.BeNumerically(">=", 1))
 
@@ -224,7 +224,7 @@ func (t *dnsTestCommon) createUtilPodLabel(baseName string) {
 	}
 
 	var err error
-	t.utilPod, err = t.c.CoreV1().Pods(t.f.Namespace.Name).Create(t.utilPod)
+	t.utilPod, err = t.c.CoreV1().Pods(t.f.Namespace.Name).Create(context.Background(), t.utilPod)
 	framework.ExpectNoError(err, "failed to create pod: %v", t.utilPod)
 	e2elog.Logf("Created pod %v", t.utilPod)
 	err = t.f.WaitForPodRunning(t.utilPod.Name)
@@ -257,7 +257,7 @@ func (t *dnsTestCommon) createUtilPodLabel(baseName string) {
 
 func (t *dnsTestCommon) deleteUtilPod() {
 	podClient := t.c.CoreV1().Pods(t.f.Namespace.Name)
-	if err := podClient.Delete(t.utilPod.Name, metav1.NewDeleteOptions(0)); err != nil {
+	if err := podClient.Delete(context.Background(), t.utilPod.Name, metav1.NewDeleteOptions(0)); err != nil {
 		e2elog.Logf("Delete of pod %v/%v failed: %v",
 			t.utilPod.Namespace, t.utilPod.Name, err)
 	}
@@ -269,11 +269,11 @@ func (t *dnsTestCommon) deleteCoreDNSPods() {
 	label := labels.SelectorFromSet(labels.Set(map[string]string{"k8s-app": "kube-dns"}))
 	options := metav1.ListOptions{LabelSelector: label.String()}
 
-	pods, err := t.f.ClientSet.CoreV1().Pods("kube-system").List(options)
+	pods, err := t.f.ClientSet.CoreV1().Pods("kube-system").List(context.Background(), options)
 	podClient := t.c.CoreV1().Pods(metav1.NamespaceSystem)
 
 	for _, pod := range pods.Items {
-		err = podClient.Delete(pod.Name, metav1.NewDeleteOptions(0))
+		err = podClient.Delete(context.Background(), pod.Name, metav1.NewDeleteOptions(0))
 		framework.ExpectNoError(err, "failed to delete pod: %s", pod.Name)
 	}
 }
@@ -316,14 +316,14 @@ func (t *dnsTestCommon) createDNSPodFromObj(pod *v1.Pod) {
 	t.dnsServerPod = pod
 
 	var err error
-	t.dnsServerPod, err = t.c.CoreV1().Pods(t.f.Namespace.Name).Create(t.dnsServerPod)
+	t.dnsServerPod, err = t.c.CoreV1().Pods(t.f.Namespace.Name).Create(context.Background(), t.dnsServerPod)
 	framework.ExpectNoError(err, "failed to create pod: %v", t.dnsServerPod)
 	e2elog.Logf("Created pod %v", t.dnsServerPod)
 	err = t.f.WaitForPodRunning(t.dnsServerPod.Name)
 	framework.ExpectNoError(err, "pod failed to start running: %v", t.dnsServerPod)
 
 	t.dnsServerPod, err = t.c.CoreV1().Pods(t.f.Namespace.Name).Get(
-		t.dnsServerPod.Name, metav1.GetOptions{})
+		context.Background(), t.dnsServerPod.Name, metav1.GetOptions{})
 	framework.ExpectNoError(err, "failed to get pod: %s", t.dnsServerPod.Name)
 }
 
@@ -372,7 +372,7 @@ func (t *dnsTestCommon) createDNSServerWithPtrRecord(isIPv6 bool) {
 
 func (t *dnsTestCommon) deleteDNSServerPod() {
 	podClient := t.c.CoreV1().Pods(t.f.Namespace.Name)
-	if err := podClient.Delete(t.dnsServerPod.Name, metav1.NewDeleteOptions(0)); err != nil {
+	if err := podClient.Delete(context.Background(), t.dnsServerPod.Name, metav1.NewDeleteOptions(0)); err != nil {
 		e2elog.Logf("Delete of pod %v/%v failed: %v",
 			t.utilPod.Namespace, t.dnsServerPod.Name, err)
 	}
@@ -567,16 +567,16 @@ func validateDNSResults(f *framework.Framework, pod *v1.Pod, fileNames []string)
 	defer func() {
 		ginkgo.By("deleting the pod")
 		defer ginkgo.GinkgoRecover()
-		podClient.Delete(pod.Name, metav1.NewDeleteOptions(0))
+		podClient.Delete(context.Background(), pod.Name, metav1.NewDeleteOptions(0))
 	}()
-	if _, err := podClient.Create(pod); err != nil {
+	if _, err := podClient.Create(context.Background(), pod); err != nil {
 		e2elog.Failf("ginkgo.Failed to create pod %s/%s: %v", pod.Namespace, pod.Name, err)
 	}
 
 	framework.ExpectNoError(f.WaitForPodRunning(pod.Name))
 
 	ginkgo.By("retrieving the pod")
-	pod, err := podClient.Get(pod.Name, metav1.GetOptions{})
+	pod, err := podClient.Get(context.Background(), pod.Name, metav1.GetOptions{})
 	if err != nil {
 		e2elog.Failf("ginkgo.Failed to get pod %s/%s: %v", pod.Namespace, pod.Name, err)
 	}
@@ -595,16 +595,16 @@ func validateTargetedProbeOutput(f *framework.Framework, pod *v1.Pod, fileNames 
 	defer func() {
 		ginkgo.By("deleting the pod")
 		defer ginkgo.GinkgoRecover()
-		podClient.Delete(pod.Name, metav1.NewDeleteOptions(0))
+		podClient.Delete(context.Background(), pod.Name, metav1.NewDeleteOptions(0))
 	}()
-	if _, err := podClient.Create(pod); err != nil {
+	if _, err := podClient.Create(context.Background(), pod); err != nil {
 		e2elog.Failf("ginkgo.Failed to create pod %s/%s: %v", pod.Namespace, pod.Name, err)
 	}
 
 	framework.ExpectNoError(f.WaitForPodRunning(pod.Name))
 
 	ginkgo.By("retrieving the pod")
-	pod, err := podClient.Get(pod.Name, metav1.GetOptions{})
+	pod, err := podClient.Get(context.Background(), pod.Name, metav1.GetOptions{})
 	if err != nil {
 		e2elog.Failf("ginkgo.Failed to get pod %s/%s: %v", pod.Namespace, pod.Name, err)
 	}

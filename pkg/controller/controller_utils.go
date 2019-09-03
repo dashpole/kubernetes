@@ -20,11 +20,13 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	"context"
 	"hash/fnv"
 	"sync"
 	"sync/atomic"
 	"time"
 
+	"go.opencensus.io/trace"
 	apps "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -48,6 +50,7 @@ import (
 	"k8s.io/kubernetes/pkg/apis/core/validation"
 	hashutil "k8s.io/kubernetes/pkg/util/hash"
 	taintutils "k8s.io/kubernetes/pkg/util/taints"
+	"k8s.io/kubernetes/pkg/util/trace"
 	"k8s.io/utils/integer"
 
 	"k8s.io/klog"
@@ -451,7 +454,7 @@ type PodControlInterface interface {
 	// and sets the ControllerRef.
 	CreatePodsOnNode(nodeName, namespace string, template *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error
 	// CreatePodsWithControllerRef creates new pods according to the spec, and sets object as the pod's controller.
-	CreatePodsWithControllerRef(namespace string, template *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error
+	CreatePodsWithControllerRef(ctx *trace.SpanContext, namespace string, template *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error
 	// DeletePod deletes the pod identified by podID.
 	DeletePod(namespace string, podID string, object runtime.Object) error
 	// PatchPod patches the pod.
@@ -517,25 +520,25 @@ func validateControllerRef(controllerRef *metav1.OwnerReference) error {
 }
 
 func (r RealPodControl) CreatePods(namespace string, template *v1.PodTemplateSpec, object runtime.Object) error {
-	return r.createPods("", namespace, template, object, nil)
+	return r.createPods(nil, "", namespace, template, object, nil)
 }
 
-func (r RealPodControl) CreatePodsWithControllerRef(namespace string, template *v1.PodTemplateSpec, controllerObject runtime.Object, controllerRef *metav1.OwnerReference) error {
+func (r RealPodControl) CreatePodsWithControllerRef(ctx *trace.SpanContext, namespace string, template *v1.PodTemplateSpec, controllerObject runtime.Object, controllerRef *metav1.OwnerReference) error {
 	if err := validateControllerRef(controllerRef); err != nil {
 		return err
 	}
-	return r.createPods("", namespace, template, controllerObject, controllerRef)
+	return r.createPods(ctx, "", namespace, template, controllerObject, controllerRef)
 }
 
 func (r RealPodControl) CreatePodsOnNode(nodeName, namespace string, template *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error {
 	if err := validateControllerRef(controllerRef); err != nil {
 		return err
 	}
-	return r.createPods(nodeName, namespace, template, object, controllerRef)
+	return r.createPods(nil, nodeName, namespace, template, object, controllerRef)
 }
 
 func (r RealPodControl) PatchPod(namespace, name string, data []byte) error {
-	_, err := r.KubeClient.CoreV1().Pods(namespace).Patch(name, types.StrategicMergePatchType, data)
+	_, err := r.KubeClient.CoreV1().Pods(namespace).Patch(context.Background(), name, types.StrategicMergePatchType, data)
 	return err
 }
 
@@ -564,10 +567,13 @@ func GetPodFromTemplate(template *v1.PodTemplateSpec, parentObject runtime.Objec
 	return pod, nil
 }
 
-func (r RealPodControl) createPods(nodeName, namespace string, template *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error {
+func (r RealPodControl) createPods(ctx *trace.SpanContext, nodeName, namespace string, template *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error {
 	pod, err := GetPodFromTemplate(template, object, controllerRef)
 	if err != nil {
 		return err
+	}
+	if ctx != nil {
+		pod.Annotations[traceutil.TraceAnnotationKey] = traceutil.SpanContextToBase64String(*ctx)
 	}
 	if len(nodeName) != 0 {
 		pod.Spec.NodeName = nodeName
@@ -575,7 +581,7 @@ func (r RealPodControl) createPods(nodeName, namespace string, template *v1.PodT
 	if len(labels.Set(pod.Labels)) == 0 {
 		return fmt.Errorf("unable to create pods, no labels")
 	}
-	newPod, err := r.KubeClient.CoreV1().Pods(namespace).Create(pod)
+	newPod, err := r.KubeClient.CoreV1().Pods(namespace).Create(context.Background(), pod)
 	if err != nil {
 		r.Recorder.Eventf(object, v1.EventTypeWarning, FailedCreatePodReason, "Error creating: %v", err)
 		return err
@@ -597,7 +603,7 @@ func (r RealPodControl) DeletePod(namespace string, podID string, object runtime
 		return fmt.Errorf("object does not have ObjectMeta, %v", err)
 	}
 	klog.V(2).Infof("Controller %v deleting pod %v/%v", accessor.GetName(), namespace, podID)
-	if err := r.KubeClient.CoreV1().Pods(namespace).Delete(podID, nil); err != nil && !apierrors.IsNotFound(err) {
+	if err := r.KubeClient.CoreV1().Pods(namespace).Delete(context.Background(), podID, nil); err != nil && !apierrors.IsNotFound(err) {
 		r.Recorder.Eventf(object, v1.EventTypeWarning, FailedDeletePodReason, "Error deleting: %v", err)
 		return fmt.Errorf("unable to delete pods: %v", err)
 	}
@@ -643,7 +649,7 @@ func (f *FakePodControl) CreatePods(namespace string, spec *v1.PodTemplateSpec, 
 	return nil
 }
 
-func (f *FakePodControl) CreatePodsWithControllerRef(namespace string, spec *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error {
+func (f *FakePodControl) CreatePodsWithControllerRef(ctx *trace.SpanContext, namespace string, spec *v1.PodTemplateSpec, object runtime.Object, controllerRef *metav1.OwnerReference) error {
 	f.Lock()
 	defer f.Unlock()
 	f.CreateCallCount++

@@ -23,6 +23,7 @@ a serivce
 package endpoints
 
 import (
+	"context"
 	"fmt"
 	"sort"
 	"time"
@@ -64,7 +65,7 @@ func GetContainerPortsByPodUID(ep *v1.Endpoints) PortsByPodUID {
 func translatePodNameToUID(c clientset.Interface, ns string, expectedEndpoints PortsByPodName) (PortsByPodUID, error) {
 	portsByUID := make(PortsByPodUID)
 	for name, portList := range expectedEndpoints {
-		pod, err := c.CoreV1().Pods(ns).Get(name, metav1.GetOptions{})
+		pod, err := c.CoreV1().Pods(ns).Get(context.Background(), name, metav1.GetOptions{})
 		if err != nil {
 			return nil, fmt.Errorf("failed to get pod %s, that's pretty weird. validation failed: %s", name, err)
 		}
@@ -125,7 +126,7 @@ func ValidateEndpointsPorts(c clientset.Interface, namespace, serviceName string
 		}
 		i++
 	}
-	if pods, err := c.CoreV1().Pods(metav1.NamespaceAll).List(metav1.ListOptions{}); err == nil {
+	if pods, err := c.CoreV1().Pods(metav1.NamespaceAll).List(context.Background(), metav1.ListOptions{}); err == nil {
 		for _, pod := range pods.Items {
 			framework.Logf("Pod %s\t%s\t%s\t%s", pod.Namespace, pod.Name, pod.Spec.NodeName, pod.DeletionTimestamp)
 		}

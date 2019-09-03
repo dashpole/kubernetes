@@ -17,6 +17,7 @@ limitations under the License.
 package statefulset
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
 	"strings"
@@ -63,7 +64,7 @@ func CreateStatefulSet(c clientset.Interface, manifestPath, ns string) *appsv1.S
 func GetPodList(c clientset.Interface, ss *appsv1.StatefulSet) *v1.PodList {
 	selector, err := metav1.LabelSelectorAsSelector(ss.Spec.Selector)
 	e2efwk.ExpectNoError(err)
-	podList, err := c.CoreV1().Pods(ss.Namespace).List(metav1.ListOptions{LabelSelector: selector.String()})
+	podList, err := c.CoreV1().Pods(ss.Namespace).List(context.Background(), metav1.ListOptions{LabelSelector: selector.String()})
 	e2efwk.ExpectNoError(err)
 	return podList
 }
@@ -72,7 +73,7 @@ func GetPodList(c clientset.Interface, ss *appsv1.StatefulSet) *v1.PodList {
 func DeleteStatefulPodAtIndex(c clientset.Interface, index int, ss *appsv1.StatefulSet) {
 	name := getStatefulSetPodNameAtIndex(index, ss)
 	noGrace := int64(0)
-	if err := c.CoreV1().Pods(ss.Namespace).Delete(name, &metav1.DeleteOptions{GracePeriodSeconds: &noGrace}); err != nil {
+	if err := c.CoreV1().Pods(ss.Namespace).Delete(context.Background(), name, &metav1.DeleteOptions{GracePeriodSeconds: &noGrace}); err != nil {
 		e2efwk.Failf("Failed to delete stateful pod %v for StatefulSet %v/%v: %v", name, ss.Namespace, ss.Name, err)
 	}
 }
@@ -293,7 +294,7 @@ type VerifyStatefulPodFunc func(*v1.Pod)
 // VerifyPodAtIndex applies a visitor pattern to the Pod at index in ss. verify is applied to the Pod to "visit" it.
 func VerifyPodAtIndex(c clientset.Interface, index int, ss *appsv1.StatefulSet, verify VerifyStatefulPodFunc) {
 	name := getStatefulSetPodNameAtIndex(index, ss)
-	pod, err := c.CoreV1().Pods(ss.Namespace).Get(name, metav1.GetOptions{})
+	pod, err := c.CoreV1().Pods(ss.Namespace).Get(context.Background(), name, metav1.GetOptions{})
 	e2efwk.ExpectNoError(err, fmt.Sprintf("Failed to get stateful pod %s for StatefulSet %s/%s", name, ss.Namespace, ss.Name))
 	verify(pod)
 }

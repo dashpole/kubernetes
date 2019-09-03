@@ -31,6 +31,7 @@ import (
 	"time"
 
 	grpcstatus "google.golang.org/grpc/status"
+	"go.opencensus.io/trace"
 
 	"github.com/armon/circbuf"
 	"k8s.io/klog"
@@ -47,6 +48,7 @@ import (
 	"k8s.io/kubernetes/pkg/kubelet/util/format"
 	"k8s.io/kubernetes/pkg/util/selinux"
 	"k8s.io/kubernetes/pkg/util/tail"
+	"k8s.io/kubernetes/pkg/util/trace"
 )
 
 var (
@@ -91,6 +93,10 @@ func (m *kubeGenericRuntimeManager) recordContainerEvent(pod *v1.Pod, container 
 // * start the container
 // * run the post start lifecycle hooks (if applicable)
 func (m *kubeGenericRuntimeManager) startContainer(podSandboxID string, podSandboxConfig *runtimeapi.PodSandboxConfig, container *v1.Container, pod *v1.Pod, podStatus *kubecontainer.PodStatus, pullSecrets []v1.Secret, podIP string) (string, error) {
+
+	ctx, containerStartProcessSpan, _ := traceutil.SpanFromEncodedContext(pod, "kubelet.ContainerStartProcess")
+	ctx, imagePullSpan := trace.StartSpan(ctx, "kubelet.PullImage")
+
 	// Step 1: pull the image.
 	imageRef, msg, err := m.imagePuller.EnsureImageExists(pod, container, pullSecrets, podSandboxConfig)
 	if err != nil {
@@ -98,6 +104,9 @@ func (m *kubeGenericRuntimeManager) startContainer(podSandboxID string, podSandb
 		m.recordContainerEvent(pod, container, "", v1.EventTypeWarning, events.FailedToCreateContainer, "Error: %v", s.Message())
 		return msg, err
 	}
+
+	imagePullSpan.End()
+	ctx, createContainerSpan := trace.StartSpan(ctx, "kubelet.CreateContainer")
 
 	// Step 2: create the container.
 	ref, err := kubecontainer.GenerateContainerRef(pod, container)
@@ -144,6 +153,10 @@ func (m *kubeGenericRuntimeManager) startContainer(podSandboxID string, podSandb
 		}, ref)
 	}
 
+	createContainerSpan.End()
+	ctx, startContainerSpan := trace.StartSpan(ctx, "kubelet.StartContainer")
+	startContainerSpan.AddAttributes(trace.StringAttribute("container", container.Name))
+
 	// Step 3: start the container.
 	err = m.runtimeService.StartContainer(containerID)
 	if err != nil {
@@ -151,6 +164,7 @@ func (m *kubeGenericRuntimeManager) startContainer(podSandboxID string, podSandb
 		m.recordContainerEvent(pod, container, containerID, v1.EventTypeWarning, events.FailedToStartContainer, "Error: %v", s.Message())
 		return s.Message(), kubecontainer.ErrRunContainer
 	}
+	startContainerSpan.End()
 	m.recordContainerEvent(pod, container, containerID, v1.EventTypeNormal, events.StartedContainer, fmt.Sprintf("Started container %s", container.Name))
 
 	// Symlink container logs to the legacy container log location for cluster logging
@@ -188,6 +202,8 @@ func (m *kubeGenericRuntimeManager) startContainer(podSandboxID string, podSandb
 			return msg, fmt.Errorf("%s: %v", ErrPostStartHook, handlerErr)
 		}
 	}
+
+	containerStartProcessSpan.End()
 
 	return "", nil
 }

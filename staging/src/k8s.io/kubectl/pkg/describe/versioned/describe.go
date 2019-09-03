@@ -18,6 +18,7 @@ package versioned
 
 import (
 	"bytes"
+	"context"
 	"crypto/x509"
 	"fmt"
 	"io"
@@ -630,7 +631,7 @@ type PodDescriber struct {
 }
 
 func (d *PodDescriber) Describe(namespace, name string, describerSettings describe.DescriberSettings) (string, error) {
-	pod, err := d.CoreV1().Pods(namespace).Get(name, metav1.GetOptions{})
+	pod, err := d.CoreV1().Pods(namespace).Get(context.Background(), name, metav1.GetOptions{})
 	if err != nil {
 		if describerSettings.ShowEvents {
 			eventsInterface := d.CoreV1().Events(namespace)
@@ -1487,7 +1488,7 @@ func (d *PersistentVolumeClaimDescriber) Describe(namespace, name string, descri
 }
 
 func getMountPods(c corev1client.PodInterface, pvcName string) ([]corev1.Pod, error) {
-	nsPods, err := c.List(metav1.ListOptions{})
+	nsPods, err := c.List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		return []corev1.Pod{}, err
 	}
@@ -3004,7 +3005,7 @@ func (d *NodeDescriber) Describe(namespace, name string, describerSettings descr
 	// in a policy aware setting, users may have access to a node, but not all pods
 	// in that case, we note that the user does not have access to the pods
 	canViewPods := true
-	nodeNonTerminatedPodsList, err := d.CoreV1().Pods(namespace).List(metav1.ListOptions{FieldSelector: fieldSelector.String()})
+	nodeNonTerminatedPodsList, err := d.CoreV1().Pods(namespace).List(context.Background(), metav1.ListOptions{FieldSelector: fieldSelector.String()})
 	if err != nil {
 		if !errors.IsForbidden(err) {
 			return "", err
@@ -3611,7 +3612,7 @@ func printReplicaSetsByLabels(matchingRSs []*appsv1.ReplicaSet) string {
 
 func getPodStatusForController(c corev1client.PodInterface, selector labels.Selector, uid types.UID) (running, waiting, succeeded, failed int, err error) {
 	options := metav1.ListOptions{LabelSelector: selector.String()}
-	rcPods, err := c.List(options)
+	rcPods, err := c.List(context.Background(), options)
 	if err != nil {
 		return
 	}

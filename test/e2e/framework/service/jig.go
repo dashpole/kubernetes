@@ -18,6 +18,7 @@ package service
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"net"
 	"net/http"
@@ -727,7 +728,7 @@ func (j *TestJig) waitForPodsCreated(namespace string, replicas int) ([]string, 
 	framework.Logf("Waiting up to %v for %d pods to be created", timeout, replicas)
 	for start := time.Now(); time.Since(start) < timeout; time.Sleep(2 * time.Second) {
 		options := metav1.ListOptions{LabelSelector: label.String()}
-		pods, err := j.Client.CoreV1().Pods(namespace).List(options)
+		pods, err := j.Client.CoreV1().Pods(namespace).List(context.Background(), options)
 		if err != nil {
 			return nil, err
 		}

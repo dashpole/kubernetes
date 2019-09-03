@@ -17,6 +17,7 @@ limitations under the License.
 package common
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -135,7 +136,7 @@ func expectPodRejection(f *framework.Framework, pod *v1.Pod) {
 		pod = f.PodClient().Create(pod)
 		expectSandboxFailureEvent(f, pod, fmt.Sprintf("\"%s\" not found", *pod.Spec.RuntimeClassName))
 	} else {
-		_, err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Create(pod)
+		_, err := f.ClientSet.CoreV1().Pods(f.Namespace.Name).Create(context.Background(), pod)
 		framework.ExpectError(err, "should be forbidden")
 		gomega.Expect(apierrs.IsForbidden(err)).To(gomega.BeTrue(), "should be forbidden error")
 	}
