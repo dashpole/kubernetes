@@ -22,6 +22,7 @@ filegroup(
         "//vendor/go.opencensus.io/internal:all-srcs",
         "//vendor/go.opencensus.io/metric/metricdata:all-srcs",
         "//vendor/go.opencensus.io/metric/metricproducer:all-srcs",
+        "//vendor/go.opencensus.io/plugin/ocgrpc:all-srcs",
         "//vendor/go.opencensus.io/plugin/ochttp:all-srcs",
         "//vendor/go.opencensus.io/resource:all-srcs",
         "//vendor/go.opencensus.io/stats:all-srcs",
