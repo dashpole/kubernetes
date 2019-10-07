@@ -134,7 +134,7 @@ NODE_IP_RANGE="$(get-node-ip-range)"
 
 # NOTE: Avoid giving nodes empty scopes, because kubelet needs a service account
 # in order to initialize properly.
-NODE_SCOPES="${NODE_SCOPES:-monitoring,logging-write,storage-ro}"
+NODE_SCOPES="${NODE_SCOPES:-monitoring,logging-write,storage-ro,trace}"
 
 # Extra docker options for nodes.
 EXTRA_DOCKER_OPTS="${EXTRA_DOCKER_OPTS:-}"
