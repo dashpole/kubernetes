@@ -49,6 +49,7 @@ go_library(
         "doc.go",
         "impersonation.go",
         "requestinfo.go",
+        "tracing.go",
     ],
     importmap = "k8s.io/kubernetes/vendor/k8s.io/apiserver/pkg/endpoints/filters",
     importpath = "k8s.io/apiserver/pkg/endpoints/filters",
@@ -72,6 +73,8 @@ go_library(
         "//staging/src/k8s.io/apiserver/pkg/server/httplog:go_default_library",
         "//staging/src/k8s.io/component-base/metrics:go_default_library",
         "//staging/src/k8s.io/component-base/metrics/legacyregistry:go_default_library",
+        "//vendor/go.opencensus.io/plugin/ochttp:go_default_library",
+        "//vendor/go.opencensus.io/trace:go_default_library",
         "//vendor/k8s.io/klog:go_default_library",
     ],
 )

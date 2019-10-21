@@ -38,6 +38,8 @@ go_library(
         "//vendor/github.com/coreos/etcd/pkg/logutil:go_default_library",
         "//vendor/github.com/coreos/etcd/pkg/types:go_default_library",
         "//vendor/github.com/google/uuid:go_default_library",
+        "//vendor/go.opencensus.io/plugin/ocgrpc:go_default_library",
+        "//vendor/go.opencensus.io/trace:go_default_library",
         "//vendor/go.uber.org/zap:go_default_library",
         "//vendor/google.golang.org/grpc:go_default_library",
         "//vendor/google.golang.org/grpc/codes:go_default_library",

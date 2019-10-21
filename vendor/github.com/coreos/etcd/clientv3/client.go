@@ -39,6 +39,8 @@ import (
 	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"go.opencensus.io/plugin/ocgrpc"
+	"go.opencensus.io/trace"
 )
 
 var (
@@ -350,6 +352,7 @@ func (c *Client) dial(target string, creds grpccredentials.TransportCredentials,
 	}
 
 	opts = append(opts, c.cfg.DialOptions...)
+	opts = append(opts, grpc.WithStatsHandler(&ocgrpc.ClientHandler{StartOptions: trace.StartOptions{Sampler: trace.ProbabilitySampler(0)}}))
 
 	dctx := c.ctx
 	if c.cfg.DialTimeout > 0 {

@@ -26,12 +26,14 @@ import (
 	"k8s.io/component-base/logs"
 	_ "k8s.io/component-base/metrics/prometheus/clientgo" // load all the prometheus client-go plugins
 	"k8s.io/kubernetes/cmd/kube-apiserver/app"
+	"k8s.io/kubernetes/pkg/util/trace"
 )
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	command := app.NewAPIServerCommand()
+	traceutil.InitializeExporter("kube-apiserver")
 
 	// TODO: once we switch everything over to Cobra commands, we can go back to calling
 	// utilflag.InitFlags() (by removing its pflag.Parse() call). For now, we have to set the
