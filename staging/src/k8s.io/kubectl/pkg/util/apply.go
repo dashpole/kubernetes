@@ -17,12 +17,40 @@ limitations under the License.
 package util
 
 import (
+	"fmt"
+	"context"
+	"encoding/base64"
+
+	"go.opencensus.io/trace"
+	"go.opencensus.io/trace/propagation"
+
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
 var metadataAccessor = meta.NewAccessor()
+
+func AddTraceContextToObject(ctx context.Context, obj runtime.Object) (context.Context, error) {
+	ctx, span := trace.StartSpan(ctx, "", trace.WithSampler(trace.AlwaysSample()))
+	if !span.SpanContext().IsSampled() {
+		return ctx, fmt.Errorf("Created span with AlwaysSample, but it wasn't sampled.")
+	}
+	rawContextBytes := propagation.Binary(span.SpanContext())
+	encodedContext := base64.StdEncoding.EncodeToString(rawContextBytes)
+
+	annots, err := metadataAccessor.Annotations(obj)
+	if err != nil {
+		return ctx, err
+	}
+
+	if annots == nil {
+		annots = map[string]string{}
+	}
+
+	annots["trace.kubernetes.io/context"] = encodedContext
+	return ctx, metadataAccessor.SetAnnotations(obj, annots)
+}
 
 // GetOriginalConfiguration retrieves the original configuration of the object
 // from the annotation, or nil if no annotation was found.

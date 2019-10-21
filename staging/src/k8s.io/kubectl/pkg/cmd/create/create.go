@@ -17,6 +17,7 @@ limitations under the License.
 package create
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/url"
@@ -126,6 +127,7 @@ func NewCmdCreate(f cmdutil.Factory, ioStreams genericclioptions.IOStreams) *cob
 		"Only relevant if --edit=true. Defaults to the line ending native to your platform.")
 	cmdutil.AddApplyAnnotationFlags(cmd)
 	cmdutil.AddDryRunFlag(cmd)
+	cmdutil.AddTraceFlag(cmd)
 	cmd.Flags().StringVarP(&o.Selector, "selector", "l", o.Selector, "Selector (label query) to filter on, supports '=', '==', and '!='.(e.g. -l key1=value1,key2=value2)")
 	cmd.Flags().StringVar(&o.Raw, "raw", o.Raw, "Raw URI to POST to the server.  Uses the transport specified by the kubeconfig file.")
 
@@ -208,6 +210,8 @@ func (o *CreateOptions) Complete(f cmdutil.Factory, cmd *cobra.Command) error {
 	return nil
 }
 
+var metadataAccessor = meta.NewAccessor()
+
 // RunCreate performs the creation
 func (o *CreateOptions) RunCreate(f cmdutil.Factory, cmd *cobra.Command) error {
 	// raw only makes sense for a single file resource multiple objects aren't likely to do what you want.
@@ -255,13 +259,20 @@ func (o *CreateOptions) RunCreate(f cmdutil.Factory, cmd *cobra.Command) error {
 		if err := util.CreateOrUpdateAnnotation(cmdutil.GetFlagBool(cmd, cmdutil.ApplyAnnotationsFlag), info.Object, scheme.DefaultJSONEncoder()); err != nil {
 			return cmdutil.AddSourceToErr("creating", info.Source, err)
 		}
+		ctx := context.Background()
+		if cmdutil.GetTraceFlag(cmd) {
+			ctx, err = util.AddTraceContextToObject(ctx, info.Object)
+			if err != nil {
+				return fmt.Errorf("error adding trace context to object: %v", err)
+			}
+		}
 
 		if err := o.Recorder.Record(info.Object); err != nil {
 			klog.V(4).Infof("error recording current command: %v", err)
 		}
 
 		if !o.DryRun {
-			if err := createAndRefresh(info); err != nil {
+			if err := createAndRefresh(ctx, info); err != nil {
 				return cmdutil.AddSourceToErr("creating", info.Source, err)
 			}
 		}
@@ -298,8 +309,16 @@ func RunEditOnCreate(f cmdutil.Factory, printFlags *genericclioptions.PrintFlags
 }
 
 // createAndRefresh creates an object from input info and refreshes info with that object
-func createAndRefresh(info *resource.Info) error {
-	obj, err := resource.NewHelper(info.Client, info.Mapping).Create(info.Namespace, true, info.Object, nil)
+func createAndRefresh(ctx context.Context, info *resource.Info) error {
+	// Send the context with the request.  This is the same as resource.NewHelper(...).Create(...) otherwise.
+	obj, err := info.Client.Post().
+		NamespaceIfScoped(info.Namespace, info.Mapping.Scope.Name() == meta.RESTScopeNameNamespace).
+		Resource(info.Mapping.Resource.Resource).
+		VersionedParams(&metav1.CreateOptions{}, metav1.ParameterCodec).
+		Body(info.Object).
+		Context(ctx).
+		Do().
+		Get()
 	if err != nil {
 		return err
 	}

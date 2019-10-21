@@ -412,6 +412,11 @@ func AddDryRunFlag(cmd *cobra.Command) {
 	cmd.Flags().Bool("dry-run", false, "If true, only print the object that would be sent, without sending it.")
 }
 
+// AddDryRunFlag adds dry-run flag to a command. Usually used by mutations.
+func AddTraceFlag(cmd *cobra.Command) {
+	cmd.Flags().Bool("trace", false, "If true, add a trace context to the created object.")
+}
+
 func AddServerSideApplyFlags(cmd *cobra.Command) {
 	cmd.Flags().Bool("server-side", false, "If true, apply runs in the server instead of the client.")
 	cmd.Flags().Bool("force-conflicts", false, "If true, server-side apply will force the changes against conflicts.")
@@ -500,6 +505,10 @@ func GetFieldManagerFlag(cmd *cobra.Command) string {
 
 func GetDryRunFlag(cmd *cobra.Command) bool {
 	return GetFlagBool(cmd, "dry-run")
+}
+
+func GetTraceFlag(cmd *cobra.Command) bool {
+	return GetFlagBool(cmd, "trace")
 }
 
 // GetResourcesAndPairs retrieves resources and "KEY=VALUE or KEY-" pair args from given args
