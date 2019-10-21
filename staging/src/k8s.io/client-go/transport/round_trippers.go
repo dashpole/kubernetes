@@ -24,6 +24,7 @@ import (
 
 	"golang.org/x/oauth2"
 	"k8s.io/klog"
+	"go.opencensus.io/trace"
 
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 )
@@ -68,11 +69,11 @@ func HTTPWrappersForConfig(config *Config, rt http.RoundTripper) (http.RoundTrip
 func DebugWrappers(rt http.RoundTripper) http.RoundTripper {
 	switch {
 	case bool(klog.V(9)):
-		rt = newDebuggingRoundTripper(rt, debugCurlCommand, debugURLTiming, debugResponseHeaders)
+		rt = newDebuggingRoundTripper(rt, debugCurlCommand, debugTraceContext, debugURLTiming, debugResponseHeaders)
 	case bool(klog.V(8)):
-		rt = newDebuggingRoundTripper(rt, debugJustURL, debugRequestHeaders, debugResponseStatus, debugResponseHeaders)
+		rt = newDebuggingRoundTripper(rt, debugJustURL, debugTraceContext, debugRequestHeaders, debugResponseStatus, debugResponseHeaders)
 	case bool(klog.V(7)):
-		rt = newDebuggingRoundTripper(rt, debugJustURL, debugRequestHeaders, debugResponseStatus)
+		rt = newDebuggingRoundTripper(rt, debugJustURL, debugTraceContext, debugRequestHeaders, debugResponseStatus)
 	case bool(klog.V(6)):
 		rt = newDebuggingRoundTripper(rt, debugURLTiming)
 	}
@@ -364,6 +365,7 @@ const (
 	debugRequestHeaders
 	debugResponseStatus
 	debugResponseHeaders
+	debugTraceContext
 )
 
 func newDebuggingRoundTripper(rt http.RoundTripper, levels ...debugLevel) *debuggingRoundTripper {
@@ -430,6 +432,14 @@ func (rt *debuggingRoundTripper) RoundTrip(req *http.Request) (*http.Response, e
 				value = maskValue(key, value)
 				klog.Infof("    %s: %s", key, value)
 			}
+		}
+	}
+
+	if rt.levels[debugTraceContext] {
+		if span := trace.FromContext(req.Context()); span != nil {
+			klog.Infof("Request Trace Context Found: Sampled: %v", span.SpanContext().TraceOptions.IsSampled())
+		} else {
+			klog.Infof("Request Trace Context not Found")
 		}
 	}
 
