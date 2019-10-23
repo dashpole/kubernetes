@@ -31,6 +31,8 @@ import (
 	"k8s.io/kubernetes/pkg/kubelet/util"
 	"k8s.io/kubernetes/pkg/kubelet/util/logreduction"
 	utilexec "k8s.io/utils/exec"
+	"go.opencensus.io/plugin/ocgrpc"
+	"go.opencensus.io/trace"
 )
 
 // RemoteRuntimeService is a gRPC implementation of internalapi.RuntimeService.
@@ -56,7 +58,12 @@ func NewRemoteRuntimeService(endpoint string, connectionTimeout time.Duration) (
 	ctx, cancel := context.WithTimeout(context.Background(), connectionTimeout)
 	defer cancel()
 
-	conn, err := grpc.DialContext(ctx, addr, grpc.WithInsecure(), grpc.WithDialer(dailer), grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(maxMsgSize)))
+	conn, err := grpc.DialContext(ctx, addr,
+		grpc.WithInsecure(),
+		grpc.WithDialer(dailer),
+		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(maxMsgSize)),
+		grpc.WithStatsHandler(&ocgrpc.ClientHandler{StartOptions: trace.StartOptions{Sampler: trace.ProbabilitySampler(0)}}),
+	)
 	if err != nil {
 		klog.Errorf("Connect remote runtime %s failed: %v", addr, err)
 		return nil, err
@@ -91,10 +98,10 @@ func (r *RemoteRuntimeService) Version(apiVersion string) (*runtimeapi.VersionRe
 
 // RunPodSandbox creates and starts a pod-level sandbox. Runtimes should ensure
 // the sandbox is in ready state.
-func (r *RemoteRuntimeService) RunPodSandbox(config *runtimeapi.PodSandboxConfig, runtimeHandler string) (string, error) {
+func (r *RemoteRuntimeService) RunPodSandbox(ctx context.Context, config *runtimeapi.PodSandboxConfig, runtimeHandler string) (string, error) {
 	// Use 2 times longer timeout for sandbox operation (4 mins by default)
 	// TODO: Make the pod sandbox timeout configurable.
-	ctx, cancel := getContextWithTimeout(r.timeout * 2)
+	ctx, cancel := context.WithTimeout(ctx, r.timeout * 2)
 	defer cancel()
 
 	resp, err := r.runtimeClient.RunPodSandbox(ctx, &runtimeapi.RunPodSandboxRequest{
@@ -117,8 +124,8 @@ func (r *RemoteRuntimeService) RunPodSandbox(config *runtimeapi.PodSandboxConfig
 
 // StopPodSandbox stops the sandbox. If there are any running containers in the
 // sandbox, they should be forced to termination.
-func (r *RemoteRuntimeService) StopPodSandbox(podSandBoxID string) error {
-	ctx, cancel := getContextWithTimeout(r.timeout)
+func (r *RemoteRuntimeService) StopPodSandbox(ctx context.Context, podSandBoxID string) error {
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
 	defer cancel()
 
 	_, err := r.runtimeClient.StopPodSandbox(ctx, &runtimeapi.StopPodSandboxRequest{
@@ -134,8 +141,8 @@ func (r *RemoteRuntimeService) StopPodSandbox(podSandBoxID string) error {
 
 // RemovePodSandbox removes the sandbox. If there are any containers in the
 // sandbox, they should be forcibly removed.
-func (r *RemoteRuntimeService) RemovePodSandbox(podSandBoxID string) error {
-	ctx, cancel := getContextWithTimeout(r.timeout)
+func (r *RemoteRuntimeService) RemovePodSandbox(ctx context.Context, podSandBoxID string) error {
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
 	defer cancel()
 
 	_, err := r.runtimeClient.RemovePodSandbox(ctx, &runtimeapi.RemovePodSandboxRequest{
@@ -150,8 +157,8 @@ func (r *RemoteRuntimeService) RemovePodSandbox(podSandBoxID string) error {
 }
 
 // PodSandboxStatus returns the status of the PodSandbox.
-func (r *RemoteRuntimeService) PodSandboxStatus(podSandBoxID string) (*runtimeapi.PodSandboxStatus, error) {
-	ctx, cancel := getContextWithTimeout(r.timeout)
+func (r *RemoteRuntimeService) PodSandboxStatus(ctx context.Context, podSandBoxID string) (*runtimeapi.PodSandboxStatus, error) {
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
 	defer cancel()
 
 	resp, err := r.runtimeClient.PodSandboxStatus(ctx, &runtimeapi.PodSandboxStatusRequest{
@@ -187,8 +194,8 @@ func (r *RemoteRuntimeService) ListPodSandbox(filter *runtimeapi.PodSandboxFilte
 }
 
 // CreateContainer creates a new container in the specified PodSandbox.
-func (r *RemoteRuntimeService) CreateContainer(podSandBoxID string, config *runtimeapi.ContainerConfig, sandboxConfig *runtimeapi.PodSandboxConfig) (string, error) {
-	ctx, cancel := getContextWithTimeout(r.timeout)
+func (r *RemoteRuntimeService) CreateContainer(ctx context.Context, podSandBoxID string, config *runtimeapi.ContainerConfig, sandboxConfig *runtimeapi.PodSandboxConfig) (string, error) {
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
 	defer cancel()
 
 	resp, err := r.runtimeClient.CreateContainer(ctx, &runtimeapi.CreateContainerRequest{
@@ -211,8 +218,8 @@ func (r *RemoteRuntimeService) CreateContainer(podSandBoxID string, config *runt
 }
 
 // StartContainer starts the container.
-func (r *RemoteRuntimeService) StartContainer(containerID string) error {
-	ctx, cancel := getContextWithTimeout(r.timeout)
+func (r *RemoteRuntimeService) StartContainer(ctx context.Context, containerID string) error {
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
 	defer cancel()
 
 	_, err := r.runtimeClient.StartContainer(ctx, &runtimeapi.StartContainerRequest{
@@ -227,11 +234,11 @@ func (r *RemoteRuntimeService) StartContainer(containerID string) error {
 }
 
 // StopContainer stops a running container with a grace period (i.e., timeout).
-func (r *RemoteRuntimeService) StopContainer(containerID string, timeout int64) error {
+func (r *RemoteRuntimeService) StopContainer(ctx context.Context, containerID string, timeout int64) error {
 	// Use timeout + default timeout (2 minutes) as timeout to leave extra time
 	// for SIGKILL container and request latency.
 	t := r.timeout + time.Duration(timeout)*time.Second
-	ctx, cancel := getContextWithTimeout(t)
+	ctx, cancel := context.WithTimeout(ctx, t)
 	defer cancel()
 
 	r.logReduction.ClearID(containerID)
@@ -249,8 +256,8 @@ func (r *RemoteRuntimeService) StopContainer(containerID string, timeout int64) 
 
 // RemoveContainer removes the container. If the container is running, the container
 // should be forced to removal.
-func (r *RemoteRuntimeService) RemoveContainer(containerID string) error {
-	ctx, cancel := getContextWithTimeout(r.timeout)
+func (r *RemoteRuntimeService) RemoveContainer(ctx context.Context, containerID string) error {
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
 	defer cancel()
 
 	r.logReduction.ClearID(containerID)
@@ -282,8 +289,8 @@ func (r *RemoteRuntimeService) ListContainers(filter *runtimeapi.ContainerFilter
 }
 
 // ContainerStatus returns the container status.
-func (r *RemoteRuntimeService) ContainerStatus(containerID string) (*runtimeapi.ContainerStatus, error) {
-	ctx, cancel := getContextWithTimeout(r.timeout)
+func (r *RemoteRuntimeService) ContainerStatus(ctx context.Context, containerID string) (*runtimeapi.ContainerStatus, error) {
+	ctx, cancel := context.WithTimeout(ctx, r.timeout)
 	defer cancel()
 
 	resp, err := r.runtimeClient.ContainerStatus(ctx, &runtimeapi.ContainerStatusRequest{

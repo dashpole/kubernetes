@@ -28,6 +28,7 @@ limitations under the License.
 package replicaset
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 	"sort"
@@ -57,6 +58,7 @@ import (
 	podutil "k8s.io/kubernetes/pkg/api/v1/pod"
 	"k8s.io/kubernetes/pkg/controller"
 	"k8s.io/kubernetes/pkg/util/metrics"
+	"k8s.io/kubernetes/pkg/util/trace"
 	"k8s.io/utils/integer"
 )
 
@@ -468,6 +470,7 @@ func (rsc *ReplicaSetController) manageReplicas(filteredPods []*v1.Pod, rs *apps
 		if diff > rsc.burstReplicas {
 			diff = rsc.burstReplicas
 		}
+
 		// TODO: Track UIDs of creates just like deletes. The problem currently
 		// is we'd need to wait on the result of a create to record the pod's
 		// UID, which would require locking *across* the create, which will turn
@@ -484,7 +487,9 @@ func (rsc *ReplicaSetController) manageReplicas(filteredPods []*v1.Pod, rs *apps
 		// after one of its pods fails.  Conveniently, this also prevents the
 		// event spam that those failures would generate.
 		successfulCreations, err := slowStartBatch(diff, controller.SlowStartInitialBatchSize, func() error {
-			err := rsc.podControl.CreatePodsWithControllerRef(rs.Namespace, &rs.Spec.Template, rs, metav1.NewControllerRef(rs, rsc.GroupVersionKind))
+			ctx, span := traceutil.StartSpanFromObject(context.Background(), rs, "replicaset.CreatePod")
+			defer span.End()
+			err = rsc.podControl.CreatePodsWithControllerRef(ctx, rs.Namespace, &rs.Spec.Template, rs, metav1.NewControllerRef(rs, rsc.GroupVersionKind))
 			if err != nil && errors.IsTimeout(err) {
 				// Pod is created but its initialization has timed out.
 				// If the initialization is successful eventually, the
@@ -611,8 +616,10 @@ func (rsc *ReplicaSetController) syncReplicaSet(key string) error {
 	rs = rs.DeepCopy()
 	newStatus := calculateStatus(rs, filteredPods, manageReplicasErr)
 
+	transitionToDesiredState := rs.Spec.Replicas != nil && *rs.Spec.Replicas == newStatus.AvailableReplicas && *rs.Spec.Replicas != rs.Status.AvailableReplicas
+
 	// Always updates status as pods come up or die.
-	updatedRS, err := updateReplicaSetStatus(rsc.kubeClient.AppsV1().ReplicaSets(rs.Namespace), rs, newStatus)
+	updatedRS, err := updateReplicaSetStatus(rsc.kubeClient.AppsV1().ReplicaSets(rs.Namespace), rs, newStatus, transitionToDesiredState)
 	if err != nil {
 		// Multiple things could lead to this update failing. Requeuing the replica set ensures
 		// Returning an error causes a requeue without forcing a hotloop

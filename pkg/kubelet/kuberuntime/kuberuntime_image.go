@@ -17,6 +17,8 @@ limitations under the License.
 package kuberuntime
 
 import (
+	"context"
+
 	"k8s.io/api/core/v1"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
 	runtimeapi "k8s.io/cri-api/pkg/apis/runtime/v1alpha2"
@@ -28,7 +30,7 @@ import (
 
 // PullImage pulls an image from the network to local storage using the supplied
 // secrets if necessary.
-func (m *kubeGenericRuntimeManager) PullImage(image kubecontainer.ImageSpec, pullSecrets []v1.Secret, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, error) {
+func (m *kubeGenericRuntimeManager) PullImage(ctx context.Context, image kubecontainer.ImageSpec, pullSecrets []v1.Secret, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, error) {
 	img := image.Image
 	repoToPull, _, _, err := parsers.ParseImageName(img)
 	if err != nil {
@@ -45,7 +47,7 @@ func (m *kubeGenericRuntimeManager) PullImage(image kubecontainer.ImageSpec, pul
 	if !withCredentials {
 		klog.V(3).Infof("Pulling image %q without credentials", img)
 
-		imageRef, err := m.imageService.PullImage(imgSpec, nil, podSandboxConfig)
+		imageRef, err := m.imageService.PullImage(ctx, imgSpec, nil, podSandboxConfig)
 		if err != nil {
 			klog.Errorf("Pull image %q failed: %v", img, err)
 			return "", err
@@ -65,7 +67,7 @@ func (m *kubeGenericRuntimeManager) PullImage(image kubecontainer.ImageSpec, pul
 			RegistryToken: currentCreds.RegistryToken,
 		}
 
-		imageRef, err := m.imageService.PullImage(imgSpec, auth, podSandboxConfig)
+		imageRef, err := m.imageService.PullImage(ctx, imgSpec, auth, podSandboxConfig)
 		// If there was no error, return success
 		if err == nil {
 			return imageRef, nil

@@ -22,6 +22,7 @@ go_library(
         "//pkg/controller/deployment/util:go_default_library",
         "//pkg/util/labels:go_default_library",
         "//pkg/util/metrics:go_default_library",
+        "//pkg/util/trace:go_default_library",
         "//staging/src/k8s.io/api/apps/v1:go_default_library",
         "//staging/src/k8s.io/api/core/v1:go_default_library",
         "//staging/src/k8s.io/api/extensions/v1beta1:go_default_library",

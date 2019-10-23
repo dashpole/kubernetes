@@ -28,6 +28,8 @@ import (
 	internalapi "k8s.io/cri-api/pkg/apis"
 	runtimeapi "k8s.io/cri-api/pkg/apis/runtime/v1alpha2"
 	"k8s.io/kubernetes/pkg/kubelet/util"
+	"go.opencensus.io/plugin/ocgrpc"
+	"go.opencensus.io/trace"
 )
 
 // RemoteImageService is a gRPC implementation of internalapi.ImageManagerService.
@@ -47,7 +49,12 @@ func NewRemoteImageService(endpoint string, connectionTimeout time.Duration) (in
 	ctx, cancel := context.WithTimeout(context.Background(), connectionTimeout)
 	defer cancel()
 
-	conn, err := grpc.DialContext(ctx, addr, grpc.WithInsecure(), grpc.WithDialer(dailer), grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(maxMsgSize)))
+	conn, err := grpc.DialContext(ctx, addr,
+		grpc.WithInsecure(),
+		grpc.WithDialer(dailer),
+		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(maxMsgSize)),
+		grpc.WithStatsHandler(&ocgrpc.ClientHandler{StartOptions: trace.StartOptions{Sampler: trace.ProbabilitySampler(0)}}),
+	)
 	if err != nil {
 		klog.Errorf("Connect remote image service %s failed: %v", addr, err)
 		return nil, err
@@ -100,8 +107,8 @@ func (r *RemoteImageService) ImageStatus(image *runtimeapi.ImageSpec) (*runtimea
 }
 
 // PullImage pulls an image with authentication config.
-func (r *RemoteImageService) PullImage(image *runtimeapi.ImageSpec, auth *runtimeapi.AuthConfig, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, error) {
-	ctx, cancel := getContextWithCancel()
+func (r *RemoteImageService) PullImage(ctx context.Context, image *runtimeapi.ImageSpec, auth *runtimeapi.AuthConfig, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, error) {
+	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
 	resp, err := r.imageClient.PullImage(ctx, &runtimeapi.PullImageRequest{

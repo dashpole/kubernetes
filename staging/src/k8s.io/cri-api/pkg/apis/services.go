@@ -17,6 +17,7 @@ limitations under the License.
 package cri
 
 import (
+	"context"
 	"time"
 
 	runtimeapi "k8s.io/cri-api/pkg/apis/runtime/v1alpha2"
@@ -32,17 +33,17 @@ type RuntimeVersioner interface {
 // container runtime. The methods are thread-safe.
 type ContainerManager interface {
 	// CreateContainer creates a new container in specified PodSandbox.
-	CreateContainer(podSandboxID string, config *runtimeapi.ContainerConfig, sandboxConfig *runtimeapi.PodSandboxConfig) (string, error)
+	CreateContainer(ctx context.Context, podSandboxID string, config *runtimeapi.ContainerConfig, sandboxConfig *runtimeapi.PodSandboxConfig) (string, error)
 	// StartContainer starts the container.
-	StartContainer(containerID string) error
+	StartContainer(ctx context.Context, containerID string) error
 	// StopContainer stops a running container with a grace period (i.e., timeout).
-	StopContainer(containerID string, timeout int64) error
+	StopContainer(ctx context.Context, containerID string, timeout int64) error
 	// RemoveContainer removes the container.
-	RemoveContainer(containerID string) error
+	RemoveContainer(ctx context.Context, containerID string) error
 	// ListContainers lists all containers by filters.
 	ListContainers(filter *runtimeapi.ContainerFilter) ([]*runtimeapi.Container, error)
 	// ContainerStatus returns the status of the container.
-	ContainerStatus(containerID string) (*runtimeapi.ContainerStatus, error)
+	ContainerStatus(ctx context.Context, containerID string) (*runtimeapi.ContainerStatus, error)
 	// UpdateContainerResources updates the cgroup resources for the container.
 	UpdateContainerResources(containerID string, resources *runtimeapi.LinuxContainerResources) error
 	// ExecSync executes a command in the container, and returns the stdout output.
@@ -63,15 +64,15 @@ type ContainerManager interface {
 type PodSandboxManager interface {
 	// RunPodSandbox creates and starts a pod-level sandbox. Runtimes should ensure
 	// the sandbox is in ready state.
-	RunPodSandbox(config *runtimeapi.PodSandboxConfig, runtimeHandler string) (string, error)
+	RunPodSandbox(ctx context.Context, config *runtimeapi.PodSandboxConfig, runtimeHandler string) (string, error)
 	// StopPodSandbox stops the sandbox. If there are any running containers in the
 	// sandbox, they should be force terminated.
-	StopPodSandbox(podSandboxID string) error
+	StopPodSandbox(ctx context.Context, podSandboxID string) error
 	// RemovePodSandbox removes the sandbox. If there are running containers in the
 	// sandbox, they should be forcibly removed.
-	RemovePodSandbox(podSandboxID string) error
+	RemovePodSandbox(ctx context.Context, podSandboxID string) error
 	// PodSandboxStatus returns the Status of the PodSandbox.
-	PodSandboxStatus(podSandboxID string) (*runtimeapi.PodSandboxStatus, error)
+	PodSandboxStatus(ctx context.Context, podSandboxID string) (*runtimeapi.PodSandboxStatus, error)
 	// ListPodSandbox returns a list of Sandbox.
 	ListPodSandbox(filter *runtimeapi.PodSandboxFilter) ([]*runtimeapi.PodSandbox, error)
 	// PortForward prepares a streaming endpoint to forward ports from a PodSandbox, and returns the address.
@@ -111,7 +112,7 @@ type ImageManagerService interface {
 	// ImageStatus returns the status of the image.
 	ImageStatus(image *runtimeapi.ImageSpec) (*runtimeapi.Image, error)
 	// PullImage pulls an image with the authentication config.
-	PullImage(image *runtimeapi.ImageSpec, auth *runtimeapi.AuthConfig, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, error)
+	PullImage(ctx context.Context, image *runtimeapi.ImageSpec, auth *runtimeapi.AuthConfig, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, error)
 	// RemoveImage removes the image.
 	RemoveImage(image *runtimeapi.ImageSpec) error
 	// ImageFsInfo returns information of the filesystem that is used to store images.

@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"context"
 	"time"
 
 	clientset "k8s.io/client-go/kubernetes"
@@ -38,11 +39,14 @@ import (
 	kubetypes "k8s.io/kubernetes/pkg/kubelet/types"
 	"k8s.io/kubernetes/pkg/kubelet/util/format"
 	statusutil "k8s.io/kubernetes/pkg/util/pod"
+	"k8s.io/kubernetes/pkg/util/trace"
+	"go.opencensus.io/trace"
 )
 
 // A wrapper around v1.PodStatus that includes a version to enforce that stale pod statuses are
 // not sent to the API server.
 type versionedPodStatus struct {
+	ctx context.Context
 	status v1.PodStatus
 	// Monotonically increasing version number (per pod).
 	version uint64
@@ -409,13 +413,24 @@ func (m *manager) updateStatusInternal(pod *v1.Pod, status v1.PodStatus, forceUp
 		return false // No new status.
 	}
 
+	ctx, _ := traceutil.StartSpanFromObject(context.Background(), pod, "kubelet.UpdatePodStatus")
+
+
 	newStatus := versionedPodStatus{
+		ctx: 		  ctx,
 		status:       status,
 		version:      cachedStatus.version + 1,
 		podName:      pod.Name,
 		podNamespace: pod.Namespace,
 	}
 	m.podStatuses[pod.UID] = newStatus
+
+	// Now that we have overwritten the cachedStatus, make sure its span is ended.
+	if isCached {
+		if span := trace.FromContext(cachedStatus.ctx); span != nil {
+			defer span.End()
+		}
+	}
 
 	select {
 	case m.podStatusChannel <- podStatusSyncRequest{pod.UID, newStatus}:
@@ -512,6 +527,10 @@ func (m *manager) syncBatch() {
 
 // syncPod syncs the given status with the API server. The caller must not hold the lock.
 func (m *manager) syncPod(uid types.UID, status versionedPodStatus) {
+	ctx := status.ctx
+	if span := trace.FromContext(ctx); span != nil {
+		defer span.End()
+	}
 	if !m.needsUpdate(uid, status) {
 		klog.V(1).Infof("Status for pod %q is up-to-date; skipping", uid)
 		return
@@ -539,7 +558,16 @@ func (m *manager) syncPod(uid types.UID, status versionedPodStatus) {
 	}
 
 	oldStatus := pod.Status.DeepCopy()
-	newPod, patchBytes, err := statusutil.PatchPodStatus(m.kubeClient, pod.Namespace, pod.Name, *oldStatus, mergePodStatus(*oldStatus, status.status))
+	newMergedStatus := mergePodStatus(*oldStatus, status.status)
+
+	_, oldCondition := podutil.GetPodConditionFromList(oldStatus.Conditions, v1.PodReady)
+	_, newCondition := podutil.GetPodConditionFromList(newMergedStatus.Conditions, v1.PodReady)
+	oldTraceContext := pod.Annotations[traceutil.TraceAnnotationKey]
+	newTraceContext := oldTraceContext
+	if oldCondition != nil && oldCondition.Status == v1.ConditionFalse && newCondition.Status == v1.ConditionTrue {
+		newTraceContext = ""
+	}
+	newPod, patchBytes, err := statusutil.PatchPodStatus(ctx, m.kubeClient, pod.Namespace, pod.Name, *oldStatus, newMergedStatus, oldTraceContext, newTraceContext)
 	klog.V(3).Infof("Patch status for pod %q with %q", format.Pod(pod), patchBytes)
 	if err != nil {
 		klog.Warningf("Failed to update status for pod %q: %v", format.Pod(pod), err)

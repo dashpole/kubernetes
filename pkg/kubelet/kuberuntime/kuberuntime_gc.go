@@ -17,6 +17,7 @@ limitations under the License.
 package kuberuntime
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -134,12 +135,12 @@ func (cgc *containerGC) removeOldestN(containers []containerGCInfo, toRemove int
 				ID:   containers[i].id,
 			}
 			message := "Container is in unknown state, try killing it before removal"
-			if err := cgc.manager.killContainer(nil, id, containers[i].name, message, nil); err != nil {
+			if err := cgc.manager.killContainer(context.Background(), nil, id, containers[i].name, message, nil); err != nil {
 				klog.Errorf("Failed to stop container %q: %v", containers[i].id, err)
 				continue
 			}
 		}
-		if err := cgc.manager.removeContainer(containers[i].id); err != nil {
+		if err := cgc.manager.removeContainer(context.Background(), containers[i].id); err != nil {
 			klog.Errorf("Failed to remove container %q: %v", containers[i].id, err)
 		}
 	}
@@ -166,11 +167,11 @@ func (cgc *containerGC) removeSandbox(sandboxID string) {
 	// In normal cases, kubelet should've already called StopPodSandbox before
 	// GC kicks in. To guard against the rare cases where this is not true, try
 	// stopping the sandbox before removing it.
-	if err := cgc.client.StopPodSandbox(sandboxID); err != nil {
+	if err := cgc.client.StopPodSandbox(context.Background(), sandboxID); err != nil {
 		klog.Errorf("Failed to stop sandbox %q before removing: %v", sandboxID, err)
 		return
 	}
-	if err := cgc.client.RemovePodSandbox(sandboxID); err != nil {
+	if err := cgc.client.RemovePodSandbox(context.Background(), sandboxID); err != nil {
 		klog.Errorf("Failed to remove sandbox %q: %v", sandboxID, err)
 	}
 }

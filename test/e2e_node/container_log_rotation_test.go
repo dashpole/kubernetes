@@ -17,6 +17,7 @@ limitations under the License.
 package e2e_node
 
 import (
+	"context"
 	"time"
 
 	"k8s.io/api/core/v1"
@@ -83,7 +84,7 @@ var _ = framework.KubeDescribe("ContainerLogRotation [Slow] [Serial] [Disruptive
 			id := kubecontainer.ParseContainerID(pod.Status.ContainerStatuses[0].ContainerID).ID
 			r, _, err := getCRIClient()
 			framework.ExpectNoError(err)
-			status, err := r.ContainerStatus(id)
+			status, err := r.ContainerStatus(context.Background(), id)
 			framework.ExpectNoError(err)
 			logPath := status.GetLogPath()
 			ginkgo.By("wait for container log being rotated to max file limit")

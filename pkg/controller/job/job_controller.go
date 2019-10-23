@@ -17,6 +17,7 @@ limitations under the License.
 package job
 
 import (
+	"context"
 	"fmt"
 	"math"
 	"reflect"
@@ -770,7 +771,7 @@ func (jm *JobController) manageJob(activePods []*v1.Pod, succeeded int32, job *b
 			for i := int32(0); i < batchSize; i++ {
 				go func() {
 					defer wait.Done()
-					err := jm.podControl.CreatePodsWithControllerRef(job.Namespace, &job.Spec.Template, job, metav1.NewControllerRef(job, controllerKind))
+					err := jm.podControl.CreatePodsWithControllerRef(context.Background(), job.Namespace, &job.Spec.Template, job, metav1.NewControllerRef(job, controllerKind))
 					if err != nil && errors.IsTimeout(err) {
 						// Pod is created but its initialization has timed out.
 						// If the initialization is successful eventually, the

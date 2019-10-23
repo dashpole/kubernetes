@@ -18,6 +18,7 @@ package logs
 
 import (
 	"compress/gzip"
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -191,7 +192,7 @@ func (c *containerLogManager) rotateLogs() error {
 		}
 		id := container.GetId()
 		// Note that we should not block log rotate for an error of a single container.
-		status, err := c.runtimeService.ContainerStatus(id)
+		status, err := c.runtimeService.ContainerStatus(context.Background(), id)
 		if err != nil {
 			klog.Errorf("Failed to get container status for %q: %v", id, err)
 			continue

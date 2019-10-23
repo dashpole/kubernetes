@@ -17,6 +17,7 @@ limitations under the License.
 package daemon
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 	"sort"
@@ -1043,7 +1044,7 @@ func (dsc *DaemonSetsController) syncNodes(ds *apps.DaemonSet, podsToDelete, nod
 					podTemplate.Spec.Affinity = util.ReplaceDaemonSetPodNodeNameNodeAffinity(
 						podTemplate.Spec.Affinity, nodesNeedingDaemonPods[ix])
 
-					err = dsc.podControl.CreatePodsWithControllerRef(ds.Namespace, podTemplate,
+					err = dsc.podControl.CreatePodsWithControllerRef(context.Background(), ds.Namespace, podTemplate,
 						ds, metav1.NewControllerRef(ds, controllerKind))
 				} else {
 					// If pod is scheduled by DaemonSetController, set its '.spec.scheduleName'.

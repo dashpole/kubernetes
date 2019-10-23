@@ -17,6 +17,7 @@ limitations under the License.
 package images
 
 import (
+	"context"
 	"fmt"
 
 	"k8s.io/api/core/v1"
@@ -43,9 +44,9 @@ type throttledImageService struct {
 	limiter flowcontrol.RateLimiter
 }
 
-func (ts throttledImageService) PullImage(image kubecontainer.ImageSpec, secrets []v1.Secret, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, error) {
+func (ts throttledImageService) PullImage(ctx context.Context, image kubecontainer.ImageSpec, secrets []v1.Secret, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, error) {
 	if ts.limiter.TryAccept() {
-		return ts.ImageService.PullImage(image, secrets, podSandboxConfig)
+		return ts.ImageService.PullImage(ctx, image, secrets, podSandboxConfig)
 	}
 	return "", fmt.Errorf("pull QPS exceeded")
 }

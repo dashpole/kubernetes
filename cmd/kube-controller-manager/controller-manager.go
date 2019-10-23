@@ -29,12 +29,14 @@ import (
 	_ "k8s.io/component-base/metrics/prometheus/clientgo" // load all the prometheus client-go plugin
 	_ "k8s.io/component-base/metrics/prometheus/version"  // for version metric registration
 	"k8s.io/kubernetes/cmd/kube-controller-manager/app"
+	"k8s.io/kubernetes/pkg/util/trace"
 )
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	command := app.NewControllerManagerCommand()
+	traceutil.InitializeExporter("kube-controller-manager")
 
 	// TODO: once we switch everything over to Cobra commands, we can go back to calling
 	// utilflag.InitFlags() (by removing its pflag.Parse() call). For now, we have to set the

@@ -30,10 +30,11 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	appsclient "k8s.io/client-go/kubernetes/typed/apps/v1"
 	podutil "k8s.io/kubernetes/pkg/api/v1/pod"
+	"k8s.io/kubernetes/pkg/util/trace"
 )
 
 // updateReplicaSetStatus attempts to update the Status.Replicas of the given ReplicaSet, with a single GET/PUT retry.
-func updateReplicaSetStatus(c appsclient.ReplicaSetInterface, rs *apps.ReplicaSet, newStatus apps.ReplicaSetStatus) (*apps.ReplicaSet, error) {
+func updateReplicaSetStatus(c appsclient.ReplicaSetInterface, rs *apps.ReplicaSet, newStatus apps.ReplicaSetStatus, endTrace bool) (*apps.ReplicaSet, error) {
 	// This is the steady state. It happens when the ReplicaSet doesn't have any expectations, since
 	// we do a periodic relist every 30s. If the generations differ but the replicas are
 	// the same, a caller might've resized to the same replica count.
@@ -63,6 +64,9 @@ func updateReplicaSetStatus(c appsclient.ReplicaSetInterface, rs *apps.ReplicaSe
 			fmt.Sprintf("sequence No: %v->%v", rs.Status.ObservedGeneration, newStatus.ObservedGeneration))
 
 		rs.Status = newStatus
+		if endTrace {
+			traceutil.RemoveSpanContextFromObject(rs)
+		}
 		updatedRS, updateErr = c.UpdateStatus(rs)
 		if updateErr == nil {
 			return updatedRS, nil

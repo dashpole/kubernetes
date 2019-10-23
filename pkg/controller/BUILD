@@ -60,6 +60,7 @@ go_library(
         "//pkg/serviceaccount:go_default_library",
         "//pkg/util/hash:go_default_library",
         "//pkg/util/taints:go_default_library",
+        "//pkg/util/trace:go_default_library",
         "//staging/src/k8s.io/api/apps/v1:go_default_library",
         "//staging/src/k8s.io/api/authentication/v1:go_default_library",
         "//staging/src/k8s.io/api/core/v1:go_default_library",

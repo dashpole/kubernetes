@@ -17,6 +17,7 @@ limitations under the License.
 package scheduler
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -45,6 +46,7 @@ import (
 	internalqueue "k8s.io/kubernetes/pkg/scheduler/internal/queue"
 	"k8s.io/kubernetes/pkg/scheduler/metrics"
 	"k8s.io/kubernetes/pkg/scheduler/volumebinder"
+	"k8s.io/kubernetes/pkg/util/trace"
 )
 
 const (
@@ -528,6 +530,9 @@ func (sched *Scheduler) scheduleOne() {
 	}
 
 	klog.V(3).Infof("Attempting to schedule pod: %v/%v", pod.Namespace, pod.Name)
+
+	_, schedulePodSpan := traceutil.StartSpanFromObject(context.Background(), pod, "kube-scheduler.SchedulePod")
+	schedulePodSpan.End()
 
 	// Synchronously attempt to find a fit for the pod.
 	start := time.Now()

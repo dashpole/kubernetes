@@ -16,6 +16,7 @@ go_library(
         "image_list.go",
         "node_problem_detector_linux.go",
         "resource_collector.go",
+        "simple_trace.go",
         "util.go",
         "util_xfs_linux.go",
         "util_xfs_unsupported.go",
@@ -33,6 +34,7 @@ go_library(
         "//pkg/kubelet/metrics:go_default_library",
         "//pkg/kubelet/remote:go_default_library",
         "//pkg/kubelet/util:go_default_library",
+        "//pkg/util/trace:go_default_library",
         "//staging/src/k8s.io/api/core/v1:go_default_library",
         "//staging/src/k8s.io/apimachinery/pkg/api/equality:go_default_library",
         "//staging/src/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
@@ -54,6 +56,7 @@ go_library(
         "//vendor/github.com/docker/docker/client:go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",
         "//vendor/github.com/onsi/gomega:go_default_library",
+        "//vendor/go.opencensus.io/trace:go_default_library",
         "//vendor/golang.org/x/net/context:go_default_library",
         "//vendor/k8s.io/klog:go_default_library",
     ] + select({

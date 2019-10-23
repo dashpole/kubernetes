@@ -397,7 +397,7 @@ func ReadLogs(ctx context.Context, path, containerID string, opts *LogOptions, r
 }
 
 func isContainerRunning(id string, r internalapi.RuntimeService) (bool, error) {
-	s, err := r.ContainerStatus(id)
+	s, err := r.ContainerStatus(context.Background(), id)
 	if err != nil {
 		return false, err
 	}

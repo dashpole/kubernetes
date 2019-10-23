@@ -17,6 +17,7 @@ limitations under the License.
 package deployment
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 	"sort"
@@ -30,6 +31,7 @@ import (
 	"k8s.io/kubernetes/pkg/controller"
 	deploymentutil "k8s.io/kubernetes/pkg/controller/deployment/util"
 	labelsutil "k8s.io/kubernetes/pkg/util/labels"
+	"k8s.io/kubernetes/pkg/util/trace"
 )
 
 // syncStatusOnly only updates Deployments Status and doesn't take any mutating actions.
@@ -183,6 +185,9 @@ func (dc *DeploymentController) getNewReplicaSet(d *apps.Deployment, rsList, old
 		return nil, nil
 	}
 
+	ctx, span := traceutil.StartSpanFromObject(context.Background(), d, "deployment.CreateReplicaSet")
+	defer span.End()
+
 	// new ReplicaSet does not exist, create one.
 	newRSTemplate := *d.Spec.Template.DeepCopy()
 	podTemplateSpecHash := controller.ComputeHash(&newRSTemplate, d.Status.CollisionCount)
@@ -215,11 +220,20 @@ func (dc *DeploymentController) getNewReplicaSet(d *apps.Deployment, rsList, old
 	*(newRS.Spec.Replicas) = newReplicasCount
 	// Set new replica set's annotation
 	deploymentutil.SetNewReplicaSetAnnotations(d, &newRS, newRevision, false, maxRevHistoryLengthInChars)
+	traceutil.EncodeContextIntoObject(ctx, &newRS)
 	// Create the new ReplicaSet. If it already exists, then we need to check for possible
 	// hash collisions. If there is any other error, we need to report it in the status of
 	// the Deployment.
 	alreadyExists := false
-	createdRS, err := dc.client.AppsV1().ReplicaSets(d.Namespace).Create(&newRS)
+	// createdRS, err := dc.client.AppsV1().ReplicaSets(d.Namespace).Create(&newRS)
+	createdRS := &apps.ReplicaSet{}
+	err = dc.client.AppsV1().RESTClient().Post().
+		Namespace(d.Namespace).
+		Resource("replicasets").
+		Context(ctx).
+		Body(&newRS).
+		Do().
+		Into(createdRS)
 	switch {
 	// We may end up hitting this due to a slow cache or a fast resync of the Deployment.
 	case errors.IsAlreadyExists(err):
@@ -474,8 +488,19 @@ func (dc *DeploymentController) syncDeploymentStatus(allRSs []*apps.ReplicaSet, 
 
 	newDeployment := d
 	newDeployment.Status = newStatus
+	if !isDesiredState(d.Status, d.Spec) && isDesiredState(newStatus, d.Spec) {
+		// State is transitioning from undesired to desired state.
+		traceutil.RemoveSpanContextFromObject(d)
+	}
 	_, err := dc.client.AppsV1().Deployments(newDeployment.Namespace).UpdateStatus(newDeployment)
 	return err
+}
+
+func isDesiredState(status apps.DeploymentStatus, spec apps.DeploymentSpec) bool {
+	if spec.Replicas == nil {
+		return false
+	}
+	return *(spec.Replicas) == status.ReadyReplicas && *(spec.Replicas) == status.UpdatedReplicas 
 }
 
 // calculateStatus calculates the latest status for the provided deployment by looking into the provided replica sets.

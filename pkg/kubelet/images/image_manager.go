@@ -17,6 +17,7 @@ limitations under the License.
 package images
 
 import (
+	"context"
 	"fmt"
 
 	dockerref "github.com/docker/distribution/reference"
@@ -86,7 +87,7 @@ func (m *imageManager) logIt(ref *v1.ObjectReference, eventtype, event, prefix, 
 
 // EnsureImageExists pulls the image for the specified pod and container, and returns
 // (imageRef, error message, error).
-func (m *imageManager) EnsureImageExists(pod *v1.Pod, container *v1.Container, pullSecrets []v1.Secret, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, string, error) {
+func (m *imageManager) EnsureImageExists(ctx context.Context, pod *v1.Pod, container *v1.Container, pullSecrets []v1.Secret, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, string, error) {
 	logPrefix := fmt.Sprintf("%s/%s", pod.Name, container.Image)
 	ref, err := kubecontainer.GenerateContainerRef(pod, container)
 	if err != nil {
@@ -129,7 +130,7 @@ func (m *imageManager) EnsureImageExists(pod *v1.Pod, container *v1.Container, p
 	}
 	m.logIt(ref, v1.EventTypeNormal, events.PullingImage, logPrefix, fmt.Sprintf("Pulling image %q", container.Image), klog.Info)
 	pullChan := make(chan pullResult)
-	m.puller.pullImage(spec, pullSecrets, pullChan, podSandboxConfig)
+	m.puller.pullImage(ctx, spec, pullSecrets, pullChan, podSandboxConfig)
 	imagePullResult := <-pullChan
 	if imagePullResult.err != nil {
 		m.logIt(ref, v1.EventTypeWarning, events.FailedToPullImage, logPrefix, fmt.Sprintf("Failed to pull image %q: %v", container.Image, imagePullResult.err), klog.Warning)

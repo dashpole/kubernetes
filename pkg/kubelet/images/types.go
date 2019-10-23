@@ -17,6 +17,7 @@ limitations under the License.
 package images
 
 import (
+	"context"
 	"errors"
 
 	"k8s.io/api/core/v1"
@@ -50,7 +51,7 @@ var (
 // Implementations are expected to be thread safe.
 type ImageManager interface {
 	// EnsureImageExists ensures that image specified in `container` exists.
-	EnsureImageExists(pod *v1.Pod, container *v1.Container, pullSecrets []v1.Secret, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, string, error)
+	EnsureImageExists(ctx context.Context, pod *v1.Pod, container *v1.Container, pullSecrets []v1.Secret, podSandboxConfig *runtimeapi.PodSandboxConfig) (string, string, error)
 
 	// TODO(ronl): consolidating image managing and deleting operation in this interface
 }
