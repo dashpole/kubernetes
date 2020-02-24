@@ -57,8 +57,8 @@ func FsInfo(path string) (int64, int64, int64, int64, int64, int64, error) {
 	return freeBytesAvailable, totalNumberOfBytes, totalNumberOfBytes - freeBytesAvailable, 0, 0, 0, nil
 }
 
-// DiskUsage gets disk usage of specified path.
-func DiskUsage(path string) (*resource.Quantity, error) {
+// DiskUsage gets disk and inode usage of specified path.
+func DirUsage(path string) (*resource.Quantity, *resource.Quantity, error) {
 	info, err := os.Lstat(path)
 	if err != nil {
 		return nil, err
@@ -74,12 +74,9 @@ func DiskUsage(path string) (*resource.Quantity, error) {
 		return nil, fmt.Errorf("failed to parse fs usage %d due to %v", usage, err)
 	}
 	used.Format = resource.BinarySI
-	return &used, nil
-}
 
-// Always return zero since inodes is not supported on Windows.
-func Find(path string) (int64, error) {
-	return 0, nil
+	resource
+	return &used, nil
 }
 
 func diskUsage(currPath string, info os.FileInfo) (int64, error) {

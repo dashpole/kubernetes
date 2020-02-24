@@ -1,4 +1,4 @@
-// +build !linux,!darwin,!windows
+// +build !linux,!windows
 
 /*
 Copyright 2014 The Kubernetes Authors.
@@ -29,11 +29,7 @@ func FsInfo(path string) (int64, int64, int64, int64, int64, int64, error) {
 	return 0, 0, 0, 0, 0, 0, fmt.Errorf("FsInfo not supported for this build.")
 }
 
-// DiskUsage gets disk usage of specified path.
-func DiskUsage(path string) (*resource.Quantity, error) {
-	return nil, fmt.Errorf("Du not supported for this build.")
-}
-
-func Find(path string) (int64, error) {
-	return 0, fmt.Errorf("Find not supported for this build.")
+// DirUsage gets disk and inode usage of specified path.
+func DirUsage(path string) (*resource.Quantity, *resource.Quantity, error) {
+	return nil, nil, fmt.Errorf("DirUsage not supported for this build.")
 }
