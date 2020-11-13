@@ -17,7 +17,6 @@ limitations under the License.
 package traces
 
 import (
-	"go.opentelemetry.io/collector/translator/conventions"
 	"go.opentelemetry.io/otel/api/global"
 	"go.opentelemetry.io/otel/api/kv"
 	"go.opentelemetry.io/otel/exporters/otlp"
@@ -45,7 +44,7 @@ func InitTraces(service string, opts ...otlp.ExporterOption) {
 		),
 		sdktrace.WithBatcher(exporter),
 		sdktrace.WithResource(resource.New(
-			kv.Key(conventions.AttributeServiceName).String(service),
+			kv.Key("service.name").String(service),
 		)),
 	)
 	if err != nil {

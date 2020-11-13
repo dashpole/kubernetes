@@ -7,11 +7,9 @@ go_library(
     importpath = "k8s.io/component-base/traces",
     visibility = ["//visibility:public"],
     deps = [
-        "//vendor/go.opentelemetry.io/collector/translator/conventions:go_default_library",
         "//vendor/go.opentelemetry.io/otel/api/global:go_default_library",
         "//vendor/go.opentelemetry.io/otel/api/kv:go_default_library",
         "//vendor/go.opentelemetry.io/otel/exporters/otlp:go_default_library",
-        "//vendor/go.opentelemetry.io/otel/exporters/trace/stdout:go_default_library",
         "//vendor/go.opentelemetry.io/otel/sdk/resource:go_default_library",
         "//vendor/go.opentelemetry.io/otel/sdk/trace:go_default_library",
         "//vendor/k8s.io/klog/v2:go_default_library",
