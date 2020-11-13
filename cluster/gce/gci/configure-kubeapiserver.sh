@@ -255,6 +255,10 @@ function start-kube-apiserver {
     params+=" --admission-control-config-file=/etc/srv/kubernetes/admission_controller_config.yaml"
   fi
 
+  if [[ "${ENABLE_APISERVER_TRACING:-false}" == "true" ]]; then
+    params+=" --opentelemetry-config-file=/etc/srv/kubernetes/opentelemetry_config.yaml"
+  fi
+
   # If GKE exec auth support is requested for webhooks, then
   # gke-exec-auth-plugin needs to be mounted into the kube-apiserver container.
   local webhook_exec_auth_plugin_mount=""
