@@ -29,6 +29,8 @@ import (
 	grpcprom "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"go.etcd.io/etcd/clientv3"
 	"go.etcd.io/etcd/pkg/transport"
+	"go.opentelemetry.io/otel/api/global"
+	otelgrpc "go.opentelemetry.io/otel/plugin/grpctrace"
 	"google.golang.org/grpc"
 
 	"k8s.io/apimachinery/pkg/runtime"
@@ -134,6 +136,8 @@ func newETCD3Client(c storagebackend.TransportConfig) (*clientv3.Client, error) 
 		grpc.WithBlock(), // block until the underlying connection is up
 		grpc.WithUnaryInterceptor(grpcprom.UnaryClientInterceptor),
 		grpc.WithStreamInterceptor(grpcprom.StreamClientInterceptor),
+		grpc.WithUnaryInterceptor(otelgrpc.UnaryClientInterceptor(global.Tracer(""))),
+		grpc.WithStreamInterceptor(otelgrpc.StreamClientInterceptor(global.Tracer(""))),
 	}
 	if egressDialer != nil {
 		dialer := func(ctx context.Context, addr string) (net.Conn, error) {
