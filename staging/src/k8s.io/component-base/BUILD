@@ -18,6 +18,7 @@ filegroup(
         "//staging/src/k8s.io/component-base/logs:all-srcs",
         "//staging/src/k8s.io/component-base/metrics:all-srcs",
         "//staging/src/k8s.io/component-base/term:all-srcs",
+        "//staging/src/k8s.io/component-base/traces:all-srcs",
         "//staging/src/k8s.io/component-base/version:all-srcs",
     ],
     tags = ["automanaged"],

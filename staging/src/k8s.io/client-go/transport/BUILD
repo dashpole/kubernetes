@@ -15,7 +15,10 @@ go_test(
         "transport_test.go",
     ],
     embed = [":go_default_library"],
-    deps = ["//vendor/golang.org/x/oauth2:go_default_library"],
+    deps = [
+        "//staging/src/k8s.io/apimachinery/pkg/util/net:go_default_library",
+        "//vendor/golang.org/x/oauth2:go_default_library",
+    ],
 )
 
 go_library(
@@ -36,6 +39,7 @@ go_library(
         "//staging/src/k8s.io/apimachinery/pkg/util/wait:go_default_library",
         "//staging/src/k8s.io/client-go/util/connrotation:go_default_library",
         "//staging/src/k8s.io/client-go/util/workqueue:go_default_library",
+        "//vendor/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp:go_default_library",
         "//vendor/golang.org/x/oauth2:go_default_library",
         "//vendor/k8s.io/klog/v2:go_default_library",
     ],
