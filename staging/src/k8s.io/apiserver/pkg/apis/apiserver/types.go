@@ -147,3 +147,36 @@ type TLSConfig struct {
 	// +optional
 	ClientCert string
 }
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// OpenTelemetryClientConfiguration provides versioned configuration for opentelemetry clients.
+type OpenTelemetryClientConfiguration struct {
+	metav1.TypeMeta
+
+	// +optional
+	// URL of the collector that's running on the master.
+	// if URL is specified, APIServer uses the egressType Master when sending data to the collector.
+	URL *string
+
+	// +optional
+	// Service that's the frontend of the collector deployment running in the cluster.
+	// If Service is specified, APIServer uses the egressType Cluster when sending data to the collector.
+	Service *ServiceReference
+}
+
+// ServiceReference holds a reference to Service.legacy.k8s.io
+type ServiceReference struct {
+	// `namespace` is the namespace of the service.
+	// Required
+	Namespace string
+	// `name` is the name of the service.
+	// Required
+	Name string
+
+	// If specified, the port on the service.
+	// Defaults to 55680.
+	// `port` should be a valid port number (1-65535, inclusive).
+	// +optional
+	Port *int32
+}

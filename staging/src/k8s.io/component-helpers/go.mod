@@ -5,7 +5,7 @@ module k8s.io/component-helpers
 go 1.15
 
 require (
-	github.com/google/go-cmp v0.5.2
+	github.com/google/go-cmp v0.5.4
 	k8s.io/api v0.0.0
 	k8s.io/apimachinery v0.0.0
 	k8s.io/client-go v0.0.0
@@ -14,6 +14,8 @@ require (
 )
 
 replace (
+	github.com/google/go-cmp => github.com/google/go-cmp v0.5.2
+	github.com/stretchr/testify => github.com/stretchr/testify v1.6.1
 	k8s.io/api => ../api
 	k8s.io/apimachinery => ../apimachinery
 	k8s.io/client-go => ../client-go

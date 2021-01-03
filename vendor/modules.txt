@@ -177,6 +177,7 @@ github.com/aws/aws-sdk-go/service/elbv2
 github.com/aws/aws-sdk-go/service/kms
 github.com/aws/aws-sdk-go/service/sts
 github.com/aws/aws-sdk-go/service/sts/stsiface
+# github.com/benbjohnson/clock => github.com/benbjohnson/clock v1.0.3
 # github.com/beorn7/perks v1.0.1 => github.com/beorn7/perks v1.0.1
 # github.com/beorn7/perks => github.com/beorn7/perks v1.0.1
 github.com/beorn7/perks/quantile
@@ -384,6 +385,9 @@ github.com/exponent-io/jsonpath
 github.com/fatih/camelcase
 # github.com/fatih/camelcase => github.com/fatih/camelcase v1.0.0
 # github.com/fatih/color => github.com/fatih/color v1.7.0
+# github.com/felixge/httpsnoop v1.0.1 => github.com/felixge/httpsnoop v1.0.1
+github.com/felixge/httpsnoop
+# github.com/felixge/httpsnoop => github.com/felixge/httpsnoop v1.0.1
 # github.com/flynn/go-shlex => github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568
 # github.com/fogleman/gg => github.com/fogleman/gg v1.2.1-0.20190220221249-0403632d5b90
 # github.com/form3tech-oss/jwt-go v3.2.2+incompatible => github.com/form3tech-oss/jwt-go v3.2.2+incompatible
@@ -564,7 +568,7 @@ github.com/google/cadvisor/utils/sysinfo
 github.com/google/cadvisor/version
 github.com/google/cadvisor/watcher
 github.com/google/cadvisor/zfs
-# github.com/google/go-cmp v0.5.2 => github.com/google/go-cmp v0.5.2
+# github.com/google/go-cmp v0.5.4 => github.com/google/go-cmp v0.5.2
 ## explicit
 # github.com/google/go-cmp => github.com/google/go-cmp v0.5.2
 github.com/google/go-cmp/cmp
@@ -1050,7 +1054,7 @@ github.com/storageos/go-api/types
 # github.com/stretchr/objx v0.2.0 => github.com/stretchr/objx v0.2.0
 github.com/stretchr/objx
 # github.com/stretchr/objx => github.com/stretchr/objx v0.2.0
-# github.com/stretchr/testify v1.6.1 => github.com/stretchr/testify v1.6.1
+# github.com/stretchr/testify v1.7.0 => github.com/stretchr/testify v1.6.1
 ## explicit
 # github.com/stretchr/testify => github.com/stretchr/testify v1.6.1
 github.com/stretchr/testify/assert
@@ -1242,6 +1246,63 @@ go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/propagation
 go.opencensus.io/trace/tracestate
+# go.opentelemetry.io/contrib v0.17.0 => go.opentelemetry.io/contrib v0.17.0
+go.opentelemetry.io/contrib
+# go.opentelemetry.io/contrib => go.opentelemetry.io/contrib v0.17.0
+# go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.17.0 => go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.17.0
+go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp
+# go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp => go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.17.0
+# go.opentelemetry.io/otel v0.17.0 => go.opentelemetry.io/otel v0.17.0
+go.opentelemetry.io/otel
+# go.opentelemetry.io/otel => go.opentelemetry.io/otel v0.17.0
+go.opentelemetry.io/otel/codes
+# go.opentelemetry.io/otel/exporters/stdout v0.17.0 => go.opentelemetry.io/otel/exporters/stdout v0.17.0
+go.opentelemetry.io/otel/exporters/stdout
+# go.opentelemetry.io/otel/exporters/stdout => go.opentelemetry.io/otel/exporters/stdout v0.17.0
+go.opentelemetry.io/otel/internal
+go.opentelemetry.io/otel/internal/baggage
+go.opentelemetry.io/otel/internal/global
+go.opentelemetry.io/otel/internal/metric
+go.opentelemetry.io/otel/internal/trace/noop
+go.opentelemetry.io/otel/internal/trace/parent
+go.opentelemetry.io/otel/label
+# go.opentelemetry.io/otel/metric v0.17.0 => go.opentelemetry.io/otel/metric v0.17.0
+go.opentelemetry.io/otel/metric
+# go.opentelemetry.io/otel/metric => go.opentelemetry.io/otel/metric v0.17.0
+go.opentelemetry.io/otel/metric/global
+go.opentelemetry.io/otel/metric/number
+go.opentelemetry.io/otel/metric/registry
+# go.opentelemetry.io/otel/oteltest => go.opentelemetry.io/otel/oteltest v0.17.0
+go.opentelemetry.io/otel/propagation
+# go.opentelemetry.io/otel/sdk v0.17.0 => go.opentelemetry.io/otel/sdk v0.17.0
+# go.opentelemetry.io/otel/sdk => go.opentelemetry.io/otel/sdk v0.17.0
+# go.opentelemetry.io/otel/sdk/export/metric v0.17.0 => go.opentelemetry.io/otel/sdk/export/metric v0.17.0
+go.opentelemetry.io/otel/sdk/export/metric
+# go.opentelemetry.io/otel/sdk/export/metric => go.opentelemetry.io/otel/sdk/export/metric v0.17.0
+go.opentelemetry.io/otel/sdk/export/metric/aggregation
+go.opentelemetry.io/otel/sdk/export/trace
+go.opentelemetry.io/otel/sdk/instrumentation
+go.opentelemetry.io/otel/sdk/internal
+# go.opentelemetry.io/otel/sdk/metric v0.17.0 => go.opentelemetry.io/otel/sdk/metric v0.17.0
+go.opentelemetry.io/otel/sdk/metric
+# go.opentelemetry.io/otel/sdk/metric => go.opentelemetry.io/otel/sdk/metric v0.17.0
+go.opentelemetry.io/otel/sdk/metric/aggregator
+go.opentelemetry.io/otel/sdk/metric/aggregator/exact
+go.opentelemetry.io/otel/sdk/metric/aggregator/histogram
+go.opentelemetry.io/otel/sdk/metric/aggregator/lastvalue
+go.opentelemetry.io/otel/sdk/metric/aggregator/minmaxsumcount
+go.opentelemetry.io/otel/sdk/metric/aggregator/sum
+go.opentelemetry.io/otel/sdk/metric/controller/basic
+go.opentelemetry.io/otel/sdk/metric/controller/time
+go.opentelemetry.io/otel/sdk/metric/processor/basic
+go.opentelemetry.io/otel/sdk/metric/selector/simple
+go.opentelemetry.io/otel/sdk/resource
+go.opentelemetry.io/otel/sdk/trace
+go.opentelemetry.io/otel/semconv
+# go.opentelemetry.io/otel/trace v0.17.0 => go.opentelemetry.io/otel/trace v0.17.0
+go.opentelemetry.io/otel/trace
+# go.opentelemetry.io/otel/trace => go.opentelemetry.io/otel/trace v0.17.0
+go.opentelemetry.io/otel/unit
 # go.uber.org/atomic v1.4.0 => go.uber.org/atomic v1.4.0
 go.uber.org/atomic
 # go.uber.org/atomic => go.uber.org/atomic v1.4.0
@@ -1828,6 +1889,7 @@ k8s.io/apiserver/pkg/endpoints/openapi
 k8s.io/apiserver/pkg/endpoints/request
 k8s.io/apiserver/pkg/endpoints/warning
 k8s.io/apiserver/pkg/features
+k8s.io/apiserver/pkg/opentelemetry
 k8s.io/apiserver/pkg/quota/v1
 k8s.io/apiserver/pkg/quota/v1/generic
 k8s.io/apiserver/pkg/registry/generic
@@ -2233,6 +2295,7 @@ k8s.io/component-base/metrics/prometheus/version
 k8s.io/component-base/metrics/prometheus/workqueue
 k8s.io/component-base/metrics/testutil
 k8s.io/component-base/term
+k8s.io/component-base/traces
 k8s.io/component-base/version
 k8s.io/component-base/version/verflag
 # k8s.io/component-helpers v0.0.0 => ./staging/src/k8s.io/component-helpers

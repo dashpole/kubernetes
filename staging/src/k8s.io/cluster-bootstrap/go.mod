@@ -5,7 +5,7 @@ module k8s.io/cluster-bootstrap
 go 1.15
 
 require (
-	github.com/stretchr/testify v1.6.1
+	github.com/stretchr/testify v1.7.0
 	golang.org/x/crypto v0.0.0-20201002170205-7f63de1d35b0 // indirect
 	gopkg.in/square/go-jose.v2 v2.2.2
 	k8s.io/api v0.0.0
@@ -14,6 +14,8 @@ require (
 )
 
 replace (
+	github.com/google/go-cmp => github.com/google/go-cmp v0.5.2
+	github.com/stretchr/testify => github.com/stretchr/testify v1.6.1
 	k8s.io/api => ../api
 	k8s.io/apimachinery => ../apimachinery
 	k8s.io/cluster-bootstrap => ../cluster-bootstrap
