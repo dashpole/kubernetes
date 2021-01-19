@@ -25,6 +25,7 @@ go_library(
         "//test/e2e/instrumentation/common:go_default_library",
         "//test/e2e/instrumentation/logging:go_default_library",
         "//test/e2e/instrumentation/monitoring:go_default_library",
+        "//test/e2e/instrumentation/tracing:go_default_library",
         "//vendor/github.com/onsi/ginkgo:go_default_library",
     ],
 )
@@ -43,6 +44,7 @@ filegroup(
         "//test/e2e/instrumentation/common:all-srcs",
         "//test/e2e/instrumentation/logging:all-srcs",
         "//test/e2e/instrumentation/monitoring:all-srcs",
+        "//test/e2e/instrumentation/tracing:all-srcs",
     ],
     tags = ["automanaged"],
 )
