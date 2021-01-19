@@ -15,7 +15,7 @@ require (
 	github.com/evanphx/json-patch v4.9.0+incompatible
 	github.com/go-openapi/spec v0.19.3
 	github.com/gogo/protobuf v1.3.1
-	github.com/google/go-cmp v0.5.2
+	github.com/google/go-cmp v0.5.4
 	github.com/google/gofuzz v1.1.0
 	github.com/google/uuid v1.1.2
 	github.com/googleapis/gnostic v0.4.1
@@ -31,12 +31,12 @@ require (
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5 // indirect
 	go.etcd.io/bbolt v1.3.5 // indirect
 	go.etcd.io/etcd v0.5.0-alpha.5.0.20200910180754-dd1b699fc489
+	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.16.0
 	go.uber.org/zap v1.10.0
 	golang.org/x/crypto v0.0.0-20201002170205-7f63de1d35b0
 	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
 	golang.org/x/sys v0.0.0-20201112073958-5cba982894dd
-	google.golang.org/genproto v0.0.0-20201110150050-8816d57aaa9a // indirect
 	google.golang.org/grpc v1.27.1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/square/go-jose.v2 v2.2.2

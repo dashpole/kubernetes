@@ -54,7 +54,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e
 	github.com/golang/mock v1.4.4
 	github.com/google/cadvisor v0.38.7
-	github.com/google/go-cmp v0.5.2
+	github.com/google/go-cmp v0.5.4
 	github.com/google/gofuzz v1.1.0
 	github.com/google/uuid v1.1.2
 	github.com/googleapis/gnostic v0.4.1
@@ -97,6 +97,8 @@ require (
 	github.com/vishvananda/netlink v1.1.0
 	github.com/vmware/govmomi v0.20.3
 	go.etcd.io/etcd v0.5.0-alpha.5.0.20200910180754-dd1b699fc489
+	go.opentelemetry.io/otel v0.16.0
+	go.opentelemetry.io/otel/sdk v0.16.0
 	golang.org/x/crypto v0.0.0-20201002170205-7f63de1d35b0
 	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
@@ -185,6 +187,7 @@ replace (
 	github.com/asaskevich/govalidator => github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a
 	github.com/auth0/go-jwt-middleware => github.com/auth0/go-jwt-middleware v0.0.0-20170425171159-5493cabe49f7
 	github.com/aws/aws-sdk-go => github.com/aws/aws-sdk-go v1.35.24
+	github.com/benbjohnson/clock => github.com/benbjohnson/clock v1.0.3
 	github.com/beorn7/perks => github.com/beorn7/perks v1.0.1
 	github.com/bgentry/speakeasy => github.com/bgentry/speakeasy v0.1.0
 	github.com/bifurcation/mint => github.com/bifurcation/mint v0.0.0-20180715133206-93c51c6ce115
@@ -246,6 +249,7 @@ replace (
 	github.com/exponent-io/jsonpath => github.com/exponent-io/jsonpath v0.0.0-20151013193312-d6023ce2651d
 	github.com/fatih/camelcase => github.com/fatih/camelcase v1.0.0
 	github.com/fatih/color => github.com/fatih/color v1.7.0
+	github.com/felixge/httpsnoop => github.com/felixge/httpsnoop v1.0.1
 	github.com/flynn/go-shlex => github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568
 	github.com/fogleman/gg => github.com/fogleman/gg v1.2.1-0.20190220221249-0403632d5b90
 	github.com/form3tech-oss/jwt-go => github.com/form3tech-oss/jwt-go v3.2.2+incompatible
@@ -282,7 +286,7 @@ replace (
 	github.com/golangplus/testing => github.com/golangplus/testing v0.0.0-20180327235837-af21d9c3145e
 	github.com/google/btree => github.com/google/btree v1.0.0
 	github.com/google/cadvisor => github.com/google/cadvisor v0.38.7
-	github.com/google/go-cmp => github.com/google/go-cmp v0.5.2
+	github.com/google/go-cmp => github.com/google/go-cmp v0.5.4
 	github.com/google/gofuzz => github.com/google/gofuzz v1.1.0
 	github.com/google/martian => github.com/google/martian v2.1.0+incompatible
 	github.com/google/pprof => github.com/google/pprof v0.0.0-20200229191704-1ebb73c60ed3
@@ -447,6 +451,11 @@ replace (
 	go.etcd.io/etcd => go.etcd.io/etcd v0.5.0-alpha.5.0.20200910180754-dd1b699fc489 // ae9734ed278b is the SHA for git tag v3.4.13
 	go.mongodb.org/mongo-driver => go.mongodb.org/mongo-driver v1.1.2
 	go.opencensus.io => go.opencensus.io v0.22.3
+	go.opentelemetry.io/contrib => go.opentelemetry.io/contrib v0.16.0
+	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp => go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.16.0
+	go.opentelemetry.io/otel => go.opentelemetry.io/otel v0.16.0
+	go.opentelemetry.io/otel/exporters/stdout => go.opentelemetry.io/otel/exporters/stdout v0.16.0
+	go.opentelemetry.io/otel/sdk => go.opentelemetry.io/otel/sdk v0.16.0
 	go.uber.org/atomic => go.uber.org/atomic v1.4.0
 	go.uber.org/multierr => go.uber.org/multierr v1.1.0
 	go.uber.org/zap => go.uber.org/zap v1.10.0
