@@ -83,13 +83,13 @@ var _ = instrumentation.SIGDescribe("[Feature:APIServerTracing]", func() {
 				return err
 			}
 			if result.Stderr != "" {
-				return fmt.Errorf("Non-empty stderr when querying for logs on the master: %v", result.Stderr)
+				return fmt.Errorf("non-empty stderr when querying for logs on the master: %v", result.Stderr)
 			}
 			// Check the opentelemetry collector logs to see if they contain our trace ID
 			if strings.Contains(logs, traceID.String()) {
 				return nil
 			}
-			return fmt.Errorf("Failed to find trace ID %v in log: \n%v", traceID.String(), logs)
+			return fmt.Errorf("failed to find trace ID %v in log: \n%v", traceID.String(), logs)
 		}, 1*time.Minute, 10*time.Second).Should(gomega.BeNil())
 
 	})

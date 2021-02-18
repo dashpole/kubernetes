@@ -44,12 +44,12 @@ func ReadOpenTelemetryConfiguration(configFilePath string) (*apiserver.OpenTelem
 	}
 	data, err := ioutil.ReadFile(configFilePath)
 	if err != nil {
-		return nil, fmt.Errorf("unable to read opentelemetry configuration from %q [%v]", configFilePath, err)
+		return nil, fmt.Errorf("unable to read opentelemetry configuration from %q: %v", configFilePath, err)
 	}
 	internalConfig := &apiserver.OpenTelemetryClientConfiguration{}
 	// this handles json/yaml/whatever, and decodes all registered version to the internal version
 	if err := runtime.DecodeInto(codecs.UniversalDecoder(), data, internalConfig); err != nil {
-		return nil, fmt.Errorf("unable to decode opentelemetry configuration data [%v]", err)
+		return nil, fmt.Errorf("unable to decode opentelemetry configuration data: %v", err)
 	}
 	return internalConfig, nil
 }
@@ -65,7 +65,7 @@ func ValidateOpenTelemetryConfiguration(config *apiserver.OpenTelemetryClientCon
 		allErrs = append(allErrs, field.Invalid(
 			field.NewPath("service"),
 			config.Service,
-			"Service and URL cannot both be set"))
+			"service and URL cannot both be set"))
 	}
 	if config.Service != nil {
 		allErrs = append(allErrs, validateService(config.Service, field.NewPath("service"))...)
@@ -95,7 +95,7 @@ func validateURL(u string, fldPath *field.Path) field.ErrorList {
 	if err != nil {
 		return append(errs, field.Invalid(
 			fldPath, u,
-			fmt.Sprintf("Unable to parse URL: %v", err)))
+			fmt.Sprintf("unable to parse URL: %v", err)))
 	}
 	return errs
 }
