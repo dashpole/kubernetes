@@ -38,8 +38,4 @@ require (
 	sigs.k8s.io/yaml v1.2.0
 )
 
-replace (
-	github.com/google/go-cmp => github.com/google/go-cmp v0.5.2
-	github.com/stretchr/testify => github.com/stretchr/testify v1.6.1
-	k8s.io/apimachinery => ../apimachinery
-)
+replace k8s.io/apimachinery => ../apimachinery

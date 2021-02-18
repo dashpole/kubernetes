@@ -284,7 +284,7 @@ replace (
 	github.com/golangplus/testing => github.com/golangplus/testing v0.0.0-20180327235837-af21d9c3145e
 	github.com/google/btree => github.com/google/btree v1.0.0
 	github.com/google/cadvisor => github.com/google/cadvisor v0.38.7
-	github.com/google/go-cmp => github.com/google/go-cmp v0.5.2
+	github.com/google/go-cmp => github.com/google/go-cmp v0.5.4
 	github.com/google/gofuzz => github.com/google/gofuzz v1.1.0
 	github.com/google/martian => github.com/google/martian v2.1.0+incompatible
 	github.com/google/pprof => github.com/google/pprof v0.0.0-20200229191704-1ebb73c60ed3
@@ -431,7 +431,7 @@ replace (
 	github.com/spf13/viper => github.com/spf13/viper v1.7.0
 	github.com/storageos/go-api => github.com/storageos/go-api v2.2.0+incompatible
 	github.com/stretchr/objx => github.com/stretchr/objx v0.2.0
-	github.com/stretchr/testify => github.com/stretchr/testify v1.6.1
+	github.com/stretchr/testify => github.com/stretchr/testify v1.7.0
 	github.com/subosito/gotenv => github.com/subosito/gotenv v1.2.0
 	github.com/syndtr/gocapability => github.com/syndtr/gocapability v0.0.0-20180916011248-d98352740cb2
 	github.com/thecodeteam/goscaleio => github.com/thecodeteam/goscaleio v0.1.0

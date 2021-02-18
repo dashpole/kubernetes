@@ -19,8 +19,4 @@ require (
 	k8s.io/kube-openapi v0.0.0-20201113171705-d219536bb9fd
 )
 
-replace (
-	github.com/google/go-cmp => github.com/google/go-cmp v0.5.2
-	github.com/stretchr/testify => github.com/stretchr/testify v1.6.1
-	k8s.io/code-generator => ../code-generator
-)
+replace k8s.io/code-generator => ../code-generator

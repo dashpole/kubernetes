@@ -26,7 +26,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apiserver/pkg/apis/apiserver"
 )
-git 
+
 var (
 	localhost = "localhost:4317"
 )
@@ -55,7 +55,7 @@ func TestReadOpenTelemetryConfiguration(t *testing.T) {
 			createFile:     false,
 			contents:       ``,
 			expectedResult: nil,
-			expectedError:  strptr("unable to read opentelemetry configuration from \"test-opentelemetry-config-absent\" [open test-opentelemetry-config-absent: no such file or directory]"),
+			expectedError:  strptr("unable to read opentelemetry configuration from \"test-opentelemetry-config-absent\": open test-opentelemetry-config-absent: no such file or directory"),
 		},
 		{
 			name:       "v1alpha1",
@@ -63,7 +63,7 @@ func TestReadOpenTelemetryConfiguration(t *testing.T) {
 			contents: `
 apiVersion: apiserver.config.k8s.io/v1alpha1
 kind: OpenTelemetryClientConfiguration
-url: localhost:55680
+url: localhost:4317
 `,
 			expectedResult: &apiserver.OpenTelemetryClientConfiguration{
 				TypeMeta: metav1.TypeMeta{
@@ -96,7 +96,7 @@ spec:
           name: agent
 `,
 			expectedResult: nil,
-			expectedError:  strptr("unable to decode opentelemetry configuration data [no kind \"DaemonSet\" is registered for version \"apps/v1\" in scheme \"k8s.io/apiserver/pkg/opentelemetry/config.go:32\"]"),
+			expectedError:  strptr("unable to decode opentelemetry configuration data: no kind \"DaemonSet\" is registered for version \"apps/v1\" in scheme \"k8s.io/apiserver/pkg/opentelemetry/config.go:32\""),
 		},
 	}
 
