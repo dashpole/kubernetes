@@ -31,16 +31,16 @@ import (
 )
 
 // InitTraces initializes tracing in the component.
-func InitTraces(service, address string, opts ...grpc.DialOption) {
+func InitTraces(ctx context.Context, service, address string, opts ...grpc.DialOption) {
 	// TODO(dashpole): replace with otlp exporter
 	exporter, err := stdout.NewExporter([]stdout.Option{
 		stdout.WithPrettyPrint(),
 	}...)
 	if err != nil {
-		klog.Fatalf("failed to initialize stdout export pipeline: %v", err)
+		klog.Fatalf("Failed to initialize stdout export pipeline: %v", err)
 	}
 
-	res, err := resource.New(context.Background(),
+	res, err := resource.New(ctx,
 		resource.WithAttributes(
 			semconv.ServiceNameKey.String(service),
 		),

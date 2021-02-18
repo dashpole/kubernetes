@@ -110,7 +110,7 @@ func (o *OpenTelemetryOptions) Apply(es *egressselector.EgressSelector) error {
 		}
 	}
 
-	traces.InitTraces("kube-apiserver", addr, opts...)
+	traces.InitTraces(context.Background(), "kube-apiserver", addr, opts...)
 	return nil
 }
 
