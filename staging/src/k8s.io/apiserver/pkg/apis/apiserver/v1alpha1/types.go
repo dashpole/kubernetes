@@ -175,7 +175,7 @@ type ServiceReference struct {
 	Name string `json:"name"`
 
 	// If specified, the port on the service.
-	// Defaults to 55680.
+	// Defaults to 4317.
 	// `port` should be a valid port number (1-65535, inclusive).
 	// +optional
 	Port *int32 `json:"port,omitempty"`

@@ -22,8 +22,8 @@ import (
 )
 
 var (
-	defaultPort = int32(55680)
-	defaultURL  = "localhost:55680"
+	defaultPort = int32(4317)
+	defaultURL  = "localhost:4317"
 )
 
 func addDefaultingFuncs(scheme *runtime.Scheme) error {

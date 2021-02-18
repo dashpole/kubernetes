@@ -28,7 +28,7 @@ import (
 )
 
 var (
-	localhost = "localhost:55680"
+	localhost = "localhost:4317"
 )
 
 func strptr(s string) *string {
