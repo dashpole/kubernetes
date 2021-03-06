@@ -1,5 +1,5 @@
 /*
-Copyright 2017 The Kubernetes Authors.
+Copyright 2021 The Kubernetes Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,11 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package instrumentation
+package filters
 
 import (
-	// ensure libs have a chance to perform initialization
-	_ "k8s.io/kubernetes/test/e2e/instrumentation/logging"
-	_ "k8s.io/kubernetes/test/e2e/instrumentation/monitoring"
-	_ "k8s.io/kubernetes/test/e2e/instrumentation/tracing"
+	"net/http"
+
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
+
+// WithTracing adds tracing to requests if the incoming request is sampled
+func WithTracing(handler http.Handler) http.Handler {
+	return otelhttp.NewHandler(handler, "KubernetesAPI")
+}

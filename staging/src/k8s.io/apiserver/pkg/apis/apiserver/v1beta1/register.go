@@ -22,7 +22,11 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-const GroupName = "apiserver.k8s.io"
+const LegacyGroupName = "apiserver.k8s.io"
+const GroupName = "apiserver.config.k8s.io"
+
+// LegacySchemeGroupVersion is group version used to register these objects
+var LegacySchemeGroupVersion = schema.GroupVersion{Group: LegacyGroupName, Version: "v1beta1"}
 
 // SchemeGroupVersion is group version used to register these objects
 var SchemeGroupVersion = schema.GroupVersion{Group: GroupName, Version: "v1beta1"}
@@ -44,6 +48,9 @@ func init() {
 
 // Adds the list of known types to the given scheme.
 func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(LegacySchemeGroupVersion,
+		&EgressSelectorConfiguration{},
+	)
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&EgressSelectorConfiguration{},
 	)

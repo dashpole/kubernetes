@@ -40,10 +40,12 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(LegacySchemeGroupVersion,
 		&AdmissionConfiguration{},
 		&EgressSelectorConfiguration{},
+		&TracingConfiguration{},
 	)
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&AdmissionConfiguration{},
 		&EgressSelectorConfiguration{},
+		&TracingConfiguration{},
 	)
 	return nil
 }

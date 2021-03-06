@@ -23,6 +23,8 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+
+	"k8s.io/apimachinery/pkg/util/net"
 )
 
 const (
@@ -260,6 +262,8 @@ func TestNew(t *testing.T) {
 			if testCase.Err {
 				return
 			}
+			transport := transportFor(t, rt)
+			rt = transport
 
 			switch {
 			case testCase.Default && rt != http.DefaultTransport:
@@ -268,8 +272,6 @@ func TestNew(t *testing.T) {
 				t.Fatalf("got %#v, expected non-default transport", rt)
 			}
 
-			// We only know how to check TLSConfig on http.Transports
-			transport := rt.(*http.Transport)
 			switch {
 			case testCase.TLS && transport.TLSClientConfig == nil:
 				t.Fatalf("got %#v, expected TLSClientConfig", transport)
@@ -448,5 +450,19 @@ func Test_contextCanceller_RoundTrip(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+// transportFor finds the underlying *http.Transport for the round tripper.
+// we only know how to check TLSConfig on http.Transports
+func transportFor(t *testing.T, rt http.RoundTripper) *http.Transport {
+	switch transport := rt.(type) {
+	case *http.Transport:
+		return transport
+	case net.RoundTripperWrapper:
+		return transportFor(t, transport.WrappedRoundTripper())
+	default:
+		t.Fatalf("unexpected transport type: %v", transport)
+		return nil
 	}
 }

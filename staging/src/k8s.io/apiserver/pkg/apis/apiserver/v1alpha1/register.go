@@ -22,7 +22,11 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-const GroupName = "apiserver.k8s.io"
+const LegacyGroupName = "apiserver.k8s.io"
+const GroupName = "apiserver.config.k8s.io"
+
+// LegacySchemeGroupVersion is group version used to register these objects
+var LegacySchemeGroupVersion = schema.GroupVersion{Group: LegacyGroupName, Version: "v1alpha1"}
 
 // SchemeGroupVersion is group version used to register these objects
 var SchemeGroupVersion = schema.GroupVersion{Group: GroupName, Version: "v1alpha1"}
@@ -40,13 +44,20 @@ func init() {
 	// generated functions takes place in the generated files. The separation
 	// makes the code compile even when the generated files are missing.
 	localSchemeBuilder.Register(addKnownTypes)
+	localSchemeBuilder.Register(addDefaultingFuncs)
 }
 
 // Adds the list of known types to the given scheme.
 func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(LegacySchemeGroupVersion,
+		&AdmissionConfiguration{},
+		&EgressSelectorConfiguration{},
+		&TracingConfiguration{},
+	)
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&AdmissionConfiguration{},
 		&EgressSelectorConfiguration{},
+		&TracingConfiguration{},
 	)
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
 	return nil
