@@ -21,6 +21,7 @@ import (
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/trace"
+
 	"k8s.io/component-base/traces"
 )
 

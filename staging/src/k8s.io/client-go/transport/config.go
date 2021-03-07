@@ -22,6 +22,8 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+
+	"go.opentelemetry.io/otel/trace"
 )
 
 // Config holds various options for establishing a transport.
@@ -76,6 +78,9 @@ type Config struct {
 	//
 	// socks5 proxying does not currently support spdy streaming endpoints.
 	Proxy func(*http.Request) (*url.URL, error)
+
+	// TracerProvider can provide a tracer, which records spans for distributed tracing.
+	TracerProvider *trace.TracerProvider
 }
 
 // ImpersonationConfig has all the available impersonation options
@@ -111,6 +116,11 @@ func (c *Config) HasCertAuth() bool {
 // HasCertCallback returns whether the configuration has certificate callback or not.
 func (c *Config) HasCertCallback() bool {
 	return c.TLS.GetCert != nil
+}
+
+// HasTracing returns whether the configuration has a tracer provider or not.
+func (c *Config) HasTracing() bool {
+	return c.TracerProvider != nil
 }
 
 // Wrap adds a transport middleware function that will give the caller

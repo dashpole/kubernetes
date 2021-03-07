@@ -101,6 +101,7 @@ func (o *TracingOptions) ApplyTo(es *egressselector.EgressSelector, c *server.Co
 
 	tp := traces.NewProvider(context.Background(), apiserverService, sampler, opts...)
 	c.TracerProvider = &tp
+	c.LoopbackClientConfig.TracerProvider = &tp
 	return nil
 }
 

@@ -144,6 +144,7 @@ func (o *RecommendedOptions) ApplyTo(config *server.RecommendedConfig) error {
 		if err := o.Traces.ApplyTo(config.Config.EgressSelector, &config.Config); err != nil {
 			return err
 		}
+		config.ClientConfig.TracerProvider = config.Config.TracerProvider
 	}
 	return nil
 }

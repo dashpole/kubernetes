@@ -24,7 +24,9 @@ import (
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"golang.org/x/oauth2"
+	"go.opentelemetry.io/otel/trace"
 
+	"k8s.io/component-base/traces"
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 	"k8s.io/klog/v2"
 )
@@ -62,7 +64,9 @@ func HTTPWrappersForConfig(config *Config, rt http.RoundTripper) (http.RoundTrip
 		len(config.Impersonate.Extra) > 0 {
 		rt = NewImpersonatingRoundTripper(config.Impersonate, rt)
 	}
-	rt = NewOtelRoundTripper(rt)
+	if config.HasTracing() {
+		rt = NewOtelRoundTripper(rt, config.TracerProvider)
+	}
 	return rt, nil
 }
 
@@ -73,7 +77,13 @@ type otelWrapper struct {
 
 // NewOtelRoundTripper returns an otelhttp-wrapped round tripper that implements
 // WrappedRoundTripper
-func NewOtelRoundTripper(rt http.RoundTripper) http.RoundTripper {
+func NewOtelRoundTripper(rt http.RoundTripper, tp *trace.TracerProvider) http.RoundTripper {
+	opts := []otelhttp.Option{
+		otelhttp.WithPropagators(traces.Propagators()),
+	}
+	if tp != nil {
+		opts = append(opts, otelhttp.WithTracerProvider(*tp))
+	}
 	return &otelWrapper{otelRT: otelhttp.NewTransport(rt), baseRT: rt}
 }
 

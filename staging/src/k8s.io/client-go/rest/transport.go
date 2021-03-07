@@ -88,6 +88,7 @@ func (c *Config) TransportConfig() (*transport.Config, error) {
 		},
 		Dial:  c.Dial,
 		Proxy: c.Proxy,
+		TracerProvider: c.TracerProvider,
 	}
 
 	if c.ExecProvider != nil && c.AuthProvider != nil {
