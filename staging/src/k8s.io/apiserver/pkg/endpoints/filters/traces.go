@@ -20,9 +20,17 @@ import (
 	"net/http"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel/trace"
+	"k8s.io/component-base/traces"
 )
 
 // WithTracing adds tracing to requests if the incoming request is sampled
-func WithTracing(handler http.Handler) http.Handler {
-	return otelhttp.NewHandler(handler, "KubernetesAPI")
+func WithTracing(handler http.Handler, tp *trace.TracerProvider) http.Handler {
+	opts := []otelhttp.Option{
+		otelhttp.WithPropagators(traces.Propagators()),
+	}
+	if tp != nil {
+		opts = append(opts, otelhttp.WithTracerProvider(*tp))
+	}
+	return otelhttp.NewHandler(handler, "KubernetesAPI", opts...)
 }

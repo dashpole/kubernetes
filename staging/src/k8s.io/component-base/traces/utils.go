@@ -30,7 +30,7 @@ import (
 )
 
 // NewProvider initializes tracing in the component, and enforces recommended tracing behavior.
-func NewProvider(ctx context.Context, service string, baseSampler sdktrace.Sampler, opts ...otlp.ExporterOption) trace.Tracer {
+func NewProvider(ctx context.Context, service string, baseSampler sdktrace.Sampler, opts ...otlp.ExporterOption) trace.TracerProvider {
 	opts = append(opts, otlp.WithInsecure())
 	exporter, err := otlp.NewExporter(ctx, opts...)
 	if err != nil {
@@ -55,7 +55,7 @@ func NewProvider(ctx context.Context, service string, baseSampler sdktrace.Sampl
 		),
 		sdktrace.WithSpanProcessor(bsp),
 		sdktrace.WithResource(res),
-	).Tracer("k8s-component-base")
+	)
 }
 
 // Propagators returns the recommended set of propagators.

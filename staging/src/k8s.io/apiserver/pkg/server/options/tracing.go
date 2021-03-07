@@ -33,6 +33,8 @@ import (
 	"k8s.io/utils/path"
 )
 
+const apiserverService = "kube-apiserver"
+
 // TracingOptions contain configuration options for tracing
 // exporters
 type TracingOptions struct {
@@ -97,10 +99,8 @@ func (o *TracingOptions) ApplyTo(es *egressselector.EgressSelector, c *server.Co
 		sampler = sdktrace.TraceIDRatioBased(float64(*npConfig.SamplingRatePerMillion) / float64(1000000))
 	}
 
-	c.Tracing = &server.TracingInfo{
-		Tracer:     traces.NewProvider(context.Background(), "kube-apiserver", sampler, opts...),
-		Propagator: traces.Propagators(),
-	}
+	tp := traces.NewProvider(context.Background(), apiserverService, sampler, opts...)
+	c.TracerProvider = &tp
 	return nil
 }
 
