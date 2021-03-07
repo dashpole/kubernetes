@@ -24,12 +24,13 @@ import (
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/semconv"
+	"go.opentelemetry.io/otel/trace"
 
 	"k8s.io/klog/v2"
 )
 
 // NewProvider initializes tracing in the component, and enforces recommended tracing behavior.
-func NewProvider(ctx context.Context, service string, baseSampler sdktrace.Sampler, opts ...otlp.ExporterOption) *sdktrace.TracerProvider {
+func NewProvider(ctx context.Context, service string, baseSampler sdktrace.Sampler, opts ...otlp.ExporterOption) trace.Tracer {
 	opts = append(opts, otlp.WithInsecure())
 	exporter, err := otlp.NewExporter(ctx, opts...)
 	if err != nil {
@@ -54,7 +55,7 @@ func NewProvider(ctx context.Context, service string, baseSampler sdktrace.Sampl
 		),
 		sdktrace.WithSpanProcessor(bsp),
 		sdktrace.WithResource(res),
-	)
+	).Tracer("k8s-component-base")
 }
 
 // Propagators returns the recommended set of propagators.

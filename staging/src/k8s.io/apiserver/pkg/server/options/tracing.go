@@ -22,11 +22,11 @@ import (
 	"net"
 
 	"github.com/spf13/pflag"
-	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"google.golang.org/grpc"
 
+	"k8s.io/apiserver/pkg/server"
 	"k8s.io/apiserver/pkg/server/egressselector"
 	"k8s.io/apiserver/pkg/tracing"
 	"k8s.io/component-base/traces"
@@ -55,8 +55,8 @@ func (o *TracingOptions) AddFlags(fs *pflag.FlagSet) {
 		"File with apiserver tracing configuration.")
 }
 
-// Apply adds the tracing settings to the global configuration.
-func (o *TracingOptions) Apply(es *egressselector.EgressSelector) error {
+// ApplyTo adds the tracing settings to the global configuration.
+func (o *TracingOptions) ApplyTo(es *egressselector.EgressSelector, c *server.Config) error {
 	if o == nil || o.ConfigFile == "" {
 		return nil
 	}
@@ -97,9 +97,10 @@ func (o *TracingOptions) Apply(es *egressselector.EgressSelector) error {
 		sampler = sdktrace.TraceIDRatioBased(float64(*npConfig.SamplingRatePerMillion) / float64(1000000))
 	}
 
-	// TODO don't use globals
-	otel.SetTracerProvider(traces.NewProvider(context.Background(), "kube-apiserver", sampler, opts...))
-	otel.SetTextMapPropagator(traces.Propagators())
+	c.Tracing = &server.TracingInfo{
+		Tracer:     traces.NewProvider(context.Background(), "kube-apiserver", sampler, opts...),
+		Propagator: traces.Propagators(),
+	}
 	return nil
 }
 

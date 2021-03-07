@@ -31,6 +31,8 @@ import (
 	jsonpatch "github.com/evanphx/json-patch"
 	"github.com/go-openapi/spec"
 	"github.com/google/uuid"
+	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel/trace"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -136,6 +138,9 @@ type Config struct {
 	// ExternalAddress is the host name to use for external (public internet) facing URLs (e.g. Swagger)
 	// Will default to a value based on secure serving info and available ipv4 IPs.
 	ExternalAddress string
+
+	// Tracing is required to record telemetry and propagate context for distributed tracing.
+	Tracing *TracingInfo
 
 	//===========================================================================
 	// Fields you probably don't care about changing
@@ -289,6 +294,14 @@ type AuthorizationInfo struct {
 	// Authorizer determines whether the subject is allowed to make the request based only
 	// on the RequestURI
 	Authorizer authorizer.Authorizer
+}
+
+type TracingInfo struct {
+	// Tracer can record spans for distributed tracing.
+	Tracer trace.Tracer
+
+	// Propagator can propagate context for distributed tracing.
+	Propagator propagation.TextMapPropagator
 }
 
 // NewConfig returns a Config struct with the default values
