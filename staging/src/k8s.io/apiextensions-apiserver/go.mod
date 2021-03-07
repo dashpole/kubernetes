@@ -8,7 +8,7 @@ require (
 	github.com/emicklei/go-restful v2.9.5+incompatible
 	github.com/go-openapi/spec v0.19.3
 	github.com/gogo/protobuf v1.3.2
-	github.com/google/go-cmp v0.5.2
+	github.com/google/go-cmp v0.5.4
 	github.com/google/gofuzz v1.1.0
 	github.com/google/uuid v1.1.2
 	github.com/googleapis/gnostic v0.4.1
@@ -16,7 +16,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.6.1
 	go.etcd.io/etcd v0.5.0-alpha.5.0.20200910180754-dd1b699fc489
-	google.golang.org/grpc v1.27.1
+	google.golang.org/grpc v1.32.0
 	gopkg.in/yaml.v2 v2.2.8
 	k8s.io/api v0.0.0
 	k8s.io/apimachinery v0.0.0
@@ -31,6 +31,8 @@ require (
 )
 
 replace (
+	github.com/google/go-cmp => github.com/google/go-cmp v0.5.2
+	google.golang.org/grpc => google.golang.org/grpc v1.27.1
 	k8s.io/api => ../api
 	k8s.io/apiextensions-apiserver => ../apiextensions-apiserver
 	k8s.io/apimachinery => ../apimachinery

@@ -7,7 +7,7 @@ go 1.16
 require (
 	github.com/emicklei/go-restful v2.9.5+incompatible // indirect
 	github.com/gogo/protobuf v1.3.2
-	github.com/google/go-cmp v0.5.2 // indirect
+	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/mailru/easyjson v0.7.0 // indirect
 	github.com/spf13/pflag v1.0.5
@@ -22,4 +22,7 @@ require (
 	k8s.io/kube-openapi v0.0.0-20210305001622-591a79e4bda7
 )
 
-replace k8s.io/code-generator => ../code-generator
+replace (
+	github.com/google/go-cmp => github.com/google/go-cmp v0.5.2
+	k8s.io/code-generator => ../code-generator
+)
