@@ -25,6 +25,7 @@ import (
 	"github.com/onsi/ginkgo"
 	"github.com/onsi/gomega"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/propagation"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -79,6 +80,7 @@ var _ = instrumentation.SIGDescribe("[Feature:APIServerTracing]", func() {
 		// This is needed because the no-op tracer doesn't propagate the SpanContext
 		// https://github.com/open-telemetry/opentelemetry-go/issues/877#issuecomment-651398357
 		otel.SetTracerProvider(tp)
+		otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}))
 
 		ginkgo.By("Creating a context with a sampled parent span")
 		ctx, span := tp.Tracer("apiservertest").Start(context.Background(), "OpenTelemetrySpan")
@@ -140,10 +142,11 @@ func opentelemetryCollectorPod(masterNode string) *v1.Pod {
 				Image: "otel/opentelemetry-collector:0.21.0",
 				Args: []string{
 					"--config=/conf/otel-collector-config.yaml",
+					"--log-level=DEBUG",
 				},
 				Ports: []v1.ContainerPort{{
-					ContainerPort: 4317,
-					HostPort:      4317,
+					ContainerPort: 55680,
+					HostPort:      66580,
 				}},
 				VolumeMounts: []v1.VolumeMount{{
 					Name:      "otel-collector-config-vol",
@@ -174,7 +177,6 @@ func opentelemetryConfigmap() *v1.ConfigMap {
   otlp:
     protocols:
       grpc:
-        endpoint: localhost:4317
 exporters:
   logging:
     logLevel: debug

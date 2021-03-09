@@ -73,12 +73,9 @@ func (o *TracingOptions) ApplyTo(es *egressselector.EgressSelector, c *server.Co
 		return fmt.Errorf("failed to validate tracing configuration: %v", errs.ToAggregate())
 	}
 
-	if npConfig.URL == nil {
-		return fmt.Errorf("URL was nil, but must be non-nil")
-	}
-
-	opts := []otlp.ExporterOption{
-		otlp.WithAddress(*npConfig.URL),
+	opts := []otlp.ExporterOption{}
+	if npConfig.URL != nil {
+		opts = append(opts, otlp.WithAddress(*npConfig.URL))
 	}
 	if es != nil {
 		// Only use the egressselector dialer if egressselector is enabled.

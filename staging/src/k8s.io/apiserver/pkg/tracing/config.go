@@ -19,7 +19,6 @@ package tracing
 import (
 	"fmt"
 	"io/ioutil"
-	"net/url"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
@@ -93,11 +92,12 @@ func validateSamplingRate(rate int32, fldPath *field.Path) field.ErrorList {
 
 func validateURL(u string, fldPath *field.Path) field.ErrorList {
 	errs := field.ErrorList{}
-	_, err := url.Parse(u)
-	if err != nil {
-		return append(errs, field.Invalid(
-			fldPath, u,
-			fmt.Sprintf("unable to parse URL: %v", err)))
-	}
+	// TODO we just want host:port here
+	// _, err := url.Parse(u)
+	// if err != nil {
+	// 	return append(errs, field.Invalid(
+	// 		fldPath, u,
+	// 		fmt.Sprintf("unable to parse URL: %v", err)))
+	// }
 	return errs
 }
