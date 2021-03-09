@@ -147,3 +147,21 @@ type TLSConfig struct {
 	// +optional
 	ClientCert string `json:"clientCert,omitempty"`
 }
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// TracingConfiguration provides versioned configuration for tracing clients.
+type TracingConfiguration struct {
+	metav1.TypeMeta `json:",inline"`
+
+	// +optional
+	// URL of the collector that's running on the control-plane node.
+	// the APIServer uses the egressType ControlPlane when sending data to the collector.
+	// Defaults to localhost:4317
+	URL *string `json:"url,omitempty" protobuf:"bytes,1,opt,name=url"`
+
+	// +optional
+	// SamplingRatePerMillion is the number of samples to collect per million spans.
+	// Defaults to 0.
+	SamplingRatePerMillion *int32 `json:"samplingRatePerMillion,omitempty" protobuf:"varint,2,opt,name=samplingRatePerMillion"`
+}
