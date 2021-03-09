@@ -113,7 +113,7 @@ func (o *TracingOptions) Validate() (errs []error) {
 	if exists, err := path.Exists(path.CheckFollowSymlink, o.ConfigFile); !exists {
 		errs = append(errs, fmt.Errorf("tracing-config-file %s does not exist", o.ConfigFile))
 	} else if err != nil {
-		errs = append(errs, fmt.Errorf("error checking if tracing-config-file %s esists", o.ConfigFile, err))
+		errs = append(errs, fmt.Errorf("error checking if tracing-config-file %s exists: %v", o.ConfigFile, err))
 	}
 	return
 }
