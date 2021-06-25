@@ -122,12 +122,22 @@ func (o *RecommendedOptions) ApplyTo(config *server.RecommendedConfig) error {
 	if err := o.CoreAPI.ApplyTo(config); err != nil {
 		return err
 	}
+	if err := o.EgressSelector.ApplyTo(&config.Config); err != nil {
+		return err
+	}
+	if feature.DefaultFeatureGate.Enabled(features.APIServerTracing) {
+		// Apply tracing config right after CoreAPI and EgressSelector so that the rest config is
+		// updated with a TracerProvider before anyone tries to use it.
+		if err := o.Traces.ApplyTo(config.Config.EgressSelector, &config.Config); err != nil {
+			return err
+		}
+		if config.TracerProvider != nil {
+			config.ClientConfig.TracerProvider = config.TracerProvider
+		}
+	}
 	if initializers, err := o.ExtraAdmissionInitializers(config); err != nil {
 		return err
 	} else if err := o.Admission.ApplyTo(&config.Config, config.SharedInformerFactory, config.ClientConfig, o.FeatureGate, initializers...); err != nil {
-		return err
-	}
-	if err := o.EgressSelector.ApplyTo(&config.Config); err != nil {
 		return err
 	}
 	if feature.DefaultFeatureGate.Enabled(features.APIPriorityAndFairness) {
@@ -144,11 +154,6 @@ func (o *RecommendedOptions) ApplyTo(config *server.RecommendedConfig) error {
 			)
 		} else {
 			klog.Warningf("Neither kubeconfig is provided nor service-account is mounted, so APIPriorityAndFairness will be disabled")
-		}
-	}
-	if feature.DefaultFeatureGate.Enabled(features.APIServerTracing) {
-		if err := o.Traces.ApplyTo(config.Config.EgressSelector, &config.Config); err != nil {
-			return err
 		}
 	}
 	return nil

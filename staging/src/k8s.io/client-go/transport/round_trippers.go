@@ -22,6 +22,9 @@ import (
 	"strings"
 	"time"
 
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel/trace"
 	"golang.org/x/oauth2"
 
 	utilnet "k8s.io/apimachinery/pkg/util/net"
@@ -61,7 +64,36 @@ func HTTPWrappersForConfig(config *Config, rt http.RoundTripper) (http.RoundTrip
 		len(config.Impersonate.Extra) > 0 {
 		rt = NewImpersonatingRoundTripper(config.Impersonate, rt)
 	}
+	rt = NewOtelRoundTripper(rt, config.TracerProvider)
 	return rt, nil
+}
+
+type otelWrapper struct {
+	otelRT http.RoundTripper
+	baseRT http.RoundTripper
+}
+
+// NewOtelRoundTripper returns an otelhttp-wrapped round tripper that implements
+// WrappedRoundTripper
+func NewOtelRoundTripper(rt http.RoundTripper, tp *trace.TracerProvider) http.RoundTripper {
+	opts := []otelhttp.Option{
+		otelhttp.WithPropagators(propagation.NewCompositeTextMapPropagator(
+			propagation.TraceContext{},
+			propagation.Baggage{},
+		)),
+	}
+	if tp != nil {
+		opts = append(opts, otelhttp.WithTracerProvider(*tp))
+	}
+	// Even if there is no TracerProvider, the otelhttp still handles context propagation.
+	// See https://github.com/open-telemetry/opentelemetry-go/tree/main/example/passthrough
+	return &otelWrapper{otelRT: otelhttp.NewTransport(rt, opts...), baseRT: rt}
+}
+
+func (o *otelWrapper) WrappedRoundTripper() http.RoundTripper { return o.baseRT }
+
+func (o *otelWrapper) RoundTrip(req *http.Request) (*http.Response, error) {
+	return o.otelRT.RoundTrip(req)
 }
 
 // DebugWrappers wraps a round tripper and logs based on the current log level.

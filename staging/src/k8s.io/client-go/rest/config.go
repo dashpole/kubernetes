@@ -30,6 +30,8 @@ import (
 	"strings"
 	"time"
 
+	"go.opentelemetry.io/otel/trace"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -144,6 +146,10 @@ type Config struct {
 	// Version forces a specific version to be used (if registered)
 	// Do we need this?
 	// Version string
+
+	// TracerProvider can provide a tracer, which records distributed tracing spans.
+	// If unspecified, no spans will be recorded.
+	TracerProvider *trace.TracerProvider
 }
 
 var _ fmt.Stringer = new(Config)

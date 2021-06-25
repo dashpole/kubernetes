@@ -22,6 +22,8 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+
+	"go.opentelemetry.io/otel/trace"
 )
 
 // Config holds various options for establishing a transport.
@@ -76,6 +78,10 @@ type Config struct {
 	//
 	// socks5 proxying does not currently support spdy streaming endpoints.
 	Proxy func(*http.Request) (*url.URL, error)
+
+	// TracerProvider can provide a tracer, which records distributed tracing spans.
+	// If unspecified, no spans will be recorded.
+	TracerProvider *trace.TracerProvider
 }
 
 // ImpersonationConfig has all the available impersonation options
