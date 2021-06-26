@@ -643,6 +643,7 @@ func CopyConfig(config *Config) *Config {
 		Timeout:            config.Timeout,
 		Dial:               config.Dial,
 		Proxy:              config.Proxy,
+		TracerProvider: config.TracerProvider,
 	}
 	if config.ExecProvider != nil && config.ExecProvider.Config != nil {
 		c.ExecProvider.Config = config.ExecProvider.Config.DeepCopyObject()

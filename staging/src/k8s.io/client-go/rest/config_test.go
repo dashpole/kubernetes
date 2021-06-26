@@ -41,6 +41,9 @@ import (
 	"github.com/google/go-cmp/cmp"
 	fuzz "github.com/google/gofuzz"
 	"github.com/stretchr/testify/assert"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/trace"
 )
 
 func TestIsConfigTransportTLS(t *testing.T) {
@@ -294,6 +297,41 @@ func (fakeAuthProviderConfigPersister) Persist(map[string]string) error {
 
 var fakeAuthProviderConfigPersisterError = errors.New("fakeAuthProviderConfigPersisterError")
 
+type fakeTracerProvider struct{}
+
+func (p fakeTracerProvider) Tracer(string, ...trace.TracerOption) trace.Tracer {
+	return fakeTracer{}
+}
+
+type fakeTracer struct{}
+
+func (t fakeTracer) Start(ctx context.Context, name string, _ ...trace.SpanOption) (context.Context, trace.Span) {
+	span := fakeSpan{}
+	return ctx, span
+}
+
+type fakeSpan struct{}
+
+func (fakeSpan) SpanContext() trace.SpanContext { return trace.SpanContext{} }
+
+func (fakeSpan) IsRecording() bool { return false }
+
+func (fakeSpan) SetStatus(codes.Code, string) {}
+
+func (fakeSpan) SetError(bool) {}
+
+func (fakeSpan) SetAttributes(...attribute.KeyValue) {}
+
+func (fakeSpan) End(...trace.SpanOption) {}
+
+func (fakeSpan) RecordError(error, ...trace.EventOption) {}
+
+func (fakeSpan) Tracer() trace.Tracer { return fakeTracer{} }
+
+func (fakeSpan) AddEvent(string, ...trace.EventOption) {}
+
+func (fakeSpan) SetName(string) {}
+
 func TestAnonymousConfig(t *testing.T) {
 	f := fuzz.New().NilChance(0.0).NumElements(1, 1)
 	f.Funcs(
@@ -325,6 +363,11 @@ func TestAnonymousConfig(t *testing.T) {
 		},
 		func(h *WarningHandler, f fuzz.Continue) {
 			*h = &fakeWarningHandler{}
+		},
+		func(t *trace.TracerProvider, f fuzz.Continue) {
+			tp := &fakeTracerProvider{}
+			f.Fuzz(tp)
+			*t = tp
 		},
 		// Authentication does not require fuzzer
 		func(r *AuthProviderConfigPersister, f fuzz.Continue) {},
@@ -365,6 +408,7 @@ func TestAnonymousConfig(t *testing.T) {
 		expected.TLSClientConfig.KeyFile = ""
 		expected.Transport = nil
 		expected.WrapTransport = nil
+		expected.TracerProvider = nil
 
 		if actual.Dial != nil {
 			_, actualError := actual.Dial(context.Background(), "", "")
@@ -420,6 +464,11 @@ func TestCopyConfig(t *testing.T) {
 			limiter := &fakeLimiter{}
 			f.Fuzz(limiter)
 			*r = limiter
+		},
+		func(t *trace.TracerProvider, f fuzz.Continue) {
+			tp := &fakeTracerProvider{}
+			f.Fuzz(tp)
+			*t = tp
 		},
 		func(h *WarningHandler, f fuzz.Continue) {
 			*h = &fakeWarningHandler{}
@@ -582,6 +631,7 @@ func TestConfigStringer(t *testing.T) {
 }
 
 func TestConfigSprint(t *testing.T) {
+	tp := trace.TracerProvider(&fakeTracerProvider{})
 	c := &Config{
 		Host:    "localhost:8080",
 		APIPath: "v1",
@@ -624,10 +674,11 @@ func TestConfigSprint(t *testing.T) {
 		Timeout:        3 * time.Second,
 		Dial:           fakeDialFunc,
 		Proxy:          fakeProxyFunc,
+		TracerProvider: &tp,
 	}
 	want := fmt.Sprintf(
-		`&rest.Config{Host:"localhost:8080", APIPath:"v1", ContentConfig:rest.ContentConfig{AcceptContentTypes:"application/json", ContentType:"application/json", GroupVersion:(*schema.GroupVersion)(nil), NegotiatedSerializer:runtime.NegotiatedSerializer(nil)}, Username:"gopher", Password:"--- REDACTED ---", BearerToken:"--- REDACTED ---", BearerTokenFile:"", Impersonate:rest.ImpersonationConfig{UserName:"gopher2", Groups:[]string(nil), Extra:map[string][]string(nil)}, AuthProvider:api.AuthProviderConfig{Name: "gopher", Config: map[string]string{--- REDACTED ---}}, AuthConfigPersister:rest.AuthProviderConfigPersister(--- REDACTED ---), ExecProvider:api.ExecConfig{Command: "sudo", Args: []string{"--- REDACTED ---"}, Env: []ExecEnvVar{--- REDACTED ---}, APIVersion: "", ProvideClusterInfo: true, Config: runtime.Object(--- REDACTED ---), StdinUnavailable: false}, TLSClientConfig:rest.sanitizedTLSClientConfig{Insecure:false, ServerName:"", CertFile:"a.crt", KeyFile:"a.key", CAFile:"", CertData:[]uint8{0x2d, 0x2d, 0x2d, 0x20, 0x54, 0x52, 0x55, 0x4e, 0x43, 0x41, 0x54, 0x45, 0x44, 0x20, 0x2d, 0x2d, 0x2d}, KeyData:[]uint8{0x2d, 0x2d, 0x2d, 0x20, 0x52, 0x45, 0x44, 0x41, 0x43, 0x54, 0x45, 0x44, 0x20, 0x2d, 0x2d, 0x2d}, CAData:[]uint8(nil), NextProtos:[]string{"h2", "http/1.1"}}, UserAgent:"gobot", DisableCompression:false, Transport:(*rest.fakeRoundTripper)(%p), WrapTransport:(transport.WrapperFunc)(%p), QPS:1, Burst:2, RateLimiter:(*rest.fakeLimiter)(%p), WarningHandler:rest.fakeWarningHandler{}, Timeout:3000000000, Dial:(func(context.Context, string, string) (net.Conn, error))(%p), Proxy:(func(*http.Request) (*url.URL, error))(%p)}`,
-		c.Transport, fakeWrapperFunc, c.RateLimiter, fakeDialFunc, fakeProxyFunc,
+		`&rest.Config{Host:"localhost:8080", APIPath:"v1", ContentConfig:rest.ContentConfig{AcceptContentTypes:"application/json", ContentType:"application/json", GroupVersion:(*schema.GroupVersion)(nil), NegotiatedSerializer:runtime.NegotiatedSerializer(nil)}, Username:"gopher", Password:"--- REDACTED ---", BearerToken:"--- REDACTED ---", BearerTokenFile:"", Impersonate:rest.ImpersonationConfig{UserName:"gopher2", Groups:[]string(nil), Extra:map[string][]string(nil)}, AuthProvider:api.AuthProviderConfig{Name: "gopher", Config: map[string]string{--- REDACTED ---}}, AuthConfigPersister:rest.AuthProviderConfigPersister(--- REDACTED ---), ExecProvider:api.ExecConfig{Command: "sudo", Args: []string{"--- REDACTED ---"}, Env: []ExecEnvVar{--- REDACTED ---}, APIVersion: "", ProvideClusterInfo: true, Config: runtime.Object(--- REDACTED ---), StdinUnavailable: false}, TLSClientConfig:rest.sanitizedTLSClientConfig{Insecure:false, ServerName:"", CertFile:"a.crt", KeyFile:"a.key", CAFile:"", CertData:[]uint8{0x2d, 0x2d, 0x2d, 0x20, 0x54, 0x52, 0x55, 0x4e, 0x43, 0x41, 0x54, 0x45, 0x44, 0x20, 0x2d, 0x2d, 0x2d}, KeyData:[]uint8{0x2d, 0x2d, 0x2d, 0x20, 0x52, 0x45, 0x44, 0x41, 0x43, 0x54, 0x45, 0x44, 0x20, 0x2d, 0x2d, 0x2d}, CAData:[]uint8(nil), NextProtos:[]string{"h2", "http/1.1"}}, UserAgent:"gobot", DisableCompression:false, Transport:(*rest.fakeRoundTripper)(%p), WrapTransport:(transport.WrapperFunc)(%p), QPS:1, Burst:2, RateLimiter:(*rest.fakeLimiter)(%p), WarningHandler:rest.fakeWarningHandler{}, Timeout:3000000000, Dial:(func(context.Context, string, string) (net.Conn, error))(%p), Proxy:(func(*http.Request) (*url.URL, error))(%p), TracerProvider:(*trace.TracerProvider)(%p)}`,
+		c.Transport, fakeWrapperFunc, c.RateLimiter, fakeDialFunc, fakeProxyFunc, c.TracerProvider,
 	)
 
 	for _, f := range []string{"%s", "%v", "%+v", "%#v"} {

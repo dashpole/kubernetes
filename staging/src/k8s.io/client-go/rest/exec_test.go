@@ -33,6 +33,7 @@ import (
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 	"k8s.io/client-go/transport"
 	"k8s.io/client-go/util/flowcontrol"
+	"go.opentelemetry.io/otel/trace"
 )
 
 func TestConfigToExecCluster(t *testing.T) {
@@ -243,6 +244,11 @@ func TestConfigToExecClusterRoundtrip(t *testing.T) {
 		func(h *WarningHandler, f fuzz.Continue) {
 			*h = &fakeWarningHandler{}
 		},
+		func(t *trace.TracerProvider, f fuzz.Continue) {
+			tp := &fakeTracerProvider{}
+			f.Fuzz(tp)
+			*t = tp
+		},
 		// Authentication does not require fuzzer
 		func(r *AuthProviderConfigPersister, f fuzz.Continue) {},
 		func(r *clientcmdapi.AuthProviderConfig, f fuzz.Continue) {
@@ -292,6 +298,7 @@ func TestConfigToExecClusterRoundtrip(t *testing.T) {
 		expected.WarningHandler = nil
 		expected.Timeout = 0
 		expected.Dial = nil
+		expected.TracerProvider = nil
 
 		// Manually set URLs so we don't get an error when parsing these during the roundtrip.
 		if expected.Host != "" {
