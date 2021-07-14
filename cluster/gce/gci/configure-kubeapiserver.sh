@@ -255,6 +255,10 @@ function start-kube-apiserver {
     params+=" --enable-admission-plugins=${ADMISSION_CONTROL}"
     params+=" --admission-control-config-file=/etc/srv/kubernetes/admission_controller_config.yaml"
   fi
+  
+  if [[ "${ENABLE_APISERVER_TRACING:-false}" == "true" ]]; then
+    params+=" --tracing-config-file=/etc/srv/kubernetes/tracing_config.yaml"
+  fi
 
   # If GKE exec auth support is requested for webhooks, then
   # gke-exec-auth-plugin needs to be mounted into the kube-apiserver container.

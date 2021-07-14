@@ -998,6 +998,13 @@ users:
 EOF
   fi
 
+  if [[ "${ENABLE_APISERVER_TRACING:-false}" == "true" ]]; then
+    cat <<EOF >/etc/srv/kubernetes/tracing_config.yaml
+apiVersion: apiserver.config.k8s.io/v1alpha1
+kind: TracingConfiguration
+EOF
+  fi
+
   if [[ -n "${ADMISSION_CONTROL:-}" ]]; then
     # Emit a basic admission control configuration file, with no plugins specified.
     cat <<EOF >/etc/srv/kubernetes/admission_controller_config.yaml
