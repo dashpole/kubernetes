@@ -33,6 +33,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/naming"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/trace"
+	"go.opentelemetry.io/otel/attribute"
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -40,7 +44,7 @@ import (
 	"k8s.io/client-go/tools/pager"
 	"k8s.io/klog/v2"
 	"k8s.io/utils/clock"
-	"k8s.io/utils/trace"
+	utiltrace "k8s.io/utils/trace"
 )
 
 const defaultExpectedTypeName = "<unspecified>"
@@ -101,6 +105,8 @@ type Reflector struct {
 	WatchListPageSize int64
 	// Called whenever the ListAndWatch drops the connection with an error.
 	watchErrorHandler WatchErrorHandler
+	// tracer can collect OpenTelemetry traces
+	tracer trace.Tracer
 }
 
 // ResourceVersionUpdater is an interface that allows store implementation to
@@ -184,6 +190,8 @@ func NewNamedReflector(name string, lw ListerWatcher, expectedType interface{}, 
 		resyncPeriod:           resyncPeriod,
 		clock:                  realClock,
 		watchErrorHandler:      WatchErrorHandler(DefaultWatchErrorHandler),
+		// TODO: get from TracerProvider, rather than global
+		tracer: otel.Tracer("k8s.io/client-go/tools/cache"),
 	}
 	r.setExpectedType(expectedType)
 	return r
@@ -358,11 +366,19 @@ func (r *Reflector) list(stopCh <-chan struct{}) error {
 	var resourceVersion string
 	options := metav1.ListOptions{ResourceVersion: r.relistResourceVersion()}
 
-	initTrace := trace.New("Reflector ListAndWatch", trace.Field{Key: "name", Value: r.name})
+	var err error
+	_, span := r.tracer.Start(context.TODO(), "Reflector ListAndWatch", trace.WithAttributes(attribute.String("name", r.name)))
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, err.Error())
+		}
+	}()
+	defer span.End()
+	initTrace := utiltrace.New("Reflector ListAndWatch", utiltrace.Field{Key: "name", Value: r.name})
 	defer initTrace.LogIfLong(10 * time.Second)
 	var list runtime.Object
 	var paginatedResult bool
-	var err error
 	listCh := make(chan struct{}, 1)
 	panicCh := make(chan interface{}, 1)
 	go func() {
@@ -419,7 +435,8 @@ func (r *Reflector) list(stopCh <-chan struct{}) error {
 		panic(r)
 	case <-listCh:
 	}
-	initTrace.Step("Objects listed", trace.Field{Key: "error", Value: err})
+	span.AddEvent("Objects listed")
+	initTrace.Step("Objects listed", utiltrace.Field{Key: "error", Value: err})
 	if err != nil {
 		klog.Warningf("%s: failed to list %v: %v", r.name, r.expectedTypeName, err)
 		return fmt.Errorf("failed to list %v: %w", r.expectedTypeName, err)
@@ -445,17 +462,21 @@ func (r *Reflector) list(stopCh <-chan struct{}) error {
 		return fmt.Errorf("unable to understand list result %#v: %v", list, err)
 	}
 	resourceVersion = listMetaInterface.GetResourceVersion()
+	span.AddEvent("Resource version extracted")
 	initTrace.Step("Resource version extracted")
 	items, err := meta.ExtractList(list)
 	if err != nil {
 		return fmt.Errorf("unable to understand list result %#v (%v)", list, err)
 	}
+	span.AddEvent("Objects extracted")
 	initTrace.Step("Objects extracted")
 	if err := r.syncWith(items, resourceVersion); err != nil {
 		return fmt.Errorf("unable to sync list result: %v", err)
 	}
+	span.AddEvent("SyncWith done")
 	initTrace.Step("SyncWith done")
 	r.setLastSyncResourceVersion(resourceVersion)
+	span.AddEvent("Resource version updated")
 	initTrace.Step("Resource version updated")
 	return nil
 }
