@@ -46,6 +46,7 @@ import (
 func DeleteResource(r rest.GracefulDeleter, allowsOptions bool, scope *RequestScope, admit admission.Interface) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		// For performance tracking purposes.
+		// TODO: add otel tracing
 		trace := utiltrace.New("Delete", traceFields(req)...)
 		defer trace.LogIfLong(500 * time.Millisecond)
 

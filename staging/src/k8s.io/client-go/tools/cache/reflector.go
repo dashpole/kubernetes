@@ -176,7 +176,7 @@ func NewReflector(lw ListerWatcher, expectedType interface{}, store Store, resyn
 }
 
 // NewNamedReflector same as NewReflector, but with a specified name for logging
-func NewNamedReflector(name string, lw ListerWatcher, expectedType interface{}, store Store, resyncPeriod time.Duration) *Reflector {
+func NewNamedReflector(name string, lw ListerWatcher, expectedType interface{}, store Store, resyncPeriod time.Duration, tp trace.TracerProvider) *Reflector {
 	realClock := &clock.RealClock{}
 	r := &Reflector{
 		name:          name,

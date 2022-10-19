@@ -48,6 +48,7 @@ import (
 func UpdateResource(r rest.Updater, scope *RequestScope, admit admission.Interface) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		// For performance tracking purposes.
+		// TODO add OTel tracing
 		trace := utiltrace.New("Update", traceFields(req)...)
 		defer trace.LogIfLong(500 * time.Millisecond)
 

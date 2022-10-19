@@ -126,6 +126,7 @@ func (b *backend) processEvents(ev ...*auditinternal.Event) error {
 		list.Items = append(list.Items, *e)
 	}
 	return b.w.WithExponentialBackoff(context.Background(), func() rest.Result {
+		// TODO: add otel tracing
 		trace := utiltrace.New("Call Audit Events webhook",
 			utiltrace.Field{"name", b.name},
 			utiltrace.Field{"event-count", len(list.Items)})

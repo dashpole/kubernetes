@@ -545,6 +545,7 @@ func (f *DeltaFIFO) Pop(process PopProcessFunc) (interface{}, error) {
 		// and new items can't be added until processing finish.
 		// https://github.com/kubernetes/kubernetes/issues/103789
 		if depth > 10 {
+			// TODO: add otel tracing
 			trace := utiltrace.New("DeltaFIFO Pop Process",
 				utiltrace.Field{Key: "ID", Value: id},
 				utiltrace.Field{Key: "Depth", Value: depth},

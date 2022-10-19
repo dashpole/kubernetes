@@ -233,6 +233,7 @@ func (a *mutatingDispatcher) callAttrMutatingHook(ctx context.Context, h *admiss
 	if err != nil {
 		return false, &webhookutil.ErrCallingWebhook{WebhookName: h.Name, Reason: fmt.Errorf("could not get REST client: %w", err), Status: apierrors.NewBadRequest("error getting REST client")}
 	}
+	// TODO: add otel tracing
 	trace := utiltrace.New("Call mutating webhook",
 		utiltrace.Field{"configuration", configurationName},
 		utiltrace.Field{"webhook", h.Name},

@@ -52,6 +52,7 @@ type getterFunc func(ctx context.Context, name string, req *http.Request, trace 
 // passed-in getterFunc to perform the actual get.
 func getResourceHandler(scope *RequestScope, getter getterFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+		// TODO: Add otel tracing
 		trace := utiltrace.New("Get", traceFields(req)...)
 		defer trace.LogIfLong(500 * time.Millisecond)
 

@@ -669,6 +669,7 @@ func (c *Cacher) GetList(ctx context.Context, key string, opts storage.ListOptio
 		return c.storage.GetList(ctx, key, opts, listObj)
 	}
 
+	// TODO: add otel tracing
 	trace := utiltrace.New("cacher list",
 		utiltrace.Field{Key: "audit-id", Value: endpointsrequest.GetAuditIDTruncated(ctx)},
 		utiltrace.Field{Key: "type", Value: c.groupResource.String()})

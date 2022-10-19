@@ -232,6 +232,7 @@ func (d *validatingDispatcher) callHook(ctx context.Context, h *v1.ValidatingWeb
 	if err != nil {
 		return &webhookutil.ErrCallingWebhook{WebhookName: h.Name, Reason: fmt.Errorf("could not get REST client: %w", err), Status: apierrors.NewBadRequest("error getting REST client")}
 	}
+	// TODO: add otel tracing
 	trace := utiltrace.New("Call validating webhook",
 		utiltrace.Field{"configuration", invocation.Webhook.GetConfigurationName()},
 		utiltrace.Field{"webhook", h.Name},

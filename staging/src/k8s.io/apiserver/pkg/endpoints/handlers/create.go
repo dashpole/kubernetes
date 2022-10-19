@@ -51,6 +51,7 @@ var namespaceGVR = schema.GroupVersionResource{Group: "", Version: "v1", Resourc
 func createHandler(r rest.NamedCreater, scope *RequestScope, admit admission.Interface, includeName bool) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		// For performance tracking purposes.
+		// TODO: add otel tracing
 		trace := utiltrace.New("Create", traceFields(req)...)
 		defer trace.LogIfLong(500 * time.Millisecond)
 

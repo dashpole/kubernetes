@@ -258,6 +258,7 @@ func (c *webhookConverter) Convert(in runtime.Object, toGV schema.GroupVersion) 
 		return out, nil
 	}
 
+	// TODO: add OTel tracing
 	trace := utiltrace.New("Call conversion webhook",
 		utiltrace.Field{"custom-resource-definition", c.name},
 		utiltrace.Field{"desired-api-version", desiredAPIVersion},

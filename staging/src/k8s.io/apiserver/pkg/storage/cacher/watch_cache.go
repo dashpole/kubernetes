@@ -460,6 +460,7 @@ func (w *watchCache) waitUntilFreshAndBlock(resourceVersion uint64, trace *utilt
 		w.cond.Wait()
 	}
 	if trace != nil {
+		// TODO: add otel event.
 		trace.Step("watchCache fresh enough")
 	}
 	return nil
