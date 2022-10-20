@@ -38,16 +38,17 @@ import (
 	"k8s.io/apiserver/pkg/endpoints/request"
 	"k8s.io/apiserver/pkg/registry/rest"
 	"k8s.io/apiserver/pkg/util/dryrun"
-	utiltrace "k8s.io/utils/trace"
+	"k8s.io/component-base/tracing"
 )
 
 // DeleteResource returns a function that will handle a resource deletion
 // TODO admission here becomes solely validating admission
 func DeleteResource(r rest.GracefulDeleter, allowsOptions bool, scope *RequestScope, admit admission.Interface) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+		ctx := req.Context()
 		// For performance tracking purposes.
-		trace := utiltrace.New("Delete", traceFields(req)...)
-		defer trace.LogIfLong(500 * time.Millisecond)
+		ctx, span := tracing.Start(ctx, "Delete", traceFields(req)...)
+		defer span.End(500 * time.Millisecond)
 
 		namespace, name, err := scope.Namer.Name(req)
 		if err != nil {
@@ -57,7 +58,7 @@ func DeleteResource(r rest.GracefulDeleter, allowsOptions bool, scope *RequestSc
 
 		// enforce a timeout of at most requestTimeoutUpperBound (34s) or less if the user-provided
 		// timeout inside the parent context is lower than requestTimeoutUpperBound.
-		ctx, cancel := context.WithTimeout(req.Context(), requestTimeoutUpperBound)
+		ctx, cancel := context.WithTimeout(ctx, requestTimeoutUpperBound)
 		defer cancel()
 
 		ctx = request.WithNamespace(ctx, namespace)
@@ -95,11 +96,11 @@ func DeleteResource(r rest.GracefulDeleter, allowsOptions bool, scope *RequestSc
 					scope.err(fmt.Errorf("decoded object cannot be converted to DeleteOptions"), w, req)
 					return
 				}
-				trace.Step("Decoded delete options")
+				span.AddEvent("Decoded delete options")
 
 				objGV := gvk.GroupVersion()
 				audit.LogRequestObject(req.Context(), obj, objGV, scope.Resource, scope.Subresource, metainternalversionscheme.Codecs)
-				trace.Step("Recorded the audit event")
+				span.AddEvent("Recorded the audit event")
 			} else {
 				if err := metainternalversionscheme.ParameterCodec.DecodeParameters(req.URL.Query(), scope.MetaGroupVersion, options); err != nil {
 					err = errors.NewBadRequest(err.Error())
@@ -115,7 +116,7 @@ func DeleteResource(r rest.GracefulDeleter, allowsOptions bool, scope *RequestSc
 		}
 		options.TypeMeta.SetGroupVersionKind(metav1.SchemeGroupVersion.WithKind("DeleteOptions"))
 
-		trace.Step("About to delete object from database")
+		span.AddEvent("About to delete object from database")
 		wasDeleted := true
 		userInfo, _ := request.UserFrom(ctx)
 		staticAdmissionAttrs := admission.NewAttributesRecord(nil, nil, scope.Kind, namespace, name, scope.Resource, scope.Subresource, admission.Delete, options, dryrun.IsDryRun(options.DryRun), userInfo)
@@ -128,7 +129,7 @@ func DeleteResource(r rest.GracefulDeleter, allowsOptions bool, scope *RequestSc
 			scope.err(err, w, req)
 			return
 		}
-		trace.Step("Object deleted from database")
+		span.AddEvent("Object deleted from database")
 
 		status := http.StatusOK
 		// Return http.StatusAccepted if the resource was not deleted immediately and
@@ -155,17 +156,18 @@ func DeleteResource(r rest.GracefulDeleter, allowsOptions bool, scope *RequestSc
 			}
 		}
 
-		trace.Step("About to write a response")
-		defer trace.Step("Writing http response done")
-		transformResponseObject(ctx, scope, trace, req, w, status, outputMediaType, result)
+		span.AddEvent("About to write a response")
+		defer span.AddEvent("Writing http response done")
+		transformResponseObject(ctx, scope, req, w, status, outputMediaType, result)
 	}
 }
 
 // DeleteCollection returns a function that will handle a collection deletion
 func DeleteCollection(r rest.CollectionDeleter, checkBody bool, scope *RequestScope, admit admission.Interface) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		trace := utiltrace.New("Delete", traceFields(req)...)
-		defer trace.LogIfLong(500 * time.Millisecond)
+		ctx := req.Context()
+		ctx, span := tracing.Start(ctx, "Delete", traceFields(req)...)
+		defer span.End(500 * time.Millisecond)
 
 		namespace, err := scope.Namer.Namespace(req)
 		if err != nil {
@@ -175,7 +177,7 @@ func DeleteCollection(r rest.CollectionDeleter, checkBody bool, scope *RequestSc
 
 		// enforce a timeout of at most requestTimeoutUpperBound (34s) or less if the user-provided
 		// timeout inside the parent context is lower than requestTimeoutUpperBound.
-		ctx, cancel := context.WithTimeout(req.Context(), requestTimeoutUpperBound)
+		ctx, cancel := context.WithTimeout(ctx, requestTimeoutUpperBound)
 		defer cancel()
 
 		ctx = request.WithNamespace(ctx, namespace)
@@ -280,8 +282,8 @@ func DeleteCollection(r rest.CollectionDeleter, checkBody bool, scope *RequestSc
 			}
 		}
 
-		trace.Step("About to write a response")
-		defer trace.Step("Writing http response done")
-		transformResponseObject(ctx, scope, trace, req, w, http.StatusOK, outputMediaType, result)
+		span.AddEvent("About to write a response")
+		defer span.AddEvent("Writing http response done")
+		transformResponseObject(ctx, scope, req, w, http.StatusOK, outputMediaType, result)
 	}
 }
