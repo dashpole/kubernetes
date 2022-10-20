@@ -26,6 +26,8 @@ import (
 	"testing"
 	"time"
 
+	"go.opentelemetry.io/otel/trace"
+
 	"k8s.io/apimachinery/pkg/util/json"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -302,6 +304,7 @@ func TestAuthenticationAuditAnnotationsDefaultChain(t *testing.T) {
 		RequestTimeout:        10 * time.Second,
 		LongRunningFunc:       func(_ *http.Request, _ *request.RequestInfo) bool { return false },
 		lifecycleSignals:      newLifecycleSignals(),
+		TracerProvider:        trace.NewNoopTracerProvider(),
 	}
 
 	h := DefaultBuildHandlerChain(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
