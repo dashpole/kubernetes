@@ -388,6 +388,103 @@ func testAPIServerTracing(t *testing.T, listener net.Listener, apiserverArgs []s
 	}
 }
 
+// traceServer implements TracesServiceServer, which can receive spans from the
+// API Server via OTLP.
+type traceServer struct {
+	t *testing.T
+	traceservice.UnimplementedTraceServiceServer
+	// the lock guards the per-scenario state below
+	lock         sync.Mutex
+	traceFound   chan struct{}
+	expectations traceExpectation
+}
+
+func (t *traceServer) Export(ctx context.Context, req *traceservice.ExportTraceServiceRequest) (*traceservice.ExportTraceServiceResponse, error) {
+	t.lock.Lock()
+	defer t.lock.Unlock()
+
+	t.expectations.update(req)
+	// if all expectations are met, notify the test scenario by closing traceFound
+	if t.expectations.met() {
+		select {
+		case <-t.traceFound:
+			// traceFound is already closed
+		default:
+			close(t.traceFound)
+		}
+	}
+	return &traceservice.ExportTraceServiceResponse{}, nil
+}
+
+// resetExpectations is used by a new test scenario to set new expectations for
+// the test server.
+func (t *traceServer) resetExpectations(newExpectations traceExpectation) {
+	t.lock.Lock()
+	defer t.lock.Unlock()
+	t.traceFound = make(chan struct{})
+	t.expectations = newExpectations
+}
+
+// traceExpectation is an expectation for an entire trace
+type traceExpectation []*spanExpectation
+
+// met returns true if all span expectations the server is looking for have
+// been satisfied.
+func (t traceExpectation) met() bool {
+	if len(t) == 0 {
+		return true
+	}
+	// we want to find any trace ID which all span IDs contain.
+	// try each trace ID met by the first span.
+	possibleTraceIDs := t[0].metTraceIDs
+	for _, tid := range possibleTraceIDs {
+		if t.contains(tid) {
+			return true
+		}
+	}
+	return false
+}
+
+// contains returns true if the all spans in the trace expectation contain the
+// trace ID
+func (t traceExpectation) contains(checkTID string) bool {
+	for _, expectation := range t {
+		if !expectation.contains(checkTID) {
+			return false
+		}
+	}
+	return true
+}
+
+// update finds all expectations that are met by a span in the
+// incoming request.
+func (t traceExpectation) update(req *traceservice.ExportTraceServiceRequest) {
+	for _, resourceSpans := range req.GetResourceSpans() {
+		for _, instrumentationSpans := range resourceSpans.GetScopeSpans() {
+			for _, span := range instrumentationSpans.GetSpans() {
+				t.updateForSpan(span)
+			}
+		}
+	}
+}
+
+// updateForSpan updates expectations based on a single incoming span.
+func (t traceExpectation) updateForSpan(span *tracev1.Span) {
+	for i, spanExpectation := range t {
+		if span.Name != spanExpectation.name {
+			continue
+		}
+		if !spanExpectation.attributes.matches(span.GetAttributes()) {
+			continue
+		}
+		if !spanExpectation.events.matches(span.GetEvents()) {
+			continue
+		}
+		t[i].metTraceIDs = append(spanExpectation.metTraceIDs, hex.EncodeToString(span.TraceId[:]))
+	}
+
+}
+
 // spanExpectation is the expectation for a single span
 type spanExpectation struct {
 	name       string
@@ -449,88 +546,4 @@ func (a attributeExpectation) matches(attrs []*commonv1.KeyValue) bool {
 		}
 	}
 	return true
-}
-
-// traceServer implements TracesServiceServer, which can receive spans from the
-// API Server via OTLP.
-type traceServer struct {
-	t *testing.T
-	traceservice.UnimplementedTraceServiceServer
-	// the lock guards the per-scenario state below
-	lock         sync.Mutex
-	traceFound   chan struct{}
-	expectations []*spanExpectation
-}
-
-func (t *traceServer) Export(ctx context.Context, req *traceservice.ExportTraceServiceRequest) (*traceservice.ExportTraceServiceResponse, error) {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	// updateExpectations marks all expectations met by the request as met
-	t.updateExpectations(req)
-	// if all expectations are met, notify the test scenario by closing traceFound
-	if t.allExpectationsMet() {
-		select {
-		case <-t.traceFound:
-			// traceFound is already closed
-		default:
-			close(t.traceFound)
-		}
-	}
-	return &traceservice.ExportTraceServiceResponse{}, nil
-}
-
-// allExpectationsMet returns true if all span expectations the server is
-// looking for have been satisfied.
-func (t *traceServer) allExpectationsMet() bool {
-	if len(t.expectations) == 0 {
-		return true
-	}
-	possibleTraceIDs := t.expectations[0].metTraceIDs
-	for _, checkTID := range possibleTraceIDs {
-		tidInAllExpectations := true
-		for _, expectation := range t.expectations {
-			if !expectation.contains(checkTID) {
-				tidInAllExpectations = false
-			}
-		}
-		if tidInAllExpectations {
-			return true
-		}
-	}
-	return false
-}
-
-// updateExpectations finds all expectations that are met by a span in the
-// incoming request.
-func (t *traceServer) updateExpectations(req *traceservice.ExportTraceServiceRequest) {
-	for _, resourceSpans := range req.GetResourceSpans() {
-		for _, instrumentationSpans := range resourceSpans.GetScopeSpans() {
-			for i, expectation := range t.expectations {
-				for _, span := range instrumentationSpans.GetSpans() {
-					if span.Name != expectation.name {
-						continue
-					}
-					if !expectation.attributes.matches(span.GetAttributes()) {
-						continue
-					}
-					if !expectation.events.matches(span.GetEvents()) {
-						continue
-					}
-					tid := hex.EncodeToString(span.TraceId[:])
-					t.t.Logf("span found: %+v, TID added; %s", span, tid)
-					t.expectations[i].metTraceIDs = append(expectation.metTraceIDs, tid)
-				}
-			}
-		}
-	}
-}
-
-// resetExpectations is used by a new test scenario to set new expectations for
-// the test server.
-func (t *traceServer) resetExpectations(newExpectations []*spanExpectation) {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-	t.traceFound = make(chan struct{})
-	t.expectations = newExpectations
 }
