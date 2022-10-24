@@ -18,6 +18,7 @@ package tracing
 
 import (
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"net"
@@ -205,7 +206,7 @@ func testAPIServerTracing(t *testing.T, listener net.Listener, apiserverArgs []s
 					},
 				},
 				{
-					name: "etcdserverpb.KV/Txn",
+					name: "etcdserverpb.KV/Range",
 					attributes: map[string]func(*commonv1.AnyValue) bool{
 						"rpc.system": func(v *commonv1.AnyValue) bool {
 							return v.GetStringValue() == "grpc"
@@ -237,7 +238,7 @@ func testAPIServerTracing(t *testing.T, listener net.Listener, apiserverArgs []s
 					},
 				},
 				{
-					name: "etcdserverpb.KV/Txn",
+					name: "etcdserverpb.KV/Range",
 					attributes: map[string]func(*commonv1.AnyValue) bool{
 						"rpc.system": func(v *commonv1.AnyValue) bool {
 							return v.GetStringValue() == "grpc"
@@ -392,7 +393,18 @@ type spanExpectation struct {
 	name       string
 	attributes attributeExpectation
 	events     eventExpectation
-	met        bool
+	// For each trace ID that meets this expectation, record it here.
+	// This way, we can ensure that all spans that should be in the same trace have the same trace ID
+	metTraceIDs []string
+}
+
+func (s *spanExpectation) contains(tid string) bool {
+	for _, metTID := range s.metTraceIDs {
+		if tid == metTID {
+			return true
+		}
+	}
+	return false
 }
 
 // eventExpectation is the expectation for an event attached to a span.
@@ -471,12 +483,22 @@ func (t *traceServer) Export(ctx context.Context, req *traceservice.ExportTraceS
 // allExpectationsMet returns true if all span expectations the server is
 // looking for have been satisfied.
 func (t *traceServer) allExpectationsMet() bool {
-	for _, expectation := range t.expectations {
-		if !expectation.met {
-			return false
+	if len(t.expectations) == 0 {
+		return true
+	}
+	possibleTraceIDs := t.expectations[0].metTraceIDs
+	for _, checkTID := range possibleTraceIDs {
+		tidInAllExpectations := true
+		for _, expectation := range t.expectations {
+			if !expectation.contains(checkTID) {
+				tidInAllExpectations = false
+			}
+		}
+		if tidInAllExpectations {
+			return true
 		}
 	}
-	return true
+	return false
 }
 
 // updateExpectations finds all expectations that are met by a span in the
@@ -484,7 +506,7 @@ func (t *traceServer) allExpectationsMet() bool {
 func (t *traceServer) updateExpectations(req *traceservice.ExportTraceServiceRequest) {
 	for _, resourceSpans := range req.GetResourceSpans() {
 		for _, instrumentationSpans := range resourceSpans.GetScopeSpans() {
-			for _, expectation := range t.expectations {
+			for i, expectation := range t.expectations {
 				for _, span := range instrumentationSpans.GetSpans() {
 					if span.Name != expectation.name {
 						continue
@@ -495,8 +517,9 @@ func (t *traceServer) updateExpectations(req *traceservice.ExportTraceServiceReq
 					if !expectation.events.matches(span.GetEvents()) {
 						continue
 					}
-					t.t.Logf("span found: %+v", span)
-					expectation.met = true
+					tid := hex.EncodeToString(span.TraceId[:])
+					t.t.Logf("span found: %+v, TID added; %s", span, tid)
+					t.expectations[i].metTraceIDs = append(expectation.metTraceIDs, tid)
 				}
 			}
 		}
