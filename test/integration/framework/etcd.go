@@ -79,7 +79,11 @@ func startEtcd() (func(), error) {
 	}
 	klog.V(1).Infof("could not connect to etcd: %v", err)
 
-	currentURL, stop, err := RunCustomEtcd("integration_test_etcd_data", nil)
+	currentURL, stop, err := RunCustomEtcd("integration_test_etcd_data", []string{
+		"--experimental-enable-distributed-tracing",
+		"--experimental-distributed-tracing-address=0.0.0.0:4317",
+		"--experimental-distributed-tracing-service-name=etcd",
+	})
 	if err != nil {
 		return nil, err
 	}
