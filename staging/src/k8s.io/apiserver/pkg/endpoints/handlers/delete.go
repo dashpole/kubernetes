@@ -22,6 +22,7 @@ import (
 	"net/http"
 	"time"
 
+	"go.opentelemetry.io/otel/attribute"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metainternalversion "k8s.io/apimachinery/pkg/apis/meta/internalversion"
 	metainternalversionscheme "k8s.io/apimachinery/pkg/apis/meta/internalversion/scheme"
@@ -73,11 +74,12 @@ func DeleteResource(r rest.GracefulDeleter, allowsOptions bool, scope *RequestSc
 		options := &metav1.DeleteOptions{}
 		if allowsOptions {
 			body, err := limitedReadBodyWithRecordMetric(ctx, req, scope.MaxRequestBodyBytes, scope.Resource.GroupResource().String(), requestmetrics.Delete)
-			trace.Step("limitedReadBody done", utiltrace.Field{"len", len(body)}, utiltrace.Field{"err", err})
 			if err != nil {
+				span.AddEvent("limitedReadBody failed", attribute.Int("len", len(body)), attribute.String("err", err.Error()))
 				scope.err(err, w, req)
 				return
 			}
+			span.AddEvent("limitedReadBody succeeded", attribute.Int("len", len(body)))
 			if len(body) > 0 {
 				s, err := negotiation.NegotiateInputSerializer(req, false, metainternalversionscheme.Codecs)
 				if err != nil {
@@ -218,11 +220,12 @@ func DeleteCollection(r rest.CollectionDeleter, checkBody bool, scope *RequestSc
 		options := &metav1.DeleteOptions{}
 		if checkBody {
 			body, err := limitedReadBodyWithRecordMetric(ctx, req, scope.MaxRequestBodyBytes, scope.Resource.GroupResource().String(), requestmetrics.DeleteCollection)
-			trace.Step("limitedReadBody done", utiltrace.Field{"len", len(body)}, utiltrace.Field{"err", err})
 			if err != nil {
+				span.AddEvent("limitedReadBody failed", attribute.Int("len", len(body)), attribute.String("err", err.Error()))
 				scope.err(err, w, req)
 				return
 			}
+			span.AddEvent("limitedReadBody succeeded", attribute.Int("len", len(body)))
 			if len(body) > 0 {
 				s, err := negotiation.NegotiateInputSerializer(req, false, metainternalversionscheme.Codecs)
 				if err != nil {
