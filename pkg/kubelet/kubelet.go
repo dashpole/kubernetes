@@ -38,6 +38,7 @@ import (
 
 	cadvisorapi "github.com/google/cadvisor/info/v1"
 	libcontaineruserns "github.com/opencontainers/runc/libcontainer/userns"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	"k8s.io/mount-utils"
 	"k8s.io/utils/integer"
@@ -490,6 +491,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		insecureContainerLifecycleHTTPClient.Transport = insecureTLSTransport
 		insecureContainerLifecycleHTTPClient.CheckRedirect = httpprobe.RedirectChecker(false)
 	}
+	tracer := kubeDeps.TracerProvider.Tracer("k8s.io/kubernetes/pkg/kubelet")
 
 	klet := &Kubelet{
 		hostname:                                hostname,
@@ -542,6 +544,7 @@ func NewMainKubelet(kubeCfg *kubeletconfiginternal.KubeletConfiguration,
 		experimentalHostUserNamespaceDefaulting: utilfeature.DefaultFeatureGate.Enabled(features.ExperimentalHostUserNamespaceDefaultingGate),
 		keepTerminatedPodVolumes:                keepTerminatedPodVolumes,
 		nodeStatusMaxImages:                     nodeStatusMaxImages,
+		tracer:                                  tracer,
 	}
 
 	if klet.cloud != nil {
@@ -1193,6 +1196,9 @@ type Kubelet struct {
 
 	// Manage user namespaces
 	usernsManager *usernsManager
+
+	// Create OpenTelemetry spans
+	tracer trace.Tracer
 }
 
 // ListPodStats is delegated to StatsProvider, which implements stats.Provider interface
@@ -1534,6 +1540,8 @@ func (kl *Kubelet) syncPod(ctx context.Context, updateType kubetypes.SyncPodType
 	defer func() {
 		klog.V(4).InfoS("syncPod exit", "pod", klog.KObj(pod), "podUID", pod.UID, "isTerminal", isTerminal)
 	}()
+	_, span := kl.tracer.Start(ctx, "SyncPod", trace.WithAttributes(attribute.String("update.type", updateType.String())))
+	defer span.End()
 
 	// Latency measurements for the main workflow are relative to the
 	// first time the pod was seen by kubelet.
