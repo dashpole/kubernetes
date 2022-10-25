@@ -941,6 +941,11 @@ clusterDNS:
   - ${quoted_dns_server_ip}
 clusterDomain: ${quoted_dns_domain}
 readOnlyPort: 10255
+tracing:
+  samplingRatePerMillion: 1000000
+featureGates:
+  KubeletTracing: true
+
 EOF
 
   # Note: ENABLE_MANIFEST_URL is used by GKE.
