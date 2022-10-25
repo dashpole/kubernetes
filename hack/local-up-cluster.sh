@@ -752,6 +752,10 @@ rotateCertificates: true
 runtimeRequestTimeout: "${RUNTIME_REQUEST_TIMEOUT}"
 staticPodPath: "${POD_MANIFEST_PATH}"
 resolvConf: "${KUBELET_RESOLV_CONF}"
+tracing:
+  samplingRatePerMillion: 1000000
+featureGates:
+  KubeletTracing: true
 EOF
     {
       # authentication

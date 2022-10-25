@@ -3109,6 +3109,11 @@ oom_score = -999
   endpoint = ["https://registry.k8s.io", "https://k8s.gcr.io",]
 [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
   SystemdCgroup = ${systemdCgroup}
+[plugins."io.containerd.tracing.processor.v1.otlp"]
+  endpoint = "http://localhost:4318"
+[plugins."io.containerd.internal.v1.tracing"]
+  sampling_ratio = 1.0
+  service_name = "containerd"
 EOF
 
   if [[ "${CONTAINER_RUNTIME_TEST_HANDLER:-}" == "true" ]]; then
