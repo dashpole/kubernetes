@@ -18,6 +18,7 @@ limitations under the License.
 package container
 
 import (
+	"context"
 	"sync"
 	"time"
 )
@@ -34,7 +35,7 @@ type RuntimeCache interface {
 }
 
 type podsGetter interface {
-	GetPods(bool) ([]*Pod, error)
+	GetPods(context.Context, bool) ([]*Pod, error)
 }
 
 // NewRuntimeCache creates a container runtime cache.
@@ -93,6 +94,6 @@ func (r *runtimeCache) updateCache() error {
 func (r *runtimeCache) getPodsWithTimestamp() ([]*Pod, time.Time, error) {
 	// Always record the timestamp before getting the pods to avoid stale pods.
 	timestamp := time.Now()
-	pods, err := r.getter.GetPods(false)
+	pods, err := r.getter.GetPods(context.Background(), false)
 	return pods, timestamp, err
 }

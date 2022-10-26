@@ -17,6 +17,7 @@ limitations under the License.
 package pleg
 
 import (
+	"context"
 	"fmt"
 	"sync/atomic"
 	"time"
@@ -200,7 +201,7 @@ func (g *GenericPLEG) relist() {
 	}()
 
 	// Get all the pods.
-	podList, err := g.runtime.GetPods(true)
+	podList, err := g.runtime.GetPods(context.Background(), true)
 	if err != nil {
 		klog.ErrorS(err, "GenericPLEG: Unable to retrieve pods")
 		return
@@ -400,7 +401,7 @@ func (g *GenericPLEG) updateCache(pod *kubecontainer.Pod, pid types.UID) error {
 	// TODO: Consider adding a new runtime method
 	// GetPodStatus(pod *kubecontainer.Pod) so that Docker can avoid listing
 	// all containers again.
-	status, err := g.runtime.GetPodStatus(pod.ID, pod.Name, pod.Namespace)
+	status, err := g.runtime.GetPodStatus(context.Background(), pod.ID, pod.Name, pod.Namespace)
 	if err != nil {
 		// nolint:logcheck // Not using the result of klog.V inside the
 		// if branch is okay, we just use it to determine whether the

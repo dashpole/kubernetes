@@ -17,6 +17,7 @@ limitations under the License.
 package stats
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"path"
@@ -357,14 +358,14 @@ func (p *criStatsProvider) ListPodCPUAndMemoryStats() ([]statsapi.PodStats, erro
 }
 
 func (p *criStatsProvider) getPodAndContainerMaps() (map[string]*runtimeapi.Container, map[string]*runtimeapi.PodSandbox, error) {
-	containers, err := p.runtimeService.ListContainers(&runtimeapi.ContainerFilter{})
+	containers, err := p.runtimeService.ListContainers(context.Background(), &runtimeapi.ContainerFilter{})
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to list all containers: %v", err)
 	}
 
 	// Creates pod sandbox map between the pod sandbox ID and the PodSandbox object.
 	podSandboxMap := make(map[string]*runtimeapi.PodSandbox)
-	podSandboxes, err := p.runtimeService.ListPodSandbox(&runtimeapi.PodSandboxFilter{})
+	podSandboxes, err := p.runtimeService.ListPodSandbox(context.Background(), &runtimeapi.PodSandboxFilter{})
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to list all pod sandboxes: %v", err)
 	}

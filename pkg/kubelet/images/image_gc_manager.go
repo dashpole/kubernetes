@@ -17,6 +17,7 @@ limitations under the License.
 package images
 
 import (
+	"context"
 	goerrors "errors"
 	"fmt"
 	"math"
@@ -24,9 +25,9 @@ import (
 	"sync"
 	"time"
 
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/klog/v2"
 
-	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/util/errors"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
@@ -194,7 +195,7 @@ func (im *realImageGCManager) Start() {
 
 	// Start a goroutine periodically updates image cache.
 	go wait.Until(func() {
-		images, err := im.runtime.ListImages()
+		images, err := im.runtime.ListImages(context.Background())
 		if err != nil {
 			klog.InfoS("Failed to update image list", "err", err)
 		} else {
@@ -213,16 +214,16 @@ func (im *realImageGCManager) detectImages(detectTime time.Time) (sets.String, e
 	imagesInUse := sets.NewString()
 
 	// Always consider the container runtime pod sandbox image in use
-	imageRef, err := im.runtime.GetImageRef(container.ImageSpec{Image: im.sandboxImage})
+	imageRef, err := im.runtime.GetImageRef(context.Background(), container.ImageSpec{Image: im.sandboxImage})
 	if err == nil && imageRef != "" {
 		imagesInUse.Insert(imageRef)
 	}
 
-	images, err := im.runtime.ListImages()
+	images, err := im.runtime.ListImages(context.Background())
 	if err != nil {
 		return imagesInUse, err
 	}
-	pods, err := im.runtime.GetPods(true)
+	pods, err := im.runtime.GetPods(context.Background(), true)
 	if err != nil {
 		return imagesInUse, err
 	}
@@ -385,7 +386,7 @@ func (im *realImageGCManager) freeSpace(bytesToFree int64, freeTime time.Time) (
 
 		// Remove image. Continue despite errors.
 		klog.InfoS("Removing image to free bytes", "imageID", image.id, "size", image.size)
-		err := im.runtime.RemoveImage(container.ImageSpec{Image: image.id})
+		err := im.runtime.RemoveImage(context.Background(), container.ImageSpec{Image: image.id})
 		if err != nil {
 			deletionErrors = append(deletionErrors, err)
 			continue

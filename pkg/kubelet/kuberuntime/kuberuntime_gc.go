@@ -17,6 +17,7 @@ limitations under the License.
 package kuberuntime
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -137,12 +138,12 @@ func (cgc *containerGC) removeOldestN(containers []containerGCInfo, toRemove int
 				ID:   containers[i].id,
 			}
 			message := "Container is in unknown state, try killing it before removal"
-			if err := cgc.manager.killContainer(nil, id, containers[i].name, message, reasonUnknown, nil); err != nil {
+			if err := cgc.manager.killContainer(context.Background(), nil, id, containers[i].name, message, reasonUnknown, nil); err != nil {
 				klog.ErrorS(err, "Failed to stop container", "containerID", containers[i].id)
 				continue
 			}
 		}
-		if err := cgc.manager.removeContainer(containers[i].id); err != nil {
+		if err := cgc.manager.removeContainer(context.Background(), containers[i].id); err != nil {
 			klog.ErrorS(err, "Failed to remove container", "containerID", containers[i].id)
 		}
 	}
@@ -172,11 +173,11 @@ func (cgc *containerGC) removeSandbox(sandboxID string) {
 	// In normal cases, kubelet should've already called StopPodSandbox before
 	// GC kicks in. To guard against the rare cases where this is not true, try
 	// stopping the sandbox before removing it.
-	if err := cgc.client.StopPodSandbox(sandboxID); err != nil {
+	if err := cgc.client.StopPodSandbox(context.Background(), sandboxID); err != nil {
 		klog.ErrorS(err, "Failed to stop sandbox before removing", "sandboxID", sandboxID)
 		return
 	}
-	if err := cgc.client.RemovePodSandbox(sandboxID); err != nil {
+	if err := cgc.client.RemovePodSandbox(context.Background(), sandboxID); err != nil {
 		klog.ErrorS(err, "Failed to remove sandbox", "sandboxID", sandboxID)
 	}
 }
@@ -184,7 +185,7 @@ func (cgc *containerGC) removeSandbox(sandboxID string) {
 // evictableContainers gets all containers that are evictable. Evictable containers are: not running
 // and created more than MinAge ago.
 func (cgc *containerGC) evictableContainers(minAge time.Duration) (containersByEvictUnit, error) {
-	containers, err := cgc.manager.getKubeletContainers(true)
+	containers, err := cgc.manager.getKubeletContainers(context.Background(), true)
 	if err != nil {
 		return containersByEvictUnit{}, err
 	}
@@ -273,12 +274,12 @@ func (cgc *containerGC) evictContainers(gcPolicy kubecontainer.GCPolicy, allSour
 //  3. belong to a non-existent (i.e., already removed) pod, or is not the
 //     most recently created sandbox for the pod.
 func (cgc *containerGC) evictSandboxes(evictNonDeletedPods bool) error {
-	containers, err := cgc.manager.getKubeletContainers(true)
+	containers, err := cgc.manager.getKubeletContainers(context.Background(), true)
 	if err != nil {
 		return err
 	}
 
-	sandboxes, err := cgc.manager.getKubeletSandboxes(true)
+	sandboxes, err := cgc.manager.getKubeletSandboxes(context.Background(), true)
 	if err != nil {
 		return err
 	}
@@ -354,7 +355,7 @@ func (cgc *containerGC) evictPodLogsDirectories(allSourcesReady bool) error {
 	for _, logSymlink := range logSymlinks {
 		if _, err := osInterface.Stat(logSymlink); os.IsNotExist(err) {
 			if containerID, err := getContainerIDFromLegacyLogSymlink(logSymlink); err == nil {
-				resp, err := cgc.manager.runtimeService.ContainerStatus(containerID, false)
+				resp, err := cgc.manager.runtimeService.ContainerStatus(context.Background(), containerID, false)
 				if err != nil {
 					// TODO: we should handle container not found (i.e. container was deleted) case differently
 					// once https://github.com/kubernetes/kubernetes/issues/63336 is resolved

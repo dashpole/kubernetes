@@ -18,6 +18,7 @@ package logs
 
 import (
 	"compress/gzip"
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -189,7 +190,7 @@ func (c *containerLogManager) Start() {
 func (c *containerLogManager) Clean(containerID string) error {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	resp, err := c.runtimeService.ContainerStatus(containerID, false)
+	resp, err := c.runtimeService.ContainerStatus(context.Background(), containerID, false)
 	if err != nil {
 		return fmt.Errorf("failed to get container status %q: %v", containerID, err)
 	}
@@ -215,7 +216,7 @@ func (c *containerLogManager) rotateLogs() error {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 	// TODO(#59998): Use kubelet pod cache.
-	containers, err := c.runtimeService.ListContainers(&runtimeapi.ContainerFilter{})
+	containers, err := c.runtimeService.ListContainers(context.Background(), &runtimeapi.ContainerFilter{})
 	if err != nil {
 		return fmt.Errorf("failed to list containers: %v", err)
 	}
@@ -228,7 +229,7 @@ func (c *containerLogManager) rotateLogs() error {
 		}
 		id := container.GetId()
 		// Note that we should not block log rotate for an error of a single container.
-		resp, err := c.runtimeService.ContainerStatus(id, false)
+		resp, err := c.runtimeService.ContainerStatus(context.Background(), id, false)
 		if err != nil {
 			klog.ErrorS(err, "Failed to get container status", "containerID", id)
 			continue

@@ -316,7 +316,7 @@ func (mr *MockRuntimeMockRecorder) Status() *gomock.Call {
 }
 
 // SyncPod mocks base method.
-func (m *MockRuntime) SyncPod(pod *v1.Pod, podStatus *container.PodStatus, pullSecrets []v1.Secret, backOff *flowcontrol.Backoff) container.PodSyncResult {
+func (m *MockRuntime) SyncPod(_ context.Context, pod *v1.Pod, podStatus *container.PodStatus, pullSecrets []v1.Secret, backOff *flowcontrol.Backoff) container.PodSyncResult {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SyncPod", pod, podStatus, pullSecrets, backOff)
 	ret0, _ := ret[0].(container.PodSyncResult)
@@ -324,7 +324,7 @@ func (m *MockRuntime) SyncPod(pod *v1.Pod, podStatus *container.PodStatus, pullS
 }
 
 // SyncPod indicates an expected call of SyncPod.
-func (mr *MockRuntimeMockRecorder) SyncPod(pod, podStatus, pullSecrets, backOff interface{}) *gomock.Call {
+func (mr *MockRuntimeMockRecorder) SyncPod(_ context.Context, pod, podStatus, pullSecrets, backOff interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SyncPod", reflect.TypeOf((*MockRuntime)(nil).SyncPod), pod, podStatus, pullSecrets, backOff)
 }
