@@ -61,6 +61,7 @@ import (
 	"k8s.io/kubernetes/plugin/pkg/admission/storage/persistentvolume/resize"
 	"k8s.io/kubernetes/plugin/pkg/admission/storage/storageclass/setdefault"
 	"k8s.io/kubernetes/plugin/pkg/admission/storage/storageobjectinuseprotection"
+	"k8s.io/kubernetes/plugin/pkg/admission/tracing"
 
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apiserver/pkg/admission"
@@ -82,6 +83,7 @@ var AllOrderedPlugins = []string{
 	noderestriction.PluginName,              // NodeRestriction
 	nodetaint.PluginName,                    // TaintNodesByCondition
 	alwayspullimages.PluginName,             // AlwaysPullImages
+	tracing.PluginName,                      // TracingContext
 	imagepolicy.PluginName,                  // ImagePolicyWebhook
 	podsecurity.PluginName,                  // PodSecurity
 	podnodeselector.PluginName,              // PodNodeSelector
@@ -164,6 +166,7 @@ func RegisterAllAdmissionPlugins(plugins *admission.Plugins) {
 	nodedeclaredfeatures.Register(plugins)
 	jobadmission.Register(plugins)
 	podresize.Register(plugins)
+	tracing.Register(plugins)
 }
 
 // DefaultOffAdmissionPlugins get admission plugins off by default for kube-apiserver.
