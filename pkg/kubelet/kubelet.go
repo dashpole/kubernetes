@@ -142,6 +142,7 @@ import (
 	"k8s.io/kubernetes/pkg/util/oom"
 	"k8s.io/kubernetes/pkg/volume"
 	"k8s.io/kubernetes/pkg/volume/csi"
+	"k8s.io/component-base/tracing"
 	"k8s.io/kubernetes/pkg/volume/util/hostutil"
 	"k8s.io/kubernetes/pkg/volume/util/subpath"
 	"k8s.io/kubernetes/pkg/volume/util/volumepathhandler"
@@ -2012,13 +2013,19 @@ func (kl *Kubelet) Run(ctx context.Context, updates <-chan kubetypes.PodUpdate) 
 // the most accurate information possible about an error situation to aid debugging.
 // Callers should not write an event if this operation returns an error.
 func (kl *Kubelet) SyncPod(ctx context.Context, updateType kubetypes.SyncPodType, pod, mirrorPod *v1.Pod, podStatus *kubecontainer.PodStatus) (isTerminal bool, postSync func(), err error) {
-	ctx, otelSpan := kl.tracer.Start(ctx, "syncPod", trace.WithAttributes(
-		semconv.K8SPodUIDKey.String(string(pod.UID)),
-		attribute.String("k8s.pod", klog.KObj(pod).String()),
-		semconv.K8SPodNameKey.String(pod.Name),
-		attribute.String("k8s.pod.update_type", updateType.String()),
-		semconv.K8SNamespaceNameKey.String(pod.Namespace),
-	))
+	ctx, otelSpan := tracing.StartReconcileSpan(
+		ctx,
+		"syncPod",
+		pod,
+		kl.tracer,
+		trace.WithAttributes(
+			semconv.K8SPodUIDKey.String(string(pod.UID)),
+			attribute.String("k8s.pod", klog.KObj(pod).String()),
+			semconv.K8SPodNameKey.String(pod.Name),
+			attribute.String("k8s.pod.update_type", updateType.String()),
+			semconv.K8SNamespaceNameKey.String(pod.Namespace),
+		),
+	)
 	logger := klog.FromContext(ctx)
 	logger.V(4).Info("SyncPod enter", "pod", klog.KObj(pod), "podUID", pod.UID)
 	defer func() {

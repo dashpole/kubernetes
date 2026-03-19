@@ -4,7 +4,6 @@ import (
 	"context"
 	"io"
 
-	"go.opentelemetry.io/otel/propagation"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apiserver/pkg/admission"
 	"k8s.io/component-base/tracing"
@@ -23,7 +22,6 @@ func Register(plugins *admission.Plugins) {
 // Plugin is an implementation of admission.MutationInterface.
 type Plugin struct {
 	*admission.Handler
-	propagator propagation.TextMapPropagator
 }
 
 var _ admission.MutationInterface = &Plugin{}
@@ -31,8 +29,7 @@ var _ admission.MutationInterface = &Plugin{}
 // NewPlugin creates a new admission plugin.
 func NewPlugin() *Plugin {
 	return &Plugin{
-		Handler:    admission.NewHandler(admission.Create, admission.Update),
-		propagator: propagation.TraceContext{},
+		Handler: admission.NewHandler(admission.Create, admission.Update),
 	}
 }
 
@@ -51,7 +48,7 @@ func (p *Plugin) Admit(ctx context.Context, a admission.Attributes, o admission.
 
 	// Inject trace context from ctx into the object's annotations.
 	// We use the W3C propagator to convert the context to traceparent/baggage strings.
-	tracing.InjectContext(ctx, metaObj, p.propagator)
+	tracing.InjectContext(ctx, metaObj)
 
 	return nil
 }

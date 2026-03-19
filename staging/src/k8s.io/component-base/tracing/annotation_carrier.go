@@ -3,7 +3,7 @@ package tracing
 import (
 	"context"
 
-	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -72,15 +72,15 @@ func (c *AnnotationCarrier) Keys() []string {
 }
 
 // InjectContext injects the trace context from ctx into the object's annotations.
-func InjectContext(ctx context.Context, obj metav1.Object, propagator propagation.TextMapPropagator) {
+func InjectContext(ctx context.Context, obj metav1.Object) {
 	carrier := NewAnnotationCarrier(obj)
-	propagator.Inject(ctx, carrier)
+	otel.GetTextMapPropagator().Inject(ctx, carrier)
 }
 
 // ExtractContext extracts trace context from the object's annotations.
-func ExtractContext(ctx context.Context, obj metav1.Object, propagator propagation.TextMapPropagator) context.Context {
+func ExtractContext(ctx context.Context, obj metav1.Object) context.Context {
 	carrier := NewAnnotationCarrier(obj)
-	return propagator.Extract(ctx, carrier)
+	return otel.GetTextMapPropagator().Extract(ctx, carrier)
 }
 
 // StartReconcileSpan starts a new root span for reconciliation, linked to any
@@ -90,14 +90,15 @@ func StartReconcileSpan(
 	name string,
 	obj metav1.Object,
 	tracer trace.Tracer,
-	propagator propagation.TextMapPropagator,
+	options ...trace.SpanStartOption,
 ) (context.Context, trace.Span) {
 	opts := []trace.SpanStartOption{
 		trace.WithSpanKind(trace.SpanKindConsumer),
 	}
+	opts = append(opts, options...)
 
 	// Extract stored context and create a link if present
-	extractedCtx := ExtractContext(context.Background(), obj, propagator)
+	extractedCtx := ExtractContext(context.Background(), obj)
 	remoteSpanCtx := trace.SpanContextFromContext(extractedCtx)
 
 	if remoteSpanCtx.IsValid() {

@@ -4,6 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -12,6 +14,7 @@ import (
 )
 
 func TestTracingContextAdmission(t *testing.T) {
+	otel.SetTextMapPropagator(propagation.TraceContext{})
 	plugin := NewPlugin()
 
 	tests := []struct {
