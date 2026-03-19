@@ -33,6 +33,8 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	clientset "k8s.io/client-go/kubernetes"
+	"go.opentelemetry.io/otel"
+	"k8s.io/component-base/tracing"
 	"k8s.io/klog/v2"
 	extenderv1 "k8s.io/kube-scheduler/extender/v1"
 	fwk "k8s.io/kube-scheduler/framework"
@@ -75,6 +77,10 @@ func (sched *Scheduler) ScheduleOne(ctx context.Context) {
 	if podInfo == nil || podInfo.Pod == nil {
 		return
 	}
+
+	ctx, span := tracing.StartReconcileSpan(ctx, "ScheduleOne", podInfo.Pod, otel.Tracer("k8s.io/kubernetes/pkg/scheduler"))
+	defer span.End()
+
 	if sched.genericWorkloadEnabled && podInfo.Pod.Spec.SchedulingGroup != nil {
 		podGroupInfo, err := sched.podGroupInfoForPod(ctx, podInfo)
 		if err != nil {
