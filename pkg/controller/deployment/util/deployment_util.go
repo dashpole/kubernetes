@@ -306,7 +306,7 @@ var annotationsToSkip = map[string]bool{
 //
 // See https://github.com/kubernetes/kubernetes/pull/20035#issuecomment-179558615
 func skipCopyAnnotation(key string) bool {
-	return annotationsToSkip[key]
+	return annotationsToSkip[key] || strings.HasPrefix(key, "tracing.k8s.io/")
 }
 
 // copyDeploymentAnnotationsToReplicaSet copies deployment's annotations to replica set's annotations,
