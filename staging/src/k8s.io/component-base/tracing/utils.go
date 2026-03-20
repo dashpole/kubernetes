@@ -81,10 +81,16 @@ func NewProvider(ctx context.Context,
 	if tracingConfig.SamplingRatePerMillion != nil && *tracingConfig.SamplingRatePerMillion > 0 {
 		sampler = sdktrace.TraceIDRatioBased(float64(*tracingConfig.SamplingRatePerMillion) / float64(1000000))
 	}
+	
+	// Create a sampler that falls back to the sampling decision of the first sampled link, if any.
+	// This ensures that when StartReconcileSpan uses a span link instead of a parent context, 
+	// the sampling decision is still coordinated.
+	fallbackSampler := sdktrace.ParentBased(linkFallbackSampler{root: sampler})
+
 	// batch span processor to aggregate spans before export.
 	bsp := sdktrace.NewBatchSpanProcessor(exporter)
 	tp := sdktrace.NewTracerProvider(
-		sdktrace.WithSampler(sdktrace.ParentBased(sampler)),
+		sdktrace.WithSampler(fallbackSampler),
 		sdktrace.WithSpanProcessor(bsp),
 		sdktrace.WithResource(res),
 	)
@@ -131,4 +137,29 @@ func WrapperFor(tp oteltrace.TracerProvider) transport.WrapperFunc {
 // Propagators returns the recommended set of propagators.
 func Propagators() propagation.TextMapPropagator {
 	return propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{})
+}
+
+type linkFallbackSampler struct {
+	root sdktrace.Sampler
+}
+
+func (s linkFallbackSampler) ShouldSample(p sdktrace.SamplingParameters) sdktrace.SamplingResult {
+	// If the parent context is not valid, ParentBased will call this sampler.
+	// So we only get here if there is no valid parent context.
+	
+	// Check if any link is valid and sampled.
+	for _, link := range p.Links {
+		if link.SpanContext.IsValid() && link.SpanContext.IsSampled() {
+			return sdktrace.SamplingResult{
+				Decision:   sdktrace.RecordAndSample,
+			}
+		}
+	}
+
+	// Fallback to the original root sampler (NeverSample or TraceIDRatioBased)
+	return s.root.ShouldSample(p)
+}
+
+func (s linkFallbackSampler) Description() string {
+	return "LinkFallback{" + s.root.Description() + "}"
 }
