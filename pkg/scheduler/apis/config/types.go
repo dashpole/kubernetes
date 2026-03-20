@@ -23,6 +23,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
 	componentbaseconfig "k8s.io/component-base/config"
+	tracingapi "k8s.io/component-base/tracing/api/v1"
 )
 
 const (
@@ -94,6 +95,11 @@ type KubeSchedulerConfiguration struct {
 	// failover with the benefit of lower memory overhead while waiting to become leader.
 	// Defaults to false.
 	DelayCacheUntilActive bool
+
+	// Tracing specifies the versioned configuration for OpenTelemetry tracing clients.
+	// See https://kep.k8s.io/2832 for more details.
+	// +optional
+	Tracing *tracingapi.TracingConfiguration
 }
 
 // KubeSchedulerProfile is a scheduling profile.

@@ -24,6 +24,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	componentbaseconfigv1alpha1 "k8s.io/component-base/config/v1alpha1"
+	tracingapi "k8s.io/component-base/tracing/api/v1"
 	"sigs.k8s.io/yaml"
 )
 
@@ -96,6 +97,11 @@ type KubeSchedulerConfiguration struct {
 	// failover with the benefit of lower memory overhead while waiting to become leader.
 	// Defaults to false.
 	DelayCacheUntilActive bool `json:"delayCacheUntilActive,omitempty"`
+
+	// Tracing specifies the versioned configuration for OpenTelemetry tracing clients.
+	// See https://kep.k8s.io/2832 for more details.
+	// +optional
+	Tracing *tracingapi.TracingConfiguration `json:"tracing,omitempty"`
 }
 
 // DecodeNestedObjects decodes plugin args for known types.

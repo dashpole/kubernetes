@@ -55,6 +55,9 @@ import (
 	kubeschedulerconfig "k8s.io/kubernetes/pkg/scheduler/apis/config"
 	"k8s.io/kubernetes/pkg/scheduler/apis/config/validation"
 	netutils "k8s.io/utils/net"
+	"go.opentelemetry.io/otel/sdk/resource"
+	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
+	"k8s.io/component-base/tracing"
 )
 
 // Options has all the params needed to run a Scheduler
@@ -310,6 +313,17 @@ func (o *Options) Config(ctx context.Context) (*schedulerappconfig.Config, error
 	if err := o.ApplyTo(logger, c); err != nil {
 		return nil, err
 	}
+
+	resourceOpts := []resource.Option{
+		resource.WithAttributes(
+			semconv.ServiceNameKey.String("kube-scheduler"),
+		),
+	}
+	tp, err := tracing.NewProvider(ctx, c.ComponentConfig.Tracing, nil, resourceOpts)
+	if err != nil {
+		return nil, err
+	}
+	c.KubeConfig.Wrap(tracing.WrapperFor(tp))
 
 	// Prepare kube clients.
 	client, eventClient, err := createClients(c.KubeConfig)

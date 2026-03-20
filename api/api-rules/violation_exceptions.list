@@ -226,6 +226,7 @@ API rule violation: names_match,k8s.io/kube-controller-manager/config/v1alpha1,K
 API rule violation: names_match,k8s.io/kube-controller-manager/config/v1alpha1,KubeControllerManagerConfiguration,ServiceController
 API rule violation: names_match,k8s.io/kube-controller-manager/config/v1alpha1,KubeControllerManagerConfiguration,StatefulSetController
 API rule violation: names_match,k8s.io/kube-controller-manager/config/v1alpha1,KubeControllerManagerConfiguration,TTLAfterFinishedController
+API rule violation: names_match,k8s.io/kube-controller-manager/config/v1alpha1,KubeControllerManagerConfiguration,Tracing
 API rule violation: names_match,k8s.io/kube-controller-manager/config/v1alpha1,KubeControllerManagerConfiguration,ValidatingAdmissionPolicyStatusController
 API rule violation: names_match,k8s.io/kube-controller-manager/config/v1alpha1,LegacySATokenCleanerConfiguration,CleanUpPeriod
 API rule violation: names_match,k8s.io/kube-controller-manager/config/v1alpha1,NamespaceControllerConfiguration,ConcurrentNamespaceSyncs

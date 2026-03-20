@@ -29,6 +29,7 @@ import (
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	v1alpha1 "k8s.io/component-base/config/v1alpha1"
+	apiv1 "k8s.io/component-base/tracing/api/v1"
 	configv1 "k8s.io/kube-scheduler/config/v1"
 	config "k8s.io/kubernetes/pkg/scheduler/apis/config"
 )
@@ -462,6 +463,7 @@ func autoConvert_v1_KubeSchedulerConfiguration_To_config_KubeSchedulerConfigurat
 	}
 	out.Extenders = *(*[]config.Extender)(unsafe.Pointer(&in.Extenders))
 	out.DelayCacheUntilActive = in.DelayCacheUntilActive
+	out.Tracing = (*apiv1.TracingConfiguration)(unsafe.Pointer(in.Tracing))
 	return nil
 }
 
@@ -498,6 +500,7 @@ func autoConvert_config_KubeSchedulerConfiguration_To_v1_KubeSchedulerConfigurat
 	}
 	out.Extenders = *(*[]configv1.Extender)(unsafe.Pointer(&in.Extenders))
 	out.DelayCacheUntilActive = in.DelayCacheUntilActive
+	out.Tracing = (*apiv1.TracingConfiguration)(unsafe.Pointer(in.Tracing))
 	return nil
 }
 

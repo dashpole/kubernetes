@@ -20,6 +20,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	cpconfigv1alpha1 "k8s.io/cloud-provider/config/v1alpha1"
 	serviceconfigv1alpha1 "k8s.io/cloud-provider/controllers/service/config/v1alpha1"
+	tracingapi "k8s.io/component-base/tracing/api/v1"
 	cmconfigv1alpha1 "k8s.io/controller-manager/config/v1alpha1"
 )
 
@@ -172,6 +173,10 @@ type KubeControllerManagerConfiguration struct {
 	DeviceTaintEvictionController DeviceTaintEvictionControllerConfiguration
 	// ResourceClaimControllerConfiguration contains elements configuring the resource claim controller.
 	ResourceClaimController ResourceClaimControllerConfiguration
+	// Tracing specifies the versioned configuration for OpenTelemetry tracing clients.
+	// See https://kep.k8s.io/2832 for more details.
+	// +optional
+	Tracing *tracingapi.TracingConfiguration
 }
 
 // AttachDetachControllerConfiguration contains elements describing AttachDetachController.

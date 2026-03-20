@@ -40,6 +40,8 @@ import (
 	cpoptions "k8s.io/cloud-provider/options"
 	cliflag "k8s.io/component-base/cli/flag"
 	basecompatibility "k8s.io/component-base/compatibility"
+	tracingapi "k8s.io/component-base/tracing/api/v1"
+	"k8s.io/apimachinery/pkg/util/validation/field"
 	"k8s.io/component-base/logs"
 	logsapi "k8s.io/component-base/logs/api/v1"
 	"k8s.io/component-base/metrics"
@@ -105,6 +107,7 @@ type KubeControllerManagerOptions struct {
 	Authorization  *apiserveroptions.DelegatingAuthorizationOptions
 	Metrics        *metrics.Options
 	Logs           *logs.Options
+	Tracing        *tracingapi.TracingConfiguration
 
 	Master                      string
 	ShowHiddenMetricsForVersion string
@@ -228,6 +231,7 @@ func NewKubeControllerManagerOptions() (*KubeControllerManagerOptions, error) {
 		Authorization:            apiserveroptions.NewDelegatingAuthorizationOptions(),
 		Metrics:                  metrics.NewOptions(),
 		Logs:                     logs.NewOptions(),
+		Tracing:                  componentConfig.Tracing,
 		ComponentGlobalsRegistry: componentGlobalsRegistry,
 	}
 
@@ -429,6 +433,7 @@ func (s *KubeControllerManagerOptions) ApplyTo(c *kubecontrollerconfig.Config, a
 		}
 	}
 	c.ControllerShutdownTimeout = s.ControllerShutdownTimeout
+	c.ComponentConfig.Tracing = s.Tracing
 	return nil
 }
 
@@ -442,6 +447,12 @@ func (s *KubeControllerManagerOptions) Validate(allControllers []string, disable
 
 	errs = append(errs, s.ComponentGlobalsRegistry.Validate()...)
 	errs = append(errs, s.Generic.Validate(allControllers, disabledByDefaultControllers, controllerAliases)...)
+	if s.Tracing != nil {
+		tracingErrs := tracingapi.ValidateTracingConfiguration(s.Tracing, utilfeature.DefaultFeatureGate, field.NewPath("tracing"))
+		for _, err := range tracingErrs {
+			errs = append(errs, err)
+		}
+	}
 	errs = append(errs, s.KubeCloudShared.Validate()...)
 	errs = append(errs, s.AttachDetachController.Validate()...)
 	errs = append(errs, s.CSRSigningController.Validate()...)

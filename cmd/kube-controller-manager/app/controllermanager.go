@@ -60,6 +60,9 @@ import (
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
 	certutil "k8s.io/client-go/util/cert"
 	cliflag "k8s.io/component-base/cli/flag"
+	"go.opentelemetry.io/otel/sdk/resource"
+	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
+	"k8s.io/component-base/tracing"
 	"k8s.io/component-base/cli/globalflag"
 	basecompatibility "k8s.io/component-base/compatibility"
 	"k8s.io/component-base/configz"
@@ -204,6 +207,18 @@ func Run(ctx context.Context, c *config.CompletedConfig) error {
 	logger.Info("Starting", "version", utilversion.Get())
 
 	logger.Info("Golang settings", "GOGC", os.Getenv("GOGC"), "GOMAXPROCS", os.Getenv("GOMAXPROCS"), "GOTRACEBACK", os.Getenv("GOTRACEBACK"))
+
+	resourceOpts := []resource.Option{
+		resource.WithAttributes(
+			semconv.ServiceNameKey.String(kubeControllerManager),
+		),
+	}
+	tp, err := tracing.NewProvider(ctx, c.ComponentConfig.Tracing, nil, resourceOpts)
+	if err != nil {
+		return err
+	}
+	defer tp.Shutdown(ctx)
+	c.Kubeconfig.Wrap(tracing.WrapperFor(tp))
 
 	// Start events processing pipeline.
 	c.EventBroadcaster.StartStructuredLogging(0)

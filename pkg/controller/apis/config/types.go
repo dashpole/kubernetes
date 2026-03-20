@@ -20,6 +20,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	cpconfig "k8s.io/cloud-provider/config"
 	serviceconfig "k8s.io/cloud-provider/controllers/service/config"
+	tracingapi "k8s.io/component-base/tracing/api/v1"
 	cmconfig "k8s.io/controller-manager/config"
 	csrsigningconfig "k8s.io/kubernetes/pkg/controller/certificates/signer/config"
 	cronjobconfig "k8s.io/kubernetes/pkg/controller/cronjob/config"
@@ -142,6 +143,11 @@ type KubeControllerManagerConfiguration struct {
 	ValidatingAdmissionPolicyStatusController validatingadmissionpolicystatusconfig.ValidatingAdmissionPolicyStatusControllerConfiguration
 	// ResourceClaimControllerConfiguration contains elements configuring the resource claim controller.
 	ResourceClaimController resourceclaimconfig.ResourceClaimControllerConfiguration
+
+	// Tracing specifies the versioned configuration for OpenTelemetry tracing clients.
+	// See https://kep.k8s.io/2832 for more details.
+	// +optional
+	Tracing *tracingapi.TracingConfiguration
 }
 
 // DeprecatedControllerConfiguration contains elements be deprecated.

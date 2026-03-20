@@ -29,6 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/validation/field"
 	"k8s.io/apiserver/pkg/util/feature"
 	componentbasevalidation "k8s.io/component-base/config/validation"
+	tracingapi "k8s.io/component-base/tracing/api/v1"
 	v1helper "k8s.io/kubernetes/pkg/apis/core/v1/helper"
 	"k8s.io/kubernetes/pkg/scheduler/apis/config"
 	schedfeature "k8s.io/kubernetes/pkg/scheduler/framework/plugins/feature"
@@ -45,6 +46,13 @@ func ValidateKubeSchedulerConfiguration(cc *config.KubeSchedulerConfiguration) u
 	if cc.LeaderElection.LeaderElect && cc.LeaderElection.ResourceLock != "leases" {
 		leaderElectionPath := field.NewPath("leaderElection")
 		errs = append(errs, field.Invalid(leaderElectionPath.Child("resourceLock"), cc.LeaderElection.ResourceLock, `resourceLock value must be "leases"`))
+	}
+
+	if cc.Tracing != nil {
+		tracingErrs := tracingapi.ValidateTracingConfiguration(cc.Tracing, feature.DefaultFeatureGate, field.NewPath("tracing"))
+		for _, err := range tracingErrs {
+			errs = append(errs, err)
+		}
 	}
 
 	profilesPath := field.NewPath("profiles")

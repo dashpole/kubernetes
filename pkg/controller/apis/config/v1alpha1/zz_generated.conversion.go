@@ -22,11 +22,14 @@ limitations under the License.
 package v1alpha1
 
 import (
+	unsafe "unsafe"
+
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	cloudproviderconfigv1alpha1 "k8s.io/cloud-provider/config/v1alpha1"
 	serviceconfigv1alpha1 "k8s.io/cloud-provider/controllers/service/config/v1alpha1"
+	apiv1 "k8s.io/component-base/tracing/api/v1"
 	controllermanagerconfigv1alpha1 "k8s.io/controller-manager/config/v1alpha1"
 	configv1alpha1 "k8s.io/kube-controller-manager/config/v1alpha1"
 	config "k8s.io/kubernetes/pkg/controller/apis/config"
@@ -232,6 +235,7 @@ func autoConvert_v1alpha1_KubeControllerManagerConfiguration_To_config_KubeContr
 	if err := resourceclaimconfigv1alpha1.Convert_v1alpha1_ResourceClaimControllerConfiguration_To_config_ResourceClaimControllerConfiguration(&in.ResourceClaimController, &out.ResourceClaimController, s); err != nil {
 		return err
 	}
+	out.Tracing = (*apiv1.TracingConfiguration)(unsafe.Pointer(in.Tracing))
 	return nil
 }
 
@@ -334,6 +338,7 @@ func autoConvert_config_KubeControllerManagerConfiguration_To_v1alpha1_KubeContr
 	if err := resourceclaimconfigv1alpha1.Convert_config_ResourceClaimControllerConfiguration_To_v1alpha1_ResourceClaimControllerConfiguration(&in.ResourceClaimController, &out.ResourceClaimController, s); err != nil {
 		return err
 	}
+	out.Tracing = (*apiv1.TracingConfiguration)(unsafe.Pointer(in.Tracing))
 	return nil
 }
 
