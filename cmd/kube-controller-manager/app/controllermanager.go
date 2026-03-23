@@ -281,7 +281,7 @@ func Run(ctx context.Context, c *config.CompletedConfig) error {
 	saTokenControllerDescriptor := newServiceAccountTokenControllerDescriptor(rootClientBuilder)
 
 	run := func(ctx context.Context, controllerDescriptors map[string]*ControllerDescriptor) error {
-		controllerContext, err := CreateControllerContext(ctx, c, rootClientBuilder, clientBuilder)
+		controllerContext, err := CreateControllerContext(ctx, c, rootClientBuilder, clientBuilder, tp)
 		if err != nil {
 			logger.Error(err, "Error building controller context")
 			return err
@@ -510,6 +510,9 @@ type ControllerContext struct {
 
 	// GraphBuilder gives an access to dependencyGraphBuilder which keeps tracks of resources in the cluster
 	GraphBuilder *garbagecollector.GraphBuilder
+
+	// TracerProvider is used for telemetry trace propagation
+	TracerProvider tracing.TracerProvider
 }
 
 // IsControllerEnabled checks if the context's controllers enabled or not
@@ -542,7 +545,7 @@ func (c ControllerContext) NewClient(name string) (kubernetes.Interface, error) 
 // CreateControllerContext creates a context struct containing references to resources needed by the
 // controllers such as the cloud provider and clientBuilder. rootClientBuilder is only used for
 // the shared-informers client and token controller.
-func CreateControllerContext(ctx context.Context, s *config.CompletedConfig, rootClientBuilder, clientBuilder clientbuilder.ControllerClientBuilder) (ControllerContext, error) {
+func CreateControllerContext(ctx context.Context, s *config.CompletedConfig, rootClientBuilder, clientBuilder clientbuilder.ControllerClientBuilder, tp tracing.TracerProvider) (ControllerContext, error) {
 	// Informer transform to trim ManagedFields for memory efficiency.
 	trim := func(obj interface{}) (interface{}, error) {
 		if accessor, err := meta.Accessor(obj); err == nil {
@@ -604,6 +607,7 @@ func CreateControllerContext(ctx context.Context, s *config.CompletedConfig, roo
 		InformersStarted:                make(chan struct{}),
 		ResyncPeriod:                    ResyncPeriod(s),
 		ControllerManagerMetrics:        controllersmetrics.NewControllerManagerMetrics(kubeControllerManager),
+		TracerProvider:                  tp,
 	}
 
 	if controllerContext.ComponentConfig.GarbageCollectorController.EnableGarbageCollector &&

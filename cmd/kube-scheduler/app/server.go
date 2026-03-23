@@ -458,6 +458,7 @@ func Setup(ctx context.Context, opts *options.Options, outOfTreeRegistryOptions 
 		recorderFactory,
 		scheduler.WithComponentConfigVersion(cc.ComponentConfig.TypeMeta.APIVersion),
 		scheduler.WithKubeConfig(cc.KubeConfig),
+		scheduler.WithTracerProvider(cc.TracerProvider),
 		scheduler.WithProfiles(cc.ComponentConfig.Profiles...),
 		scheduler.WithPercentageOfNodesToScore(cc.ComponentConfig.PercentageOfNodesToScore),
 		scheduler.WithFrameworkOutOfTreeRegistry(outOfTreeRegistry),

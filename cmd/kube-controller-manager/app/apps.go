@@ -111,6 +111,7 @@ func newReplicaSetController(ctx context.Context, controllerContext ControllerCo
 		controllerContext.InformerFactory.Core().V1().Pods(),
 		client,
 		replicaset.BurstReplicas,
+		controllerContext.TracerProvider.Tracer("k8s.io/kubernetes/pkg/controller/replicaset"),
 	)
 	return newControllerLoop(func(ctx context.Context) {
 		rsc.Run(ctx, int(controllerContext.ComponentConfig.ReplicaSetController.ConcurrentRSSyncs))
@@ -137,6 +138,7 @@ func newDeploymentController(ctx context.Context, controllerContext ControllerCo
 		controllerContext.InformerFactory.Apps().V1().ReplicaSets(),
 		controllerContext.InformerFactory.Core().V1().Pods(),
 		client,
+		controllerContext.TracerProvider.Tracer("k8s.io/kubernetes/pkg/controller/deployment"),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("error creating Deployment controller: %w", err)

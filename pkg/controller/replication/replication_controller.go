@@ -37,6 +37,7 @@ import (
 	"k8s.io/kubernetes/pkg/controller"
 	"k8s.io/kubernetes/pkg/controller/replicaset"
 	consistencyutil "k8s.io/kubernetes/pkg/controller/util/consistency"
+	"k8s.io/component-base/tracing"
 )
 
 const (
@@ -73,6 +74,7 @@ func NewReplicationManager(ctx context.Context, podInformer coreinformers.PodInf
 			// In order to support stale controller consistency, we would need to parameterize the metrics
 			// and resource types passed to the consistency store.
 			consistencyutil.NewNoopConsistencyStore(),
+			tracing.NewNoopTracerProvider().Tracer(""),
 		),
 	}
 }

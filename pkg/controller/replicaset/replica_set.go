@@ -59,7 +59,7 @@ import (
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/component-base/metrics/legacyregistry"
 	"k8s.io/component-base/tracing"
-	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/trace"
 	"k8s.io/klog/v2"
 	podutil "k8s.io/kubernetes/pkg/api/v1/pod"
 	"k8s.io/kubernetes/pkg/controller"
@@ -139,6 +139,9 @@ type ReplicaSetController struct {
 
 	// Controller specific features; see ReplicaSetControllerFeatures for details.
 	controllerFeatures ReplicaSetControllerFeatures
+
+	// tracer is the OpenTelemetry Tracer used to create spans
+	tracer trace.Tracer
 }
 
 // ReplicaSetControllerFeatures that can be set in accordance with the controller type (GVK).
@@ -154,7 +157,7 @@ func DefaultReplicaSetControllerFeatures() ReplicaSetControllerFeatures {
 }
 
 // NewReplicaSetController configures a replica set controller with the specified event recorder
-func NewReplicaSetController(ctx context.Context, rsInformer appsinformers.ReplicaSetInformer, podInformer coreinformers.PodInformer, kubeClient clientset.Interface, burstReplicas int) *ReplicaSetController {
+func NewReplicaSetController(ctx context.Context, rsInformer appsinformers.ReplicaSetInformer, podInformer coreinformers.PodInformer, kubeClient clientset.Interface, burstReplicas int, tracer trace.Tracer) *ReplicaSetController {
 	logger := klog.FromContext(ctx)
 	eventBroadcaster := record.NewBroadcaster(record.WithContext(ctx))
 	if err := metrics.Register(legacyregistry.Register); err != nil {
@@ -198,13 +201,14 @@ func NewReplicaSetController(ctx context.Context, rsInformer appsinformers.Repli
 		eventBroadcaster,
 		DefaultReplicaSetControllerFeatures(),
 		consistencyStore,
+		tracer,
 	)
 }
 
 // NewBaseController is the implementation of NewReplicaSetController with additional injected
 // parameters so that it can also serve as the implementation of NewReplicationController.
 func NewBaseController(logger klog.Logger, rsInformer appsinformers.ReplicaSetInformer, podInformer coreinformers.PodInformer, kubeClient clientset.Interface, burstReplicas int,
-	gvk schema.GroupVersionKind, metricOwnerName, queueName string, podControl controller.PodControlInterface, eventBroadcaster record.EventBroadcaster, controllerFeatures ReplicaSetControllerFeatures, consistencyStore consistencyutil.ConsistencyStore) *ReplicaSetController {
+	gvk schema.GroupVersionKind, metricOwnerName, queueName string, podControl controller.PodControlInterface, eventBroadcaster record.EventBroadcaster, controllerFeatures ReplicaSetControllerFeatures, consistencyStore consistencyutil.ConsistencyStore, tracer trace.Tracer) *ReplicaSetController {
 
 	rsc := &ReplicaSetController{
 		GroupVersionKind: gvk,
@@ -220,6 +224,7 @@ func NewBaseController(logger klog.Logger, rsInformer appsinformers.ReplicaSetIn
 		clock:              clock.RealClock{},
 		controllerFeatures: controllerFeatures,
 		consistencyStore:   consistencyStore,
+		tracer:             tracer,
 	}
 
 	rsInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
@@ -788,7 +793,7 @@ func (rsc *ReplicaSetController) syncReplicaSet(ctx context.Context, key string)
 		return err
 	}
 
-	ctx, span := tracing.StartReconcileSpan(ctx, "syncReplicaSet", rs, otel.Tracer("k8s.io/kubernetes/pkg/controller/replicaset"))
+	ctx, span := tracing.StartReconcileSpan(ctx, "syncReplicaSet", rs, rsc.tracer)
 	defer span.End()
 
 	rsNeedsSync := rsc.expectations.SatisfiedExpectations(logger, key)

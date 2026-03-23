@@ -58,6 +58,8 @@ import (
 	"k8s.io/kubernetes/pkg/scheduler/profile"
 	"k8s.io/kubernetes/pkg/scheduler/util/assumecache"
 	"k8s.io/utils/clock"
+	"k8s.io/component-base/tracing"
+	"go.opentelemetry.io/otel/trace"
 )
 
 // ErrNoNodesAvailable is used to describe the error that no nodes available to schedule pods.
@@ -121,6 +123,8 @@ type Scheduler struct {
 
 	nominatedNodeNameForExpectationEnabled bool
 	genericWorkloadEnabled                 bool
+	
+	tracer trace.Tracer
 }
 
 func (sched *Scheduler) applyDefaultHandlers() {
@@ -144,6 +148,7 @@ type schedulerOptions struct {
 	frameworkCapturer          FrameworkCapturer
 	parallelism                int32
 	applyDefaultProfile        bool
+	tracerProvider             tracing.TracerProvider
 }
 
 // Option configures a Scheduler
@@ -258,6 +263,13 @@ func WithBuildFrameworkCapturer(fc FrameworkCapturer) Option {
 	}
 }
 
+// WithTracerProvider sets the tracer provider for Scheduler.
+func WithTracerProvider(tp tracing.TracerProvider) Option {
+	return func(o *schedulerOptions) {
+		o.tracerProvider = tp
+	}
+}
+
 var defaultSchedulerOptions = schedulerOptions{
 	clock:                             clock.RealClock{},
 	percentageOfNodesToScore:          schedulerapi.DefaultPercentageOfNodesToScore,
@@ -286,6 +298,10 @@ func New(ctx context.Context,
 	options := defaultSchedulerOptions
 	for _, opt := range opts {
 		opt(&options)
+	}
+
+	if options.tracerProvider == nil {
+		options.tracerProvider = tracing.NewNoopTracerProvider()
 	}
 
 	if options.applyDefaultProfile {
@@ -454,6 +470,7 @@ func New(ctx context.Context,
 		nominatedNodeNameForExpectationEnabled: feature.DefaultFeatureGate.Enabled(features.NominatedNodeNameForExpectation),
 		podGroupLister:                         podGroupLister,
 		genericWorkloadEnabled:                 feature.DefaultFeatureGate.Enabled(features.GenericWorkload),
+		tracer:                                 options.tracerProvider.Tracer("k8s.io/kubernetes/pkg/scheduler"),
 	}
 	sched.NextPod = podQueue.Pop
 	sched.applyDefaultHandlers()

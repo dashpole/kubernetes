@@ -74,6 +74,7 @@ func testNewReplicaSetControllerFromClient(tb testing.TB, client clientset.Inter
 		informers.Core().V1().Pods(),
 		client,
 		burstReplicas,
+		tracing.NewNoopTracerProvider().Tracer(""),
 	)
 
 	ret.podListerSynced = alwaysReady
@@ -639,6 +640,7 @@ func TestWatchControllers(t *testing.T) {
 		informers.Core().V1().Pods(),
 		client,
 		BurstReplicas,
+		tracing.NewNoopTracerProvider().Tracer(""),
 	)
 	informers.Start(stopCh)
 	informers.WaitForCacheSync(stopCh)
@@ -1209,6 +1211,7 @@ func TestExpectationsOnRecreate(t *testing.T) {
 		f.Core().V1().Pods(),
 		client,
 		100,
+		tracing.NewNoopTracerProvider().Tracer(""),
 	)
 	f.Start(stopCh)
 	f.WaitForCacheSync(stopCh)

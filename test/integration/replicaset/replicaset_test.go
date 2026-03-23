@@ -39,6 +39,7 @@ import (
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/util/retry"
+	"k8s.io/component-base/tracing"
 	featuregatetesting "k8s.io/component-base/featuregate/testing"
 	kubeapiservertesting "k8s.io/kubernetes/cmd/kube-apiserver/app/testing"
 	podutil "k8s.io/kubernetes/pkg/api/v1/pod"
@@ -137,6 +138,7 @@ func rmSetup(t *testing.T) (context.Context, kubeapiservertesting.TearDownFunc, 
 		informers.Core().V1().Pods(),
 		clientset.NewForConfigOrDie(restclient.AddUserAgent(config, "replicaset-controller")),
 		replicaset.BurstReplicas,
+		tracing.NewNoopTracerProvider().Tracer(""),
 	)
 
 	newTeardown := func() {

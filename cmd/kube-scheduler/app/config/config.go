@@ -28,6 +28,7 @@ import (
 	"k8s.io/client-go/tools/events"
 	"k8s.io/client-go/tools/leaderelection"
 	basecompatibility "k8s.io/component-base/compatibility"
+	"k8s.io/component-base/tracing"
 	kubeschedulerconfig "k8s.io/kubernetes/pkg/scheduler/apis/config"
 )
 
@@ -62,6 +63,9 @@ type Config struct {
 
 	// ComponentGlobalsRegistry is the registry where the effective versions and feature gates for all components are stored.
 	ComponentGlobalsRegistry basecompatibility.ComponentGlobalsRegistry
+
+	// TracerProvider is the tracing provider for the scheduler
+	TracerProvider tracing.TracerProvider
 }
 
 type completedConfig struct {

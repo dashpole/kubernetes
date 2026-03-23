@@ -46,7 +46,7 @@ import (
 	"k8s.io/client-go/tools/record"
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/klog/v2"
-	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/trace"
 	"k8s.io/component-base/tracing"
 	"k8s.io/kubernetes/pkg/controller"
 	"k8s.io/kubernetes/pkg/controller/deployment/util"
@@ -100,10 +100,13 @@ type DeploymentController struct {
 
 	// Deployments that need to be synced
 	queue workqueue.TypedRateLimitingInterface[string]
+
+	// tracer is the OpenTelemetry Tracer used to create spans
+	tracer trace.Tracer
 }
 
 // NewDeploymentController creates a new DeploymentController.
-func NewDeploymentController(ctx context.Context, dInformer appsinformers.DeploymentInformer, rsInformer appsinformers.ReplicaSetInformer, podInformer coreinformers.PodInformer, client clientset.Interface) (*DeploymentController, error) {
+func NewDeploymentController(ctx context.Context, dInformer appsinformers.DeploymentInformer, rsInformer appsinformers.ReplicaSetInformer, podInformer coreinformers.PodInformer, client clientset.Interface, tracer trace.Tracer) (*DeploymentController, error) {
 	eventBroadcaster := record.NewBroadcaster(record.WithContext(ctx))
 	logger := klog.FromContext(ctx)
 	dc := &DeploymentController{
@@ -116,6 +119,7 @@ func NewDeploymentController(ctx context.Context, dInformer appsinformers.Deploy
 				Name: "deployment",
 			},
 		),
+		tracer: tracer,
 	}
 	dc.rsControl = controller.RealRSControl{
 		KubeClient: client,
@@ -615,7 +619,7 @@ func (dc *DeploymentController) syncDeployment(ctx context.Context, key string) 
 	// TODO: Deep-copy only when needed.
 	d := deployment.DeepCopy()
 	
-	ctx, span := tracing.StartReconcileSpan(ctx, "syncDeployment", d, otel.Tracer("k8s.io/kubernetes/pkg/controller/deployment"))
+	ctx, span := tracing.StartReconcileSpan(ctx, "syncDeployment", d, dc.tracer)
 	defer span.End()
 
 	everything := metav1.LabelSelector{}

@@ -10,61 +10,92 @@ import (
 	"time"
 
 	"go.opentelemetry.io/otel"
+	otelresource "go.opentelemetry.io/otel/sdk/resource"
+	semconv "go.opentelemetry.io/otel/semconv/v1.12.0"
 	"go.opentelemetry.io/otel/trace"
 	traceservice "go.opentelemetry.io/proto/otlp/collector/trace/v1"
 	tracev1 "go.opentelemetry.io/proto/otlp/trace/v1"
 	"google.golang.org/grpc"
 
+	"strings"
+
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"strings"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/informers"
 	clientset "k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/cache"
+	componentbasetracing "k8s.io/component-base/tracing"
+	tracingapi "k8s.io/component-base/tracing/api/v1"
 	"k8s.io/klog/v2/ktesting"
 	kubeapiservertesting "k8s.io/kubernetes/cmd/kube-apiserver/app/testing"
-	tracingapi "k8s.io/component-base/tracing/api/v1"
-	componentbasetracing "k8s.io/component-base/tracing"
 	"k8s.io/kubernetes/pkg/controller/deployment"
 	"k8s.io/kubernetes/pkg/controller/replicaset"
+	"k8s.io/kubernetes/pkg/scheduler"
 	"k8s.io/kubernetes/test/integration/framework"
 	testutil "k8s.io/kubernetes/test/integration/util"
 )
 
+type spanWithService struct {
+	*tracev1.Span
+	ServiceName string
+}
+
 type traceServer struct {
 	traceservice.UnimplementedTraceServiceServer
-	mu    sync.Mutex
-	spans []*tracev1.Span
+	mu            sync.Mutex
+	spans         []*spanWithService
+	forwardClient traceservice.TraceServiceClient
 }
 
 func (t *traceServer) Export(ctx context.Context, req *traceservice.ExportTraceServiceRequest) (*traceservice.ExportTraceServiceResponse, error) {
 	t.mu.Lock()
-	defer t.mu.Unlock()
 	for _, resourceSpans := range req.GetResourceSpans() {
-		for _, scopeSpans := range resourceSpans.GetScopeSpans() {
-			for _, span := range scopeSpans.GetSpans() {
-				t.spans = append(t.spans, span)
+		var serviceName string
+		for _, attr := range resourceSpans.GetResource().GetAttributes() {
+			if attr.Key == string(semconv.ServiceNameKey) {
+				serviceName = attr.Value.GetStringValue()
 			}
 		}
+		for _, scopeSpans := range resourceSpans.GetScopeSpans() {
+			for _, span := range scopeSpans.GetSpans() {
+				t.spans = append(t.spans, &spanWithService{Span: span, ServiceName: serviceName})
+			}
+		}
+	}
+	t.mu.Unlock()
+	if t.forwardClient != nil {
+		go func() {
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			defer cancel()
+			_, _ = t.forwardClient.Export(ctx, req)
+		}()
 	}
 	return &traceservice.ExportTraceServiceResponse{}, nil
 }
 
-func (t *traceServer) getSpans() []*tracev1.Span {
+func (t *traceServer) getSpans() []*spanWithService {
 	t.mu.Lock()
 	defer t.mu.Unlock()
-	spans := make([]*tracev1.Span, len(t.spans))
+	spans := make([]*spanWithService, len(t.spans))
 	copy(spans, t.spans)
 	return spans
 }
 
 func TestTracing_DeploymentLifecycle(t *testing.T) {
+	// 0. Optional: connect to local Jaeger instance if running
+	cc, err := grpc.Dial("localhost:4317", grpc.WithInsecure())
+	var forwardClient traceservice.TraceServiceClient
+	if err == nil {
+		forwardClient = traceservice.NewTraceServiceClient(cc)
+		defer cc.Close()
+	}
+
 	// 1. Setup the dummy gRPC trace Server
 	srv := grpc.NewServer()
-	fakeServer := &traceServer{}
+	fakeServer := &traceServer{forwardClient: forwardClient}
 	traceservice.RegisterTraceServiceServer(srv, fakeServer)
 	l, err := net.Listen("tcp", "localhost:0")
 	if err != nil {
@@ -93,16 +124,43 @@ samplingRatePerMillion: 1000000
 	ep := l.Addr().String()
 	rate := int32(1000000)
 	cfg := &tracingapi.TracingConfiguration{
-		Endpoint: &ep,
+		Endpoint:               &ep,
 		SamplingRatePerMillion: &rate,
 	}
-	tp, err := componentbasetracing.NewProvider(ctx, cfg, nil, nil)
+	tpApiServer, err := componentbasetracing.NewProvider(ctx, cfg, nil, []otelresource.Option{
+		otelresource.WithAttributes(semconv.ServiceNameKey.String("kube-apiserver")),
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
-	otel.SetTracerProvider(tp)
+	// We still set a global here for things that haven't been migrated
+	otel.SetTracerProvider(tpApiServer)
 	otel.SetTextMapPropagator(componentbasetracing.Propagators())
-	defer tp.Shutdown(ctx)
+	defer tpApiServer.Shutdown(ctx)
+
+	tpControllerManager, err := componentbasetracing.NewProvider(ctx, cfg, nil, []otelresource.Option{
+		otelresource.WithAttributes(semconv.ServiceNameKey.String("kube-controller-manager")),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer tpControllerManager.Shutdown(ctx)
+
+	tpScheduler, err := componentbasetracing.NewProvider(ctx, cfg, nil, []otelresource.Option{
+		otelresource.WithAttributes(semconv.ServiceNameKey.String("kube-scheduler")),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer tpScheduler.Shutdown(ctx)
+
+	tpKubelet, err := componentbasetracing.NewProvider(ctx, cfg, nil, []otelresource.Option{
+		otelresource.WithAttributes(semconv.ServiceNameKey.String("kubelet")),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer tpKubelet.Shutdown(ctx)
 
 	// 4. Start API Server with tracing enabled
 	server := kubeapiservertesting.StartTestServerOrDie(t,
@@ -115,7 +173,7 @@ samplingRatePerMillion: 1000000
 	)
 	defer server.TearDownFn()
 
-	server.ClientConfig.Wrap(componentbasetracing.WrapperFor(tp))
+	server.ClientConfig.Wrap(componentbasetracing.WrapperFor(tpApiServer))
 	clientSet, err := clientset.NewForConfig(server.ClientConfig)
 	if err != nil {
 		t.Fatal(err)
@@ -135,6 +193,7 @@ samplingRatePerMillion: 1000000
 		informerFactory.Apps().V1().ReplicaSets(),
 		informerFactory.Core().V1().Pods(),
 		clientSet,
+		tpControllerManager.Tracer("k8s.io/kubernetes/pkg/controller/deployment"),
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -148,15 +207,16 @@ samplingRatePerMillion: 1000000
 		informerFactory.Core().V1().Pods(),
 		clientSet,
 		500,
+		tpControllerManager.Tracer("k8s.io/kubernetes/pkg/controller/replicaset"),
 	)
 	go rsc.Run(tCtx, 5)
 
 	testCtx := testutil.InitTestSchedulerWithOptions(t, &testutil.TestContext{
-		Ctx: tCtx,
-		ClientSet: clientSet,
+		Ctx:        tCtx,
+		ClientSet:  clientSet,
 		KubeConfig: server.ClientConfig,
-		CloseFn: func() {},
-	}, 0)
+		CloseFn:    func() {},
+	}, 0, scheduler.WithTracerProvider(tpScheduler))
 	defer testCtx.CloseFn()
 	testutil.SyncSchedulerInformerFactory(testCtx)
 	go testCtx.Scheduler.Run(testCtx.SchedulerCtx)
@@ -165,7 +225,7 @@ samplingRatePerMillion: 1000000
 	informerFactory.WaitForCacheSync(tCtx.Done())
 
 	// 9. Start Fake Kubelet
-	go startFakeKubelet(tCtx, clientSet, "fake-node", otel.Tracer("k8s.io/kubernetes/pkg/kubelet"))
+	go startFakeKubelet(tCtx, clientSet, "fake-node", tpKubelet.Tracer("k8s.io/kubernetes/pkg/kubelet"))
 
 	// 10. Execute Test Logic
 	ns := &corev1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: "tracing-test"}}
@@ -252,7 +312,7 @@ samplingRatePerMillion: 1000000
 	// Send an API call with our own parent trace ctx just to ensure we know the root ID
 	tracer := otel.Tracer("test")
 	ctxTrace, rootSpan := tracer.Start(ctx, "CreateDeployment")
-	
+
 	_, err = clientSet.AppsV1().Deployments(ns.Name).Create(ctxTrace, deploymentObj, metav1.CreateOptions{})
 	rootSpan.End()
 	if err != nil {
@@ -272,41 +332,45 @@ samplingRatePerMillion: 1000000
 		for _, p := range pods.Items {
 			t.Logf("Pod %s phase: %s, node: %s, conditions: %v", p.Name, p.Status.Phase, p.Spec.NodeName, p.Status.Conditions)
 		}
-		
+
 		n, _ := clientSet.CoreV1().Nodes().Get(ctx, "fake-node", metav1.GetOptions{})
 		t.Logf("Node fake-node taints: %v", n.Spec.Taints)
-		
+
 		t.Fatal("Deployment did not become available:", err)
 	}
 
 	// Retrieve spans and verify
-	expectedSpans := []string{
-		"syncDeployment",
-		"syncReplicaSet",
-		"ScheduleOne",
-		"fake-kubelet-sync",
+	expectedSpans := map[string]string{
+		"syncDeployment":    "kube-controller-manager",
+		"syncReplicaSet":    "kube-controller-manager",
+		"ScheduleOne":       "kube-scheduler",
+		"fake-kubelet-sync": "kubelet",
 	}
 
-	var foundSpans map[string]*tracev1.Span
-	var spans []*tracev1.Span
+	var foundSpans map[string]*spanWithService
+	var spans []*spanWithService
 	err = wait.PollUntilContextTimeout(ctx, 100*time.Millisecond, 20*time.Second, true, func(ctx context.Context) (bool, error) {
 		spans = fakeServer.getSpans()
-		
-		foundSpans = map[string]*tracev1.Span{}
+
+		foundSpans = map[string]*spanWithService{}
 		for _, span := range spans {
 			foundSpans[span.Name] = span
 		}
 
-		for _, expected := range expectedSpans {
-			if _, ok := foundSpans[expected]; !ok {
+		for expected, expectedServiceName := range expectedSpans {
+			span, ok := foundSpans[expected]
+			if !ok {
 				return false, nil
+			}
+			if span.ServiceName != expectedServiceName {
+				return false, nil // Wait for the correct service name span if there is another one, or just let it timeout
 			}
 		}
 
 		// Verify trace propagation linkage
-		for _, expected := range expectedSpans {
+		for expected := range expectedSpans {
 			span := foundSpans[expected]
-			if len(span.Links) == 0 && span.ParentSpanId == nil {
+			if len(span.Links) == 0 && len(span.ParentSpanId) == 0 {
 				// Not properly linked
 				return false, nil
 			}
@@ -320,10 +384,10 @@ samplingRatePerMillion: 1000000
 			}
 			t.Logf("Span %s: TraceId=%x, ParentSpanId=%x, Links=[%s]", span.Name, span.TraceId, span.ParentSpanId, strings.Join(linkTraceIds, ", "))
 		}
-		
+
 		return true, nil
 	})
-	
+
 	if err != nil {
 		spans := fakeServer.getSpans()
 		var spanNames []string
@@ -331,11 +395,21 @@ samplingRatePerMillion: 1000000
 			spanNames = append(spanNames, span.Name)
 		}
 		var failedSpans []string
-	for _, expected := range expectedSpans {
-		span := foundSpans[expected]
-		failedSpans = append(failedSpans, fmt.Sprintf("%s (ParentSpanId: %x, Links: %d)", expected, span.ParentSpanId, len(span.Links)))
-	}
-	t.Fatalf("Failed waiting for all expected spans to arrive and link. Details: %v", failedSpans)
+		for expected, expectedServiceName := range expectedSpans {
+			span := foundSpans[expected]
+			if span == nil {
+				failedSpans = append(failedSpans, fmt.Sprintf("%s (Missing)", expected))
+			} else if span.ServiceName != expectedServiceName {
+				failedSpans = append(failedSpans, fmt.Sprintf("%s (Wrong ServiceName: %s [expected %s])", expected, span.ServiceName, expectedServiceName))
+			} else if len(span.Links) == 0 && len(span.ParentSpanId) == 0 {
+				failedSpans = append(failedSpans, fmt.Sprintf("%s (Not linked: ParentSpanId: %x, Links: %d)", expected, span.ParentSpanId, len(span.Links)))
+			}
+		}
+		if len(failedSpans) > 0 {
+			t.Fatalf("Failed waiting for all expected spans to arrive and link. Details: %v", failedSpans)
+		} else {
+			t.Fatalf("Poll returns error %v but all spans look correct? (this shouldn't happen)", err)
+		}
 	}
 }
 

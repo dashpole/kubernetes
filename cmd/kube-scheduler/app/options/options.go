@@ -324,6 +324,7 @@ func (o *Options) Config(ctx context.Context) (*schedulerappconfig.Config, error
 		return nil, err
 	}
 	c.KubeConfig.Wrap(tracing.WrapperFor(tp))
+	c.TracerProvider = tp
 
 	// Prepare kube clients.
 	client, eventClient, err := createClients(c.KubeConfig)

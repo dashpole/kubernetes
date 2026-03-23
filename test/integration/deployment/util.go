@@ -31,6 +31,7 @@ import (
 	"k8s.io/client-go/informers"
 	clientset "k8s.io/client-go/kubernetes"
 	restclient "k8s.io/client-go/rest"
+	"k8s.io/component-base/tracing"
 	kubeapiservertesting "k8s.io/kubernetes/cmd/kube-apiserver/app/testing"
 	podutil "k8s.io/kubernetes/pkg/api/v1/pod"
 	"k8s.io/kubernetes/pkg/controller/deployment"
@@ -121,6 +122,7 @@ func dcSetup(ctx context.Context, t *testing.T) (kubeapiservertesting.TearDownFu
 		informers.Apps().V1().ReplicaSets(),
 		informers.Core().V1().Pods(),
 		clientset.NewForConfigOrDie(restclient.AddUserAgent(config, "deployment-controller")),
+		tracing.NewNoopTracerProvider().Tracer(""),
 	)
 	if err != nil {
 		t.Fatalf("error creating Deployment controller: %v", err)
@@ -131,6 +133,7 @@ func dcSetup(ctx context.Context, t *testing.T) (kubeapiservertesting.TearDownFu
 		informers.Core().V1().Pods(),
 		clientset.NewForConfigOrDie(restclient.AddUserAgent(config, "replicaset-controller")),
 		replicaset.BurstReplicas,
+		tracing.NewNoopTracerProvider().Tracer(""),
 	)
 	return server.TearDownFn, rm, dc, informers, clientSet
 }
