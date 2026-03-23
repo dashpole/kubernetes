@@ -78,7 +78,12 @@ func (sched *Scheduler) ScheduleOne(ctx context.Context) {
 		return
 	}
 
-	ctx, span := tracing.StartReconcileSpan(ctx, "ScheduleOne", podInfo.Pod, sched.tracer)
+	tracer := sched.tracer
+	if tracer == nil {
+		tracer = tracing.NewNoopTracerProvider().Tracer("")
+	}
+
+	ctx, span := tracing.StartReconcileSpan(ctx, "ScheduleOne", podInfo.Pod, tracer)
 	defer span.End()
 
 	if sched.genericWorkloadEnabled && podInfo.Pod.Spec.SchedulingGroup != nil {
