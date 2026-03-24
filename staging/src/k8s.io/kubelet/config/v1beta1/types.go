@@ -20,6 +20,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	logsapi "k8s.io/component-base/logs/api/v1"
+	telemetryapi "k8s.io/component-base/telemetry/api/v1alpha1"
 	tracingapi "k8s.io/component-base/tracing/api/v1"
 )
 
@@ -924,6 +925,11 @@ type KubeletConfiguration struct {
 	// Default: nil
 	// +optional
 	Tracing *tracingapi.TracingConfiguration `json:"tracing,omitempty"`
+
+	// Telemetry specifies the versioned configuration for OpenTelemetry declarative configuration.
+	// This takes precedence over Tracing if configured.
+	// +optional
+	Telemetry *telemetryapi.TelemetryConfiguration `json:"telemetry,omitempty"`
 
 	// LocalStorageCapacityIsolation enables local ephemeral storage isolation feature. The default setting is true.
 	// This feature allows users to set request/limit for container's ephemeral storage and manage it in a similar way

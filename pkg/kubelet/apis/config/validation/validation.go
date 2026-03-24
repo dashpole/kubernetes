@@ -29,6 +29,7 @@ import (
 	"k8s.io/component-base/featuregate"
 	logsapi "k8s.io/component-base/logs/api/v1"
 	"k8s.io/component-base/metrics"
+	telemetryapi "k8s.io/component-base/telemetry/api/v1alpha1"
 	tracingapi "k8s.io/component-base/tracing/api/v1"
 	"k8s.io/kubernetes/pkg/features"
 	kubeletconfig "k8s.io/kubernetes/pkg/kubelet/apis/config"
@@ -341,6 +342,10 @@ func ValidateKubeletConfiguration(kc *kubeletconfig.KubeletConfiguration, featur
 	}
 
 	if errs := tracingapi.ValidateTracingConfiguration(kc.Tracing, localFeatureGate, field.NewPath("tracing")); len(errs) > 0 {
+		allErrors = append(allErrors, errs.ToAggregate().Errors()...)
+	}
+
+	if errs := telemetryapi.ValidateTelemetryConfiguration(kc.Telemetry, field.NewPath("telemetry")); len(errs) > 0 {
 		allErrors = append(allErrors, errs.ToAggregate().Errors()...)
 	}
 
