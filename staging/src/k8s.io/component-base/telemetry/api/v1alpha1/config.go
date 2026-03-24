@@ -14,17 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package validation
+package v1alpha1
 
 import (
 	"path/filepath"
 
 	"k8s.io/apimachinery/pkg/util/validation/field"
-	"k8s.io/component-base/telemetry/api/v1alpha1"
 )
 
 // ValidateTelemetryConfiguration validates the given telemetry configuration.
-func ValidateTelemetryConfiguration(config *v1alpha1.TelemetryConfiguration, fldPath *field.Path) field.ErrorList {
+func ValidateTelemetryConfiguration(config *TelemetryConfiguration, fldPath *field.Path) field.ErrorList {
 	allErrs := field.ErrorList{}
 
 	if config == nil {
@@ -41,3 +40,4 @@ func ValidateTelemetryConfiguration(config *v1alpha1.TelemetryConfiguration, fld
 
 	return allErrs
 }
+

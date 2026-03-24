@@ -689,6 +689,12 @@ go.etcd.io/raft/v3/tracker
 ## explicit; go 1.24.0
 go.opentelemetry.io/auto/sdk
 go.opentelemetry.io/auto/sdk/internal/telemetry
+# go.opentelemetry.io/contrib/bridges/otellogr v0.17.0
+## explicit; go 1.25.0
+go.opentelemetry.io/contrib/bridges/otellogr
+# go.opentelemetry.io/contrib/bridges/prometheus v0.67.0
+## explicit; go 1.25.0
+go.opentelemetry.io/contrib/bridges/prometheus
 # go.opentelemetry.io/contrib/instrumentation/github.com/emicklei/go-restful/otelrestful v0.65.0
 ## explicit; go 1.24.0
 go.opentelemetry.io/contrib/instrumentation/github.com/emicklei/go-restful/otelrestful
@@ -828,6 +834,8 @@ go.opentelemetry.io/otel/exporters/stdout/stdouttrace/internal/x
 ## explicit; go 1.25.0
 go.opentelemetry.io/otel/log
 go.opentelemetry.io/otel/log/embedded
+go.opentelemetry.io/otel/log/global
+go.opentelemetry.io/otel/log/internal/global
 go.opentelemetry.io/otel/log/noop
 # go.opentelemetry.io/otel/metric v1.42.0
 ## explicit; go 1.25.0
