@@ -123,9 +123,9 @@ func (o *TracingOptions) ApplyTo(es *egressselector.EgressSelector, c *server.Co
 			semconv.ServiceInstanceIDKey.String(c.APIServerID),
 		),
 	}
-	tp, err := tracing.NewProvider(context.Background(), traceConfig, opts, resourceOpts)
+	tp, err := tracing.NewProvider(context.Background(), traceConfig, nil, opts, resourceOpts)
 	if err != nil {
-		return err
+		return fmt.Errorf("could not configure tracer provider: %w", err)
 	}
 	c.TracerProvider = tp
 	if c.LoopbackClientConfig != nil {

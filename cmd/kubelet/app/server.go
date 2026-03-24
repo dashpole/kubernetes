@@ -1391,7 +1391,7 @@ func newTracerProvider(s *options.KubeletServer) (oteltrace.TracerProvider, erro
 			semconv.HostNameKey.String(hostname),
 		),
 	}
-	tp, err := tracing.NewProvider(context.Background(), s.KubeletConfiguration.Tracing, []otlptracegrpc.Option{}, resourceOpts)
+	tp, err := tracing.NewProvider(context.Background(), s.KubeletConfiguration.Tracing, s.KubeletConfiguration.Telemetry, []otlptracegrpc.Option{}, resourceOpts)
 	if err != nil {
 		return nil, fmt.Errorf("could not configure tracer provider: %w", err)
 	}

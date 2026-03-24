@@ -18,9 +18,11 @@ package tracing
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
@@ -30,7 +32,10 @@ import (
 	noopoteltrace "go.opentelemetry.io/otel/trace/noop"
 
 	"k8s.io/client-go/transport"
+	"k8s.io/component-base/telemetry"
+	telemetryapi "k8s.io/component-base/telemetry/api/v1alpha1"
 	"k8s.io/component-base/tracing/api/v1"
+	"k8s.io/klog/v2"
 )
 
 // TracerProvider is an OpenTelemetry TracerProvider which can be shut down
@@ -51,15 +56,49 @@ func NewNoopTracerProvider() TracerProvider {
 	return &noopTracerProvider{TracerProvider: noopoteltrace.NewTracerProvider()}
 }
 
+type telemetryTracerProviderWrapper struct {
+	oteltrace.TracerProvider
+	shutdownFuncs []func(context.Context) error
+}
+
+func (t *telemetryTracerProviderWrapper) Shutdown(ctx context.Context) error {
+	var errs []error
+	for _, f := range t.shutdownFuncs {
+		if err := f(ctx); err != nil {
+			errs = append(errs, err)
+		}
+	}
+	if len(errs) > 0 {
+		return fmt.Errorf("failed to shutdown telemetry: %v", errs)
+	}
+	return nil
+}
+
 // NewProvider creates a TracerProvider in a component, and enforces recommended tracing behavior
 func NewProvider(ctx context.Context,
 	tracingConfig *v1.TracingConfiguration,
+	telemetryConfig *telemetryapi.TelemetryConfiguration,
 	addedOpts []otlptracegrpc.Option,
 	resourceOpts []resource.Option,
 ) (TracerProvider, error) {
+	if telemetryConfig != nil && telemetryConfig.ConfigPath != nil && len(*telemetryConfig.ConfigPath) > 0 {
+		// Initialize via declarative configuration
+		shutdownFuncs, err := telemetry.InitTelemetry(ctx, telemetryConfig)
+		if err != nil {
+			return nil, err
+		}
+		// When using declarative configuration, providers are set globally.
+		// We wrap the global tracer provider and provide the shutdown functions.
+		return &telemetryTracerProviderWrapper{
+			TracerProvider: otel.GetTracerProvider(),
+			shutdownFuncs:  shutdownFuncs,
+		}, nil
+	}
+
 	if tracingConfig == nil {
 		return NewNoopTracerProvider(), nil
 	}
+	klog.Warning("TracingConfiguration is deprecated, please use TelemetryConfiguration instead")
 	opts := append([]otlptracegrpc.Option{}, addedOpts...)
 	if tracingConfig.Endpoint != nil {
 		opts = append(opts, otlptracegrpc.WithEndpoint(*tracingConfig.Endpoint))
