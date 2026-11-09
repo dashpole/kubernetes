@@ -225,6 +225,16 @@ func (dc *DeploymentController) getNewReplicaSet(ctx context.Context, d *apps.De
 	*(newRS.Spec.Replicas) = newReplicasCount
 	// Set new replica set's annotation
 	deploymentutil.SetNewReplicaSetAnnotations(ctx, d, &newRS, newRevision, false, maxRevHistoryLengthInChars)
+	if tp := d.Annotations["traceparent"]; tp != "" {
+		if newRS.Annotations == nil {
+			newRS.Annotations = make(map[string]string)
+		}
+		newRS.Annotations["traceparent"] = tp
+		if newRS.Spec.Template.Annotations == nil {
+			newRS.Spec.Template.Annotations = make(map[string]string)
+		}
+		newRS.Spec.Template.Annotations["traceparent"] = tp
+	}
 	// Create the new ReplicaSet. If it already exists, then we need to check for possible
 	// hash collisions. If there is any other error, we need to report it in the status of
 	// the Deployment.

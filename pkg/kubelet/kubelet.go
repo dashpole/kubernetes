@@ -40,6 +40,7 @@ import (
 	"go.opentelemetry.io/otel/codes"
 	semconv "go.opentelemetry.io/otel/semconv/v1.43.0"
 	"go.opentelemetry.io/otel/trace"
+	"k8s.io/component-base/tracing"
 
 	"k8s.io/client-go/informers"
 	ndf "k8s.io/component-helpers/nodedeclaredfeatures"
@@ -2079,13 +2080,24 @@ func (kl *Kubelet) Run(ctx context.Context, updates <-chan kubetypes.PodUpdate) 
 // the most accurate information possible about an error situation to aid debugging.
 // Callers should not write an event if this operation returns an error.
 func (kl *Kubelet) SyncPod(ctx context.Context, updateType kubetypes.SyncPodType, pod, mirrorPod *v1.Pod, podStatus *kubecontainer.PodStatus) (isTerminal bool, postSync func(), err error) {
-	ctx, otelSpan := kl.tracer.Start(ctx, "syncPod", trace.WithAttributes(
-		semconv.K8SPodUIDKey.String(string(pod.UID)),
-		attribute.String("k8s.pod", klog.KObj(pod).String()),
-		semconv.K8SPodNameKey.String(pod.Name),
-		attribute.String("k8s.pod.update_type", updateType.String()),
-		semconv.K8SNamespaceNameKey.String(pod.Namespace),
-	))
+	opts := []trace.SpanStartOption{
+		trace.WithAttributes(
+			semconv.K8SPodUIDKey.String(string(pod.UID)),
+			attribute.String("k8s.pod", klog.KObj(pod).String()),
+			semconv.K8SPodNameKey.String(pod.Name),
+			attribute.String("k8s.pod.update_type", updateType.String()),
+			semconv.K8SNamespaceNameKey.String(pod.Namespace),
+		),
+	}
+	tracer := kl.tracer
+	if tp := pod.Annotations["traceparent"]; tp != "" {
+		if sc, ok := tracing.ParseW3CTraceparent(tp); ok && sc.IsValid() {
+			opts = append(opts, trace.WithLinks(trace.Link{SpanContext: sc}))
+			ctx = trace.ContextWithRemoteSpanContext(ctx, sc)
+		}
+		tracer = tracing.GetOrCreateAsyncTracer("kubelet")
+	}
+	ctx, otelSpan := tracer.Start(ctx, "syncPod", opts...)
 	logger := klog.FromContext(ctx)
 	logger.V(4).Info("SyncPod enter", "pod", klog.KObj(pod), "podUID", pod.UID)
 	defer func() {

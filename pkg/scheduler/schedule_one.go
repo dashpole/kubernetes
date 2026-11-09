@@ -40,6 +40,10 @@ import (
 	"k8s.io/kubernetes/pkg/scheduler/framework"
 	"k8s.io/kubernetes/pkg/scheduler/metrics"
 	"k8s.io/kubernetes/pkg/scheduler/util"
+
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
+	"k8s.io/component-base/tracing"
 )
 
 const (
@@ -92,6 +96,17 @@ func (sched *Scheduler) ScheduleOne(ctx context.Context) {
 func (sched *Scheduler) scheduleOnePod(ctx context.Context, podInfo *framework.QueuedPodInfo) {
 	logger := klog.FromContext(ctx)
 	pod := podInfo.Pod
+
+	var span trace.Span
+	if tp := pod.Annotations["traceparent"]; tp != "" {
+		tracer := tracing.GetOrCreateAsyncTracer("kube-scheduler")
+		ctx, span = tracing.StartAsyncSpan(ctx, tracer, "SchedulePod", tp,
+			attribute.String("k8s.pod.name", pod.Name),
+			attribute.String("k8s.namespace.name", pod.Namespace),
+			attribute.String("k8s.pod.uid", string(pod.UID)),
+		)
+		defer span.End()
+	}
 	// TODO(knelasevero): Remove duplicated keys from log entry calls
 	// When contextualized logging hits GA
 	// https://github.com/kubernetes/kubernetes/issues/111672

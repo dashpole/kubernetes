@@ -59,9 +59,13 @@ import (
 	consistencyutil "k8s.io/client-go/util/consistency"
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/component-base/metrics/legacyregistry"
+	"k8s.io/component-base/tracing"
 	"k8s.io/klog/v2"
 	podutil "k8s.io/kubernetes/pkg/api/v1/pod"
 	"k8s.io/kubernetes/pkg/controller"
+
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 	"k8s.io/kubernetes/pkg/controller/replicaset/metrics"
 	"k8s.io/kubernetes/pkg/features"
 	"k8s.io/utils/clock"
@@ -679,6 +683,14 @@ func (rsc *ReplicaSetController) manageReplicas(ctx context.Context, activePods 
 		// after one of its pods fails.  Conveniently, this also prevents the
 		// event spam that those failures would generate.
 		successfulCreations, err := slowStartBatch(diff, controller.SlowStartInitialBatchSize, func() error {
+			if tp := rs.Annotations["traceparent"]; tp != "" {
+				if rs.Spec.Template.Annotations == nil {
+					rs.Spec.Template.Annotations = make(map[string]string)
+				}
+				if _, ok := rs.Spec.Template.Annotations["traceparent"]; !ok {
+					rs.Spec.Template.Annotations["traceparent"] = tp
+				}
+			}
 			err := rsc.podControl.CreatePods(ctx, rs.Namespace, &rs.Spec.Template, rs, metav1.NewControllerRef(rs, rsc.GroupVersionKind))
 			if err != nil {
 				if apierrors.HasStatusCause(err, v1.NamespaceTerminatingCause) {
@@ -788,6 +800,18 @@ func (rsc *ReplicaSetController) syncReplicaSet(ctx context.Context, key string)
 	}
 	if err != nil {
 		return err
+	}
+
+	if tp := rs.Annotations["traceparent"]; tp != "" {
+		tracer := tracing.GetOrCreateAsyncTracer("kube-controller-manager")
+		var span trace.Span
+		ctx, span = tracing.StartAsyncSpan(ctx, tracer, "ReconcileReplicaSet", tp,
+			attribute.String("k8s.controller.name", "replicaset"),
+			attribute.String("k8s.replicaset.name", rs.Name),
+			attribute.String("k8s.namespace.name", rs.Namespace),
+			attribute.Int64("k8s.generation", rs.Generation),
+		)
+		defer span.End()
 	}
 
 	rsNeedsSync := rsc.expectations.SatisfiedExpectations(logger, key)

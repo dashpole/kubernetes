@@ -45,9 +45,13 @@ import (
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/record"
 	"k8s.io/client-go/util/workqueue"
+	"k8s.io/component-base/tracing"
 	"k8s.io/klog/v2"
 	"k8s.io/kubernetes/pkg/controller"
 	"k8s.io/kubernetes/pkg/controller/deployment/util"
+
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 )
 
 const (
@@ -597,6 +601,18 @@ func (dc *DeploymentController) syncDeployment(ctx context.Context, key string) 
 
 	// Deep-copy otherwise we are mutating our cache.
 	d := deployment.DeepCopy()
+
+	if tp := d.Annotations["traceparent"]; tp != "" {
+		tracer := tracing.GetOrCreateAsyncTracer("kube-controller-manager")
+		var span trace.Span
+		ctx, span = tracing.StartAsyncSpan(ctx, tracer, "ReconcileDeployment", tp,
+			attribute.String("k8s.controller.name", "deployment"),
+			attribute.String("k8s.deployment.name", d.Name),
+			attribute.String("k8s.namespace.name", d.Namespace),
+			attribute.Int64("k8s.generation", d.Generation),
+		)
+		defer span.End()
+	}
 
 	everything := metav1.LabelSelector{}
 	if reflect.DeepEqual(d.Spec.Selector, &everything) {
