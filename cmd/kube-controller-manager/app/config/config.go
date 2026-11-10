@@ -23,6 +23,7 @@ import (
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/record"
 	basecompatibility "k8s.io/component-base/compatibility"
+	"k8s.io/component-base/tracing"
 	kubectrlmgrconfig "k8s.io/kubernetes/pkg/controller/apis/config"
 	"time"
 )
@@ -49,6 +50,9 @@ type Config struct {
 	EventRecorder    record.EventRecorder
 
 	ControllerShutdownTimeout time.Duration
+
+	// TracerProvider is the OpenTelemetry TracerProvider for controller spans and client-go propagation.
+	TracerProvider tracing.TracerProvider
 
 	// ComponentGlobalsRegistry is the registry where the effective versions and feature gates for all components are stored.
 	ComponentGlobalsRegistry basecompatibility.ComponentGlobalsRegistry

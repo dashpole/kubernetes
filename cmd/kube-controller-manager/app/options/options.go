@@ -23,6 +23,9 @@ import (
 	"net"
 	"time"
 
+	"go.opentelemetry.io/otel/sdk/resource"
+	semconv "go.opentelemetry.io/otel/semconv/v1.43.0"
+
 	v1 "k8s.io/api/core/v1"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -43,7 +46,10 @@ import (
 	logsapi "k8s.io/component-base/logs/api/v1"
 	"k8s.io/component-base/metrics"
 	metricsfeatures "k8s.io/component-base/metrics/features"
+	"k8s.io/component-base/tracing"
+	tracingapi "k8s.io/component-base/tracing/api/v1"
 	cmoptions "k8s.io/controller-manager/options"
+	cmfeatures "k8s.io/controller-manager/pkg/features"
 	kubectrlmgrconfigv1alpha1 "k8s.io/kube-controller-manager/config/v1alpha1"
 	kubecontrollerconfig "k8s.io/kubernetes/cmd/kube-controller-manager/app/config"
 	"k8s.io/kubernetes/cmd/kube-controller-manager/names"
@@ -54,6 +60,7 @@ import (
 	garbagecollectorconfig "k8s.io/kubernetes/pkg/controller/garbagecollector/config"
 	"k8s.io/kubernetes/pkg/controller/nodeipam/ipam"
 	netutils "k8s.io/utils/net"
+	"k8s.io/utils/path"
 
 	// add the kubernetes feature gates
 	_ "k8s.io/kubernetes/pkg/features"
@@ -109,6 +116,7 @@ type KubeControllerManagerOptions struct {
 
 	Master                      string
 	ShowHiddenMetricsForVersion string
+	TracingConfigFile           string
 
 	ControllerShutdownTimeout time.Duration
 
@@ -321,6 +329,8 @@ func (s *KubeControllerManagerOptions) Flags(allControllers []string, disabledBy
 
 	fss.FlagSet("generic").DurationVar(&s.ControllerShutdownTimeout, "controller-shutdown-timeout",
 		s.ControllerShutdownTimeout, "Time to wait for the controllers to shut down before terminating the executable")
+	fss.FlagSet("generic").StringVar(&s.TracingConfigFile, "tracing-config-file",
+		s.TracingConfigFile, "File with kube-controller-manager tracing configuration.")
 
 	s.ComponentGlobalsRegistry.AddFlags(fss.FlagSet("generic"))
 
@@ -502,13 +512,21 @@ func (s *KubeControllerManagerOptions) Validate(allControllers []string, disable
 		errs = append(errs, fmt.Errorf("built-in cloud providers are disabled. The ipam %s is not available", s.KubeCloudShared.CIDRAllocatorType))
 	}
 
+	if utilfeature.DefaultFeatureGate.Enabled(cmfeatures.ControllerManagerTracing) && len(s.TracingConfigFile) > 0 {
+		if exists, err := path.Exists(path.CheckFollowSymlink, s.TracingConfigFile); !exists {
+			errs = append(errs, fmt.Errorf("tracing-config-file %s does not exist", s.TracingConfigFile))
+		} else if err != nil {
+			errs = append(errs, fmt.Errorf("error checking if tracing-config-file %s exists: %v", s.TracingConfigFile, err))
+		}
+	}
+
 	// TODO: validate component config, master and kubeconfig
 
 	return utilerrors.NewAggregate(errs)
 }
 
 // Config return a controller manager config objective
-func (s KubeControllerManagerOptions) Config(ctx context.Context, allControllers []string, disabledByDefaultControllers []string, controllerAliases map[string]string) (*kubecontrollerconfig.Config, error) {
+func (s KubeControllerManagerOptions) Config(ctx context.Context, allControllers []string, disabledByDefaultControllers []string, controllerAliases map[string]string) (retCfg *kubecontrollerconfig.Config, retErr error) {
 	if err := s.Validate(allControllers, disabledByDefaultControllers, controllerAliases); err != nil {
 		return nil, err
 	}
@@ -527,6 +545,34 @@ func (s KubeControllerManagerOptions) Config(ctx context.Context, allControllers
 	kubeconfig.QPS = s.Generic.ClientConnection.QPS
 	kubeconfig.Burst = int(s.Generic.ClientConnection.Burst)
 
+	var tp tracing.TracerProvider
+	if utilfeature.DefaultFeatureGate.Enabled(cmfeatures.ControllerManagerTracing) && len(s.TracingConfigFile) > 0 {
+		traceConfig, err := apiserveroptions.ReadTracingConfiguration(s.TracingConfigFile)
+		if err != nil {
+			return nil, fmt.Errorf("failed to read tracing config: %w", err)
+		}
+		if errs := tracingapi.ValidateTracingConfiguration(traceConfig, utilfeature.DefaultFeatureGate, nil); len(errs) > 0 {
+			return nil, fmt.Errorf("failed to validate tracing configuration: %w", errs.ToAggregate())
+		}
+		resourceOpts := []resource.Option{
+			resource.WithAttributes(
+				semconv.ServiceNameKey.String(KubeControllerManagerUserAgent),
+			),
+		}
+		tp, err = tracing.NewProvider(ctx, traceConfig, nil, resourceOpts)
+		if err != nil {
+			return nil, err
+		}
+		defer func() {
+			if retErr != nil {
+				_ = tp.Shutdown(ctx)
+			}
+		}()
+		kubeconfig.Wrap(tracing.WrapperFor(tp))
+	} else {
+		tp = tracing.NewNoopTracerProvider()
+	}
+
 	client, err := clientset.NewForConfig(restclient.AddUserAgent(kubeconfig, KubeControllerManagerUserAgent))
 	if err != nil {
 		return nil, err
@@ -541,6 +587,7 @@ func (s KubeControllerManagerOptions) Config(ctx context.Context, allControllers
 		EventBroadcaster:          eventBroadcaster,
 		EventRecorder:             eventRecorder,
 		ControllerShutdownTimeout: s.ControllerShutdownTimeout,
+		TracerProvider:            tp,
 		ComponentGlobalsRegistry:  s.ComponentGlobalsRegistry,
 	}
 	if err := s.ApplyTo(c, allControllers, disabledByDefaultControllers, controllerAliases); err != nil {

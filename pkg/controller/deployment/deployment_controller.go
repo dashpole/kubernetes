@@ -27,6 +27,9 @@ import (
 	"sync"
 	"time"
 
+	semconv "go.opentelemetry.io/otel/semconv/v1.43.0"
+	oteltrace "go.opentelemetry.io/otel/trace"
+
 	apps "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -45,6 +48,7 @@ import (
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/record"
 	"k8s.io/client-go/util/workqueue"
+	"k8s.io/component-base/tracing"
 	"k8s.io/klog/v2"
 	"k8s.io/kubernetes/pkg/controller"
 	"k8s.io/kubernetes/pkg/controller/deployment/util"
@@ -97,7 +101,9 @@ type DeploymentController struct {
 	podListerSynced cache.InformerSynced
 
 	// Deployments that need to be synced
-	queue workqueue.TypedRateLimitingInterface[string]
+	queue       workqueue.TypedRateLimitingInterface[string]
+	tracer      oteltrace.Tracer
+	linkTracker *tracing.LinkTracker
 }
 
 // NewDeploymentController creates a new DeploymentController.
@@ -108,6 +114,8 @@ func NewDeploymentController(ctx context.Context, dInformer appsinformers.Deploy
 		client:           client,
 		eventBroadcaster: eventBroadcaster,
 		eventRecorder:    eventBroadcaster.NewRecorder(scheme.Scheme, v1.EventSource{Component: "deployment-controller"}),
+		tracer:           tracing.TracerFromContext(ctx),
+		linkTracker:      tracing.NewLinkTracker(),
 		queue: workqueue.NewTypedRateLimitingQueueWithConfig(
 			workqueue.DefaultTypedControllerRateLimiter[string](),
 			workqueue.TypedRateLimitingQueueConfig[string]{
@@ -202,6 +210,7 @@ func (dc *DeploymentController) Run(ctx context.Context, workers int) {
 func (dc *DeploymentController) addDeployment(logger klog.Logger, obj interface{}) {
 	d := obj.(*apps.Deployment)
 	logger.V(4).Info("Adding deployment", "deployment", klog.KObj(d))
+	dc.linkTracker.Record(d)
 	dc.enqueueDeployment(d)
 }
 
@@ -209,6 +218,7 @@ func (dc *DeploymentController) updateDeployment(logger klog.Logger, old, cur in
 	oldD := old.(*apps.Deployment)
 	curD := cur.(*apps.Deployment)
 	logger.V(4).Info("Updating deployment", "deployment", klog.KObj(oldD))
+	dc.linkTracker.Record(curD)
 	dc.enqueueDeployment(curD)
 }
 
@@ -227,6 +237,7 @@ func (dc *DeploymentController) deleteDeployment(logger klog.Logger, obj interfa
 		}
 	}
 	logger.V(4).Info("Deleting deployment", "deployment", klog.KObj(d))
+	dc.linkTracker.Forget(d)
 	dc.enqueueDeployment(d)
 }
 
@@ -597,6 +608,17 @@ func (dc *DeploymentController) syncDeployment(ctx context.Context, key string) 
 
 	// Deep-copy otherwise we are mutating our cache.
 	d := deployment.DeepCopy()
+
+	tracer := tracing.TracerFromContext(ctx)
+	ctx, span := tracer.Start(ctx, "reconcile Deployment",
+		dc.linkTracker.WithObjects(d),
+		oteltrace.WithAttributes(
+			semconv.K8SDeploymentUID(string(d.UID)),
+			semconv.K8SDeploymentName(d.Name),
+			semconv.K8SNamespaceName(d.Namespace),
+		),
+	)
+	defer span.End()
 
 	everything := metav1.LabelSelector{}
 	if reflect.DeepEqual(d.Spec.Selector, &everything) {

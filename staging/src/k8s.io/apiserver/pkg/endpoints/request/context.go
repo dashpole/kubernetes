@@ -20,6 +20,8 @@ import (
 	"context"
 	"errors"
 
+	"go.opentelemetry.io/otel/trace"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apiserver/pkg/authentication/user"
 	"k8s.io/apiserver/pkg/authorization/authorizer"
@@ -37,6 +39,10 @@ const (
 
 	// used for propagating a conditional authorization decision between authorization and admission
 	conditionallyAuthorizedDecisionKey
+
+	// incomingSpanContextKey is the context key for the incoming caller's remote SpanContext
+	// when kube-apiserver's own server span is unsampled.
+	incomingSpanContextKey
 )
 
 // NewContext instantiates a base context object for request flows.
@@ -103,4 +109,21 @@ func WithConditionallyAuthorizedDecision(parent context.Context, authorizer auth
 func ConditionallyAuthorizedDecisionFrom(ctx context.Context) (authorizer.Authorizer, authorizer.ConditionsAwareDecision, bool) {
 	tuple, ok := ctx.Value(conditionallyAuthorizedDecisionKey).(authorizerDecisionTuple)
 	return tuple.authorizer, tuple.decision, ok
+}
+
+// WithIncomingSpanContext returns a copy of parent in which the caller's incoming remote SpanContext is set.
+func WithIncomingSpanContext(parent context.Context, sc trace.SpanContext) context.Context {
+	if !sc.IsValid() {
+		return parent
+	}
+	return WithValue(parent, incomingSpanContextKey, sc)
+}
+
+// IncomingSpanContextFrom returns the incoming caller's remote SpanContext from ctx, if present.
+func IncomingSpanContextFrom(ctx context.Context) (trace.SpanContext, bool) {
+	if ctx == nil {
+		return trace.SpanContext{}, false
+	}
+	sc, ok := ctx.Value(incomingSpanContextKey).(trace.SpanContext)
+	return sc, ok && sc.IsValid()
 }

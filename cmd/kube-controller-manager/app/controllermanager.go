@@ -73,6 +73,7 @@ import (
 	featuremetrics "k8s.io/component-base/metrics/prometheus/feature"
 	"k8s.io/component-base/metrics/prometheus/slis"
 	"k8s.io/component-base/term"
+	"k8s.io/component-base/tracing"
 	utilversion "k8s.io/component-base/version"
 	"k8s.io/component-base/version/verflag"
 	zpagesfeatures "k8s.io/component-base/zpages/features"
@@ -215,6 +216,17 @@ func Run(ctx context.Context, c *config.CompletedConfig) error {
 	c.EventBroadcaster.StartStructuredLogging(0)
 	c.EventBroadcaster.StartRecordingToSink(&v1core.EventSinkImpl{Interface: c.Client.CoreV1().Events("")})
 	defer c.EventBroadcaster.Shutdown()
+
+	if c.TracerProvider != nil {
+		defer func() {
+			shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			defer cancel()
+			if err := c.TracerProvider.Shutdown(shutdownCtx); err != nil {
+				logger.Error(err, "Failed to shut down tracer provider")
+			}
+		}()
+		ctx = tracing.ContextWithTracerProvider(ctx, c.TracerProvider)
+	}
 
 	externalConfig := &configv1alpha1.KubeControllerManagerConfiguration{}
 	if err := configv1alpha1conversion.Convert_config_KubeControllerManagerConfiguration_To_v1alpha1_KubeControllerManagerConfiguration(&c.ComponentConfig, externalConfig, nil); err != nil {
@@ -886,9 +898,12 @@ func createClientBuilders(c *config.CompletedConfig) (clientBuilder clientbuilde
 		ClientConfig: c.Kubeconfig,
 	}
 	if c.ComponentConfig.KubeCloudShared.UseServiceAccountCredentials {
-
+		anonConfig := restclient.AnonymousClientConfig(c.Kubeconfig)
+		if c.TracerProvider != nil && c.Kubeconfig != nil && c.Kubeconfig.WrapTransport != nil {
+			anonConfig.Wrap(tracing.WrapperFor(c.TracerProvider))
+		}
 		clientBuilder = clientbuilder.NewDynamicClientBuilder(
-			restclient.AnonymousClientConfig(c.Kubeconfig),
+			anonConfig,
 			c.Client.CoreV1(),
 			metav1.NamespaceSystem)
 	} else {

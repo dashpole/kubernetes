@@ -28,9 +28,13 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apiserver/pkg/server/healthz"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
+	"k8s.io/client-go/kubernetes/fake"
+	restclient "k8s.io/client-go/rest"
 	"k8s.io/component-base/featuregate"
 	featuregatetesting "k8s.io/component-base/featuregate/testing"
+	"k8s.io/component-base/tracing"
 	"k8s.io/klog/v2/ktesting"
+	"k8s.io/kubernetes/cmd/kube-controller-manager/app/config"
 	"k8s.io/kubernetes/cmd/kube-controller-manager/names"
 )
 
@@ -265,3 +269,61 @@ func runControllers(
 	RunControllers(ctx, controllerCtx, controllers, 0, 0)
 	return nil
 }
+
+func TestCreateClientBuildersPreservesTracingWrapper(t *testing.T) {
+	tp := tracing.NewNoopTracerProvider()
+	kubeconfig := &restclient.Config{Host: "https://127.0.0.1:6443"}
+	kubeconfig.Wrap(tracing.WrapperFor(tp))
+
+	cfg := &config.Config{
+		Kubeconfig:     kubeconfig,
+		TracerProvider: tp,
+	}
+	cfg.ComponentConfig.KubeCloudShared.UseServiceAccountCredentials = false
+
+	clientBuilder, rootClientBuilder := createClientBuilders(cfg.Complete())
+	rootCfg, err := rootClientBuilder.Config("root-test")
+	if err != nil {
+		t.Fatalf("unexpected error from rootClientBuilder.Config: %v", err)
+	}
+	if rootCfg.WrapTransport == nil {
+		t.Errorf("expected rootClientBuilder config to preserve WrapTransport")
+	}
+	builderCfg, err := clientBuilder.Config("controller-test")
+	if err != nil {
+		t.Fatalf("unexpected error from clientBuilder.Config: %v", err)
+	}
+	if builderCfg.WrapTransport == nil {
+		t.Errorf("expected clientBuilder config to preserve WrapTransport when UseServiceAccountCredentials=false")
+	}
+
+	// VerifyAnonymousClientConfig path when UseServiceAccountCredentials=true.
+	anonCfg := restclient.AnonymousClientConfig(kubeconfig)
+	if anonCfg.WrapTransport != nil {
+		t.Fatalf("expected AnonymousClientConfig to strip WrapTransport before re-wrapping")
+	}
+	_ = fake.NewSimpleClientset()
+	anonCfg.Wrap(tracing.WrapperFor(tp))
+	if anonCfg.WrapTransport == nil {
+		t.Errorf("expected re-wrapped anonymous config to have WrapTransport")
+	}
+
+	// Verify that when tracing is disabled (kubeconfig.WrapTransport == nil),
+	// createClientBuilders does NOT wrap the dynamic client builder with otelhttp.
+	unwrappedKubeconfig := &restclient.Config{Host: "https://127.0.0.1:6443"}
+	disabledCfg := &config.Config{
+		Kubeconfig:     unwrappedKubeconfig,
+		TracerProvider: tracing.NewNoopTracerProvider(),
+		Client:         nil,
+	}
+	disabledCfg.ComponentConfig.KubeCloudShared.UseServiceAccountCredentials = false
+	disabledBuilder, _ := createClientBuilders(disabledCfg.Complete())
+	disabledBuilderCfg, err := disabledBuilder.Config("controller-disabled-test")
+	if err != nil {
+		t.Fatalf("unexpected error from disabledBuilder.Config: %v", err)
+	}
+	if disabledBuilderCfg.WrapTransport != nil {
+		t.Errorf("expected WrapTransport to remain nil when tracing is disabled")
+	}
+}
+

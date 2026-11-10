@@ -37,6 +37,9 @@ import (
 	"sync"
 	"time"
 
+	semconv "go.opentelemetry.io/otel/semconv/v1.43.0"
+	oteltrace "go.opentelemetry.io/otel/trace"
+
 	apps "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -59,6 +62,7 @@ import (
 	consistencyutil "k8s.io/client-go/util/consistency"
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/component-base/metrics/legacyregistry"
+	"k8s.io/component-base/tracing"
 	"k8s.io/klog/v2"
 	podutil "k8s.io/kubernetes/pkg/api/v1/pod"
 	"k8s.io/kubernetes/pkg/controller"
@@ -137,6 +141,9 @@ type ReplicaSetController struct {
 
 	// Controller specific features; see ReplicaSetControllerFeatures for details.
 	controllerFeatures ReplicaSetControllerFeatures
+
+	tracer      oteltrace.Tracer
+	linkTracker *tracing.LinkTracker
 }
 
 // ReplicaSetControllerFeatures that can be set in accordance with the controller type (GVK).
@@ -212,6 +219,8 @@ func NewBaseController(ctx context.Context, rsInformer appsinformers.ReplicaSetI
 		eventBroadcaster: eventBroadcaster,
 		burstReplicas:    burstReplicas,
 		expectations:     controller.NewUIDTrackingControllerExpectations(controller.NewControllerExpectations()),
+		tracer:           tracing.TracerFromContext(ctx),
+		linkTracker:      tracing.NewLinkTracker(),
 		queue: workqueue.NewTypedRateLimitingQueueWithConfig(
 			workqueue.DefaultTypedControllerRateLimiter[string](),
 			workqueue.TypedRateLimitingQueueConfig[string]{
@@ -391,6 +400,7 @@ func (rsc *ReplicaSetController) enqueueRSAfter(rs *apps.ReplicaSet, duration ti
 func (rsc *ReplicaSetController) addRS(logger klog.Logger, obj interface{}) {
 	rs := obj.(*apps.ReplicaSet)
 	logger.V(4).Info("Adding", "replicaSet", klog.KObj(rs))
+	rsc.linkTracker.Record(rs)
 	rsc.enqueueRS(rs)
 }
 
@@ -427,6 +437,7 @@ func (rsc *ReplicaSetController) updateRS(logger klog.Logger, old, cur interface
 	if *(oldRS.Spec.Replicas) != *(curRS.Spec.Replicas) {
 		logger.V(4).Info("replicaSet updated. Desired pod count change.", "replicaSet", klog.KObj(oldRS), "oldReplicas", *(oldRS.Spec.Replicas), "newReplicas", *(curRS.Spec.Replicas))
 	}
+	rsc.linkTracker.Record(curRS)
 	rsc.enqueueRS(curRS)
 }
 
@@ -444,6 +455,7 @@ func (rsc *ReplicaSetController) deleteRS(logger klog.Logger, obj interface{}) {
 			return
 		}
 	}
+	rsc.linkTracker.Forget(rs)
 
 	key, err := controller.KeyFunc(rs)
 	if err != nil {
@@ -789,6 +801,17 @@ func (rsc *ReplicaSetController) syncReplicaSet(ctx context.Context, key string)
 	if err != nil {
 		return err
 	}
+
+	tracer := tracing.TracerFromContext(ctx)
+	ctx, span := tracer.Start(ctx, "reconcile "+rsc.Kind,
+		rsc.linkTracker.WithObjects(rs),
+		oteltrace.WithAttributes(
+			semconv.K8SReplicaSetUID(string(rs.UID)),
+			semconv.K8SReplicaSetName(rs.Name),
+			semconv.K8SNamespaceName(rs.Namespace),
+		),
+	)
+	defer span.End()
 
 	rsNeedsSync := rsc.expectations.SatisfiedExpectations(logger, key)
 	selector, err := metav1.LabelSelectorAsSelector(rs.Spec.Selector)

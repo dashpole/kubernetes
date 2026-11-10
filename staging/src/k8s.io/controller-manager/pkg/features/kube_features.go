@@ -50,6 +50,12 @@ const (
 	//
 	// Make kube-controller-manager release leader election lock on exit.
 	ControllerManagerReleaseLeaderElectionLockOnExit featuregate.Feature = "ControllerManagerReleaseLeaderElectionLockOnExit"
+
+	// owner: @dashpole, @artem-tkachuk
+	// kep: https://kep.k8s.io/5915
+	//
+	// Enables OpenTelemetry distributed tracing in kube-controller-manager.
+	ControllerManagerTracing featuregate.Feature = "ControllerManagerTracing"
 )
 
 func SetupCurrentKubernetesSpecificFeatureGates(featuregates featuregate.MutableVersionedFeatureGate) error {
@@ -71,5 +77,8 @@ var versionedCloudPublicFeatureGates = map[featuregate.Feature]featuregate.Versi
 	},
 	ControllerManagerReleaseLeaderElectionLockOnExit: {
 		{Version: version.MustParse("1.36"), Default: false, PreRelease: featuregate.Alpha},
+	},
+	ControllerManagerTracing: {
+		{Version: version.MustParse("1.38"), Default: false, PreRelease: featuregate.Alpha},
 	},
 }

@@ -21,6 +21,7 @@ import (
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
 	"k8s.io/apiserver/pkg/audit"
 	"k8s.io/apiserver/pkg/endpoints/request"
@@ -53,6 +54,12 @@ func WithTracing(handler http.Handler, tp trace.TracerProvider) http.Handler {
 		// Add the http.target attribute to the otelhttp span
 		// Workaround for https://github.com/open-telemetry/opentelemetry-go-contrib/issues/3743
 		span := trace.SpanFromContext(r.Context())
+		if !span.SpanContext().IsSampled() {
+			incomingCtx := tracing.Propagators().Extract(r.Context(), propagation.HeaderCarrier(r.Header))
+			if incomingSC := trace.SpanContextFromContext(incomingCtx); incomingSC.IsValid() {
+				r = r.WithContext(request.WithIncomingSpanContext(r.Context(), incomingSC))
+			}
+		}
 		if r.URL != nil {
 			span.SetAttributes(attribute.Key("http.target").String(r.URL.RequestURI()))
 		}

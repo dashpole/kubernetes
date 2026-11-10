@@ -17,7 +17,10 @@ limitations under the License.
 package options
 
 import (
+	"context"
 	"fmt"
+	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"strings"
@@ -46,9 +49,12 @@ import (
 	cpoptions "k8s.io/cloud-provider/options"
 
 	eventv1 "k8s.io/api/events/v1"
+	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	clientgofeaturegate "k8s.io/client-go/features"
+	featuregatetesting "k8s.io/component-base/featuregate/testing"
 	cmconfig "k8s.io/controller-manager/config"
 	cmoptions "k8s.io/controller-manager/options"
+	cmfeatures "k8s.io/controller-manager/pkg/features"
 	migration "k8s.io/controller-manager/pkg/leadermigration/options"
 	kubecontrollerconfig "k8s.io/kubernetes/cmd/kube-controller-manager/app/config"
 	kubectrlmgrconfig "k8s.io/kubernetes/pkg/controller/apis/config"
@@ -179,6 +185,7 @@ var args = []string{
 	"--bind-address=192.168.4.21",
 	"--secure-port=10001",
 	"--concurrent-ttl-after-finished-syncs=8",
+	"--tracing-config-file=/tracing-config",
 }
 
 func TestAddFlags(t *testing.T) {
@@ -477,6 +484,7 @@ func TestAddFlags(t *testing.T) {
 			AlwaysAllowGroups:            []string{"system:masters"},
 		},
 		Master:                    "192.168.4.20",
+		TracingConfigFile:         "/tracing-config",
 		ControllerShutdownTimeout: 10 * time.Second,
 		Metrics:                   &metrics.Options{},
 		Logs:                      logs.NewOptions(),
@@ -524,6 +532,21 @@ func TestValidateFlags(t *testing.T) {
 				"--cloud-provider=external",
 			},
 			wantErr: false,
+		},
+		{
+			name: "non-existent tracing-config-file ignored when ControllerManagerTracing is disabled",
+			flags: []string{
+				"--tracing-config-file=/non-existent-tracing-config.yaml",
+			},
+			wantErr: false,
+		},
+		{
+			name: "non-existent tracing-config-file",
+			flags: []string{
+				"--feature-gates=ControllerManagerTracing=true",
+				"--tracing-config-file=/non-existent-tracing-config.yaml",
+			},
+			wantErr: true,
 		},
 		{
 			name: "nodeipam to cloudAllocator",
@@ -1757,3 +1780,50 @@ func (r sortedGCIgnoredResources) Less(i, j int) bool {
 func (r sortedGCIgnoredResources) Swap(i, j int) {
 	r[i], r[j] = r[j], r[i]
 }
+
+func TestTracingConfigFile(t *testing.T) {
+	featuregatetesting.SetFeatureGateDuringTest(t, utilfeature.DefaultFeatureGate, cmfeatures.ControllerManagerTracing, true)
+
+	tmpDir := t.TempDir()
+	tracingConfigPath := filepath.Join(tmpDir, "tracing-config.yaml")
+	tracingYAML := `apiVersion: apiserver.config.k8s.io/v1beta1
+kind: TracingConfiguration
+endpoint: 127.0.0.1:4317
+samplingRatePerMillion: 1000
+`
+	if err := os.WriteFile(tracingConfigPath, []byte(tracingYAML), 0600); err != nil {
+		t.Fatalf("failed to write temp tracing config: %v", err)
+	}
+
+	s, err := NewKubeControllerManagerOptions()
+	if err != nil {
+		t.Fatalf("NewKubeControllerManagerOptions failed: %v", err)
+	}
+	s.Master = "https://127.0.0.1:6443"
+	s.TracingConfigFile = tracingConfigPath
+
+	if err := s.Validate([]string{"*"}, nil, nil); err != nil {
+		t.Fatalf("expected valid tracing-config-file to pass Validate, got: %v", err)
+	}
+
+	cfg, err := s.Config(context.Background(), []string{"*"}, nil, nil)
+	if err != nil {
+		t.Fatalf("expected Config() to succeed with valid tracing-config-file, got: %v", err)
+	}
+	defer func() {
+		if cfg.TracerProvider != nil {
+			_ = cfg.TracerProvider.Shutdown(context.Background())
+		}
+		if cfg.EventBroadcaster != nil {
+			cfg.EventBroadcaster.Shutdown()
+		}
+	}()
+
+	if cfg.TracerProvider == nil {
+		t.Fatal("expected cfg.TracerProvider to be non-nil")
+	}
+	if cfg.Kubeconfig == nil || cfg.Kubeconfig.WrapTransport == nil {
+		t.Fatal("expected cfg.Kubeconfig.WrapTransport to be configured when tracing is enabled")
+	}
+}
+
