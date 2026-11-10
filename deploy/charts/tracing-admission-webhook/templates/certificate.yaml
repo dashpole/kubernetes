@@ -1,0 +1,27 @@
+{{- if .Values.certManager.enabled -}}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ include "tracing-admission-webhook.fullname" . }}-selfsigned
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "tracing-admission-webhook.labels" . | nindent 4 }}
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "tracing-admission-webhook.fullname" . }}-serving-cert
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "tracing-admission-webhook.labels" . | nindent 4 }}
+spec:
+  dnsNames:
+    - {{ include "tracing-admission-webhook.fullname" . }}.{{ .Release.Namespace }}.svc
+    - {{ include "tracing-admission-webhook.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: {{ include "tracing-admission-webhook.fullname" . }}-selfsigned
+  secretName: {{ include "tracing-admission-webhook.tlsSecretName" . }}
+{{- end }}

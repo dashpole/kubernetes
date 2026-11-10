@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Build, Test, Lint & Helm Verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Run go vet
+        run: make vet
+
+      - name: Run unit tests with race detector
+        run: make test
+
+      - name: Build binary
+        run: make build
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v7
+        with:
+          version: latest
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Lint and render Helm chart
+        run: |
+          make helm-lint
+          helm template tracing-admission-webhook deploy/charts/tracing-admission-webhook --namespace tracing-system > /dev/null

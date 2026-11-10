@@ -1,0 +1,10 @@
+apiVersion: v2
+name: tracing-admission-webhook
+description: Out-of-tree Kubernetes mutating admission webhook for W3C traceparent injection on resource creation and spec mutations
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+home: https://github.com/kubernetes-sigs/tracing-admission-webhook
+maintainers:
+  - name: Kubernetes SIG Instrumentation
+    url: https://github.com/kubernetes/community/tree/master/sig-instrumentation

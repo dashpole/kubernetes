@@ -1,0 +1,7 @@
+Thank you for installing {{ .Chart.Name }}.
+
+The mutating admission webhook is deployed in namespace {{ .Release.Namespace }}
+with failurePolicy: {{ .Values.webhook.failurePolicy }} (fail-open).
+
+To verify the webhook pods are running:
+  kubectl get pods -n {{ .Release.Namespace }} -l "app.kubernetes.io/instance={{ .Release.Name }}"

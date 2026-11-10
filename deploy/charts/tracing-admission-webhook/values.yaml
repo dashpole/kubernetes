@@ -1,0 +1,86 @@
+replicaCount: 2
+
+image:
+  repository: registry.k8s.io/tracing-admission-webhook/tracing-admission-webhook
+  pullPolicy: IfNotPresent
+  tag: ""
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 443
+  targetPort: 8443
+
+webhook:
+  # failurePolicy defaults to Ignore so control-plane writes never block if the webhook is unavailable.
+  failurePolicy: Ignore
+  timeoutSeconds: 5
+  reinvocationPolicy: Never
+  caBundle: ""
+  generateIfMissing: false
+  samplingRate: 1.0
+  requireSampled: false
+  excludedNamespaces:
+    - kube-system
+    - kube-public
+    - kube-node-lease
+  rules:
+    - apiGroups: ["apps"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources:
+        - deployments
+        - replicasets
+        - statefulsets
+        - daemonsets
+      scope: Namespaced
+    - apiGroups: ["batch"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources:
+        - jobs
+        - cronjobs
+      scope: Namespaced
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources:
+        - pods
+        - replicationcontrollers
+      scope: Namespaced
+
+certManager:
+  enabled: true
+  secretName: ""
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 500m
+    memory: 128Mi
