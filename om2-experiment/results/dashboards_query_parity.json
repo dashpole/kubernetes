@@ -1,0 +1,199 @@
+{
+  "summary": {
+    "004": {
+      "total_exprs": 389,
+      "non_empty_count": 305,
+      "error_count": 0,
+      "errors": []
+    },
+    "om1": {
+      "total_exprs": 389,
+      "non_empty_count": 305,
+      "error_count": 0,
+      "errors": []
+    },
+    "om2": {
+      "total_exprs": 389,
+      "non_empty_count": 305,
+      "error_count": 0,
+      "errors": []
+    },
+    "om2-nh": {
+      "total_exprs": 389,
+      "non_empty_count": 305,
+      "error_count": 0,
+      "errors": []
+    },
+    "om2-nh-default": {
+      "total_exprs": 389,
+      "non_empty_count": 279,
+      "error_count": 0,
+      "errors": []
+    }
+  },
+  "non_empty_diffs_vs_004": {
+    "om1": [],
+    "om2": [],
+    "om2-nh": [],
+    "om2-nh-default": [
+      {
+        "expr": "cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{verb=\"read\", cluster=\"$cluster\"}",
+        "004_count": 3,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{verb=\"write\", cluster=\"$cluster\"}",
+        "004_count": 2,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(kubelet_cgroup_manager_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (instance, operation_type, le))",
+        "004_count": 2,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(kubelet_pleg_relist_duration_seconds_bucket{cluster=\"$cluster\",job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (instance, le))",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(kubelet_pleg_relist_interval_seconds_bucket{cluster=\"$cluster\",job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (instance, le))",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(kubelet_pod_start_duration_seconds_bucket{cluster=\"$cluster\",job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (instance, le))",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{cluster=\"$cluster\",job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (instance, le))",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(kubelet_runtime_operations_duration_seconds_bucket{cluster=\"$cluster\",job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (instance, operation_type, le))",
+        "004_count": 17,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(kubeproxy_network_programming_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\"}[$__rate_interval])) by (instance, le))",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\",instance=~\"$instance\",verb=\"POST\"}[$__rate_interval])) by (verb, le))",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\",job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (instance, verb, le))",
+        "004_count": 5,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(scheduler_pod_scheduling_sli_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(scheduler_scheduling_attempt_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99, sum(rate(storage_operation_duration_seconds_bucket{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (instance, operation_name, volume_plugin, le))",
+        "004_count": 10,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "histogram_quantile(0.99,rate(kubeproxy_sync_proxy_rules_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\"}[$__rate_interval]))",
+        "004_count": 2,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "sum(rate(kubelet_cgroup_manager_duration_seconds_count{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (instance, operation_type)",
+        "004_count": 2,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "sum(rate(kubelet_pleg_relist_duration_seconds_count{cluster=\"$cluster\", job=\"kubelet\", instance=~\"$instance\"}[$__rate_interval])) by (instance)",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "sum(rate(kubelet_pod_start_duration_seconds_count{cluster=\"$cluster\",job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (instance)",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "sum(rate(kubelet_pod_worker_duration_seconds_count{cluster=\"$cluster\",job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (instance)",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "sum(rate(kubeproxy_network_programming_duration_seconds_count{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\"}[$__rate_interval]))",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "sum(rate(kubeproxy_sync_proxy_rules_duration_seconds_count{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\"}[$__rate_interval]))",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "sum(rate(scheduler_pod_scheduling_sli_duration_seconds_count{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance)",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "sum(rate(scheduler_scheduling_algorithm_duration_seconds_count{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance)",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "sum(rate(scheduler_scheduling_attempt_duration_seconds_count{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance)",
+        "004_count": 1,
+        "om2-nh-default_count": 0
+      },
+      {
+        "expr": "sum(rate(storage_operation_duration_seconds_count{cluster=\"$cluster\",job=\"kubelet\",instance=~\"$instance\"}[$__rate_interval])) by (instance, operation_name, volume_plugin)",
+        "004_count": 10,
+        "om2-nh-default_count": 0
+      }
+    ]
+  },
+  "empty_in_both_004_and_om2_count": 84,
+  "empty_in_both_004_and_om2_sample": [
+    "(\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n  -\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_available_bytes{cluster=\"$cluster\", job=\"kubelet\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n)\n",
+    "(\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_inodes{cluster=\"$cluster\", job=\"kubelet\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n  -\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_inodes_used{cluster=\"$cluster\", job=\"kubelet\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n)\n",
+    "1 - avg(rate(windows_cpu_time_total{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", mode=\"idle\"}[$__rate_interval]))",
+    "1 - sum(:windows_node_memory_MemFreeCached_bytes:sum{cluster=\"$cluster\"}) / sum(:windows_node_memory_MemTotal_bytes:sum{cluster=\"$cluster\"})",
+    "100 * (apiserver_request:availability30d{verb=\"all\", cluster=\"$cluster\"} - 0.990000)",
+    "apiserver_request:availability30d{verb=\"all\", cluster=\"$cluster\"}",
+    "apiserver_request:availability30d{verb=\"read\", cluster=\"$cluster\"}",
+    "apiserver_request:availability30d{verb=\"write\", cluster=\"$cluster\"}",
+    "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, le))",
+    "histogram_quantile(0.99, sum(rate(scheduler_volume_scheduling_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\",instance=~\"$instance\"}[$__rate_interval])) by (cluster, instance, le))",
+    "max without(instance,node) (\n(\n  topk(1, kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n  -\n  topk(1, kubelet_volume_stats_available_bytes{cluster=\"$cluster\", job=\"kubelet\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n)\n/\ntopk(1, kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n* 100)\n",
+    "max without(instance,node) (\ntopk(1, kubelet_volume_stats_inodes_used{cluster=\"$cluster\", job=\"kubelet\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n/\ntopk(1, kubelet_volume_stats_inodes{cluster=\"$cluster\", job=\"kubelet\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n* 100)\n",
+    "max(\n  windows_os_visible_memory_bytes{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"}\n  - windows_memory_available_bytes{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"}\n)\n",
+    "max(node:windows_node_memory_totalCached_bytes:sum{cluster=\"$cluster\", instance=\"$instance\"})",
+    "max(rate(windows_logical_disk_read_bytes_total{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"}[$__rate_interval]))",
+    "max(rate(windows_logical_disk_read_seconds_total{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\",  instance=\"$instance\"}[$__rate_interval]) + rate(windows_logical_disk_write_seconds_total{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"}[$__rate_interval]))",
+    "max(rate(windows_logical_disk_write_bytes_total{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"}[$__rate_interval]))",
+    "max(windows_memory_available_bytes{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"})",
+    "node:windows_node_cpu_utilisation:avg1m{cluster=\"$cluster\", instance=\"$instance\"}",
+    "node:windows_node_cpu_utilisation:avg1m{cluster=\"$cluster\"} * node:windows_node_num_cpu:sum{cluster=\"$cluster\"} / scalar(sum(node:windows_node_num_cpu:sum{cluster=\"$cluster\"}))",
+    "node:windows_node_disk_utilisation:avg_irate{cluster=\"$cluster\", instance=\"$instance\"}",
+    "node:windows_node_disk_utilisation:avg_irate{cluster=\"$cluster\"} / scalar(node:windows_node:sum{cluster=\"$cluster\"})",
+    "node:windows_node_filesystem_usage:{cluster=\"$cluster\", instance=\"$instance\"}",
+    "node:windows_node_memory_swap_io_pages:irate{cluster=\"$cluster\", instance=\"$instance\"}",
+    "node:windows_node_memory_swap_io_pages:irate{cluster=\"$cluster\"}"
+  ]
+}

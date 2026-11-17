@@ -1,0 +1,10 @@
+{
+  "pod": "otel-collector-deployment-opentelemetry-collector-6968b676gxw2l",
+  "error_lines_in_logs": [],
+  "otelcol_process_uptime_and_points": [
+    "otelcol_exporter_sent_metric_points{exporter=\"prometheus\"} 290764",
+    "otelcol_exporter_sent_metric_points{exporter=\"prometheusremotewrite\"} 290764",
+    "otelcol_receiver_accepted_metric_points{receiver=\"prometheus\",transport=\"http\"} 290764",
+    "otelcol_receiver_refused_metric_points{receiver=\"prometheus\",transport=\"http\"} 0"
+  ]
+}

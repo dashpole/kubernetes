@@ -1,0 +1,1233 @@
+# HELP aggregator_discovery_aggregation_count_total [ALPHA] Counter of number of times discovery was aggregated
+# TYPE aggregator_discovery_aggregation_count_total counter
+aggregator_discovery_aggregation_count_total 0.0 st@1794947452.637239143
+# HELP apiserver_audit_event_total [ALPHA] Counter of audit events generated and sent to the audit backend.
+# TYPE apiserver_audit_event_total counter
+apiserver_audit_event_total 0.0 st@1794947452.625272626
+# HELP apiserver_audit_requests_rejected_total [ALPHA] Counter of apiserver requests rejected due to an error in audit logging backend.
+# TYPE apiserver_audit_requests_rejected_total counter
+apiserver_audit_requests_rejected_total 0.0 st@1794947452.625600365
+# HELP apiserver_client_certificate_expiration_seconds [ALPHA] Distribution of the remaining lifetime on the certificate used to authenticate a request.
+# TYPE apiserver_client_certificate_expiration_seconds histogram
+apiserver_client_certificate_expiration_seconds {count:0,sum:0,bucket:[0:0,1800:0,3600:0,7200:0,21600:0,43200:0,86400:0,172800:0,345600:0,604800:0,2.592e+06:0,7.776e+06:0,1.5552e+07:0,3.1104e+07:0,+Inf:0]} st@1794947453.057622562
+# HELP apiserver_delegated_authz_request_duration_seconds [ALPHA] Request latency in seconds. Broken down by status code.
+# TYPE apiserver_delegated_authz_request_duration_seconds histogram
+apiserver_delegated_authz_request_duration_seconds{code="201"} {count:366,sum:1.462825839000002,bucket:[0.25:366,0.5:366,0.7:366,1:366,1.5:366,3:366,5:366,10:366,+Inf:366]} st@1794947456.510025884
+apiserver_delegated_authz_request_duration_seconds{code="403"} {count:2,sum:0.00878869,bucket:[0.25:2,0.5:2,0.7:2,1:2,1.5:2,3:2,5:2,10:2,+Inf:2]} st@1794947455.517690395
+# HELP apiserver_delegated_authz_request_total [ALPHA] Number of HTTP requests partitioned by status code.
+# TYPE apiserver_delegated_authz_request_total counter
+apiserver_delegated_authz_request_total{code="201"} 366.0 st@1794947456.510021519
+apiserver_delegated_authz_request_total{code="403"} 2.0 st@1794947455.517683542
+# HELP apiserver_envelope_encryption_dek_cache_fill_percent [ALPHA] Percent of the cache slots currently occupied by cached DEKs.
+# TYPE apiserver_envelope_encryption_dek_cache_fill_percent gauge
+apiserver_envelope_encryption_dek_cache_fill_percent 0.0
+# HELP apiserver_storage_data_key_generation_duration_seconds [ALPHA] Latencies in seconds of data encryption key(DEK) generation operations.
+# TYPE apiserver_storage_data_key_generation_duration_seconds histogram
+apiserver_storage_data_key_generation_duration_seconds {count:0,sum:0,bucket:[5e-06:0,1e-05:0,2e-05:0,4e-05:0,8e-05:0,0.00016:0,0.00032:0,0.00064:0,0.00128:0,0.00256:0,0.00512:0,0.01024:0,0.02048:0,0.04096:0,+Inf:0]} st@1794947452.626920123
+# HELP apiserver_storage_data_key_generation_failures_total [ALPHA] Total number of failed data encryption key(DEK) generation operations.
+# TYPE apiserver_storage_data_key_generation_failures_total counter
+apiserver_storage_data_key_generation_failures_total 0.0 st@1794947452.627403381
+# HELP apiserver_storage_envelope_transformation_cache_misses_total [ALPHA] Total number of cache misses while accessing key decryption key(KEK).
+# TYPE apiserver_storage_envelope_transformation_cache_misses_total counter
+apiserver_storage_envelope_transformation_cache_misses_total 0.0 st@1794947452.62670692
+# HELP apiserver_validation_declarative_validation_mismatch_total [BETA] Number of times declarative validation results differed from handwritten validation results for core types.
+# TYPE apiserver_validation_declarative_validation_mismatch_total counter
+apiserver_validation_declarative_validation_mismatch_total 0.0 st@1794947452.628334201
+# HELP apiserver_validation_declarative_validation_panic_total [BETA] Number of times declarative validation has panicked during validation.
+# TYPE apiserver_validation_declarative_validation_panic_total counter
+apiserver_validation_declarative_validation_panic_total 0.0 st@1794947452.628539818
+# HELP apiserver_validation_duplicate_validation_error_total [INTERNAL] Number of duplicate validation errors during validation.
+# TYPE apiserver_validation_duplicate_validation_error_total counter
+apiserver_validation_duplicate_validation_error_total 0.0 st@1794947452.628698973
+# HELP apiserver_webhooks_x509_insecure_sha1_total [BETA] Counts the number of requests to servers with insecure SHA1 signatures in their serving certificate OR the number of connection failures due to the insecure SHA1 signatures (either/or, based on the runtime environment)
+# TYPE apiserver_webhooks_x509_insecure_sha1_total counter
+apiserver_webhooks_x509_insecure_sha1_total 0.0 st@1794947452.643002144
+# HELP apiserver_webhooks_x509_missing_san_total [BETA] Counts the number of requests to servers missing SAN extension in their serving certificate OR the number of connection failures due to the lack of x509 certificate SAN extension missing (either/or, based on the runtime environment)
+# TYPE apiserver_webhooks_x509_missing_san_total counter
+apiserver_webhooks_x509_missing_san_total 0.0 st@1794947452.642751279
+# HELP authenticated_user_requests [ALPHA] Counter of authenticated requests broken out by username.
+# TYPE authenticated_user_requests counter
+authenticated_user_requests{username="other"} 3853.0 st@1794947455.517867327
+# HELP authentication_attempts [ALPHA] Counter of authenticated attempts.
+# TYPE authentication_attempts counter
+authentication_attempts{result="success"} 3853.0 st@1794947455.517870177
+# HELP authentication_duration_seconds [ALPHA] Authentication duration in seconds broken out by result.
+# TYPE authentication_duration_seconds histogram
+authentication_duration_seconds{result="success"} {count:3853,sum:0.03712937199999993,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-166:1,3:61,3:2,3:1,3:1,6:3],positive_buckets:[1,1,4,1,3,2,2,2,3,6,3,5,7,5,4,10,10,17,14,21,33,47,87,158,259,414,446,509,476,346,247,178,164,113,54,32,25,24,18,15,6,10,10,9,6,4,6,0,5,3,1,1,1,0,1,3,2,1,3,2,3,2,1,2,1,1,2,0,1],bucket:[0.001:3853,0.002:3853,0.004:3853,0.008:3853,0.016:3853,0.032:3853,0.064:3853,0.128:3853,0.256:3853,0.512:3853,1.024:3853,2.048:3853,4.096:3853,8.192:3853,16.384:3853,+Inf:3853]} st@1794947455.51787256
+# HELP authorization_attempts_total [ALPHA] Counter of authorization attempts broken down by result. It can be either 'allowed', 'denied', 'no-opinion', 'conditional' or 'error'.
+# TYPE authorization_attempts_total counter
+authorization_attempts_total{result="allowed"} 3851.0 st@1794947456.510097952
+authorization_attempts_total{result="error"} 2.0 st@1794947455.517850174
+# HELP authorization_duration_seconds [ALPHA] Authorization duration in seconds broken out by result.
+# TYPE authorization_duration_seconds histogram
+authorization_duration_seconds{result="allowed"} {count:3851,sum:1.7738442570000001,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-135:63,3:19,3:2,4:1,4:1],positive_buckets:[2,3,1,1,3,14,13,13,17,62,61,73,99,180,147,91,78,49,37,40,114,116,96,376,450,273,231,265,142,97,74,49,39,23,24,18,18,11,10,8,13,6,3,5,6,4,5,2,4,1,3,1,1,2,1,0,2,0,1,2,0,0,1,4,16,33,70,53,56,37,28,30,15,2,5,8,4,3,0,1,0,1,1,1,1,1],bucket:[0.001:3475,0.002:3481,0.004:3723,0.008:3843,0.016:3847,0.032:3850,0.064:3851,0.128:3851,0.256:3851,0.512:3851,1.024:3851,2.048:3851,4.096:3851,8.192:3851,16.384:3851,+Inf:3851]} st@1794947456.510099448
+authorization_duration_seconds{result="error"} {count:2,sum:0.009217335,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-64:1,3:1],positive_buckets:[1,1],bucket:[0.001:0,0.002:0,0.004:1,0.008:2,0.016:2,0.032:2,0.064:2,0.128:2,0.256:2,0.512:2,1.024:2,2.048:2,4.096:2,8.192:2,16.384:2,+Inf:2]} st@1794947455.517853406
+# HELP cardinality_enforcement_unexpected_categorizations_total [ALPHA] The count of unexpected categorizations during cardinality enforcement.
+# TYPE cardinality_enforcement_unexpected_categorizations_total counter
+cardinality_enforcement_unexpected_categorizations_total 0.0 st@1794947452.623844435
+# HELP disabled_metrics_total [BETA] The count of disabled metrics.
+# TYPE disabled_metrics_total counter
+disabled_metrics_total 0.0 st@1794947452.622465775
+# HELP go_cgo_go_to_c_calls_calls_total Count of calls made from Go to C by the current process. Sourced from /cgo/go-to-c-calls:calls.
+# TYPE go_cgo_go_to_c_calls_calls_total counter
+# UNIT go_cgo_go_to_c_calls_calls_total calls
+go_cgo_go_to_c_calls_calls_total 0.0 st@1794947452.620993066
+# HELP go_cpu_classes_gc_mark_assist_cpu_seconds_total Estimated total CPU time goroutines spent performing GC tasks to assist the GC and prevent it from falling behind the application. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/gc/mark/assist:cpu-seconds.
+# TYPE go_cpu_classes_gc_mark_assist_cpu_seconds_total counter
+# UNIT go_cpu_classes_gc_mark_assist_cpu_seconds_total cpu_seconds
+go_cpu_classes_gc_mark_assist_cpu_seconds_total 0.055954657 st@1794947452.621000136
+# HELP go_cpu_classes_gc_mark_dedicated_cpu_seconds_total Estimated total CPU time spent performing GC tasks on processors (as defined by GOMAXPROCS) dedicated to those tasks. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/gc/mark/dedicated:cpu-seconds.
+# TYPE go_cpu_classes_gc_mark_dedicated_cpu_seconds_total counter
+# UNIT go_cpu_classes_gc_mark_dedicated_cpu_seconds_total cpu_seconds
+go_cpu_classes_gc_mark_dedicated_cpu_seconds_total 2.42330038 st@1794947452.621005936
+# HELP go_cpu_classes_gc_mark_idle_cpu_seconds_total Estimated total CPU time spent performing GC tasks on spare CPU resources that the Go scheduler could not otherwise find a use for. This should be subtracted from the total GC CPU time to obtain a measure of compulsory GC CPU time. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/gc/mark/idle:cpu-seconds.
+# TYPE go_cpu_classes_gc_mark_idle_cpu_seconds_total counter
+# UNIT go_cpu_classes_gc_mark_idle_cpu_seconds_total cpu_seconds
+go_cpu_classes_gc_mark_idle_cpu_seconds_total 0.44711779 st@1794947452.621010199
+# HELP go_cpu_classes_gc_pause_cpu_seconds_total Estimated total CPU time spent with the application paused by the GC. Even if only one thread is running during the pause, this is computed as GOMAXPROCS times the pause latency because nothing else can be executing. This is the exact sum of samples in /sched/pauses/total/gc:seconds if each sample is multiplied by GOMAXPROCS at the time it is taken. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/gc/pause:cpu-seconds.
+# TYPE go_cpu_classes_gc_pause_cpu_seconds_total counter
+# UNIT go_cpu_classes_gc_pause_cpu_seconds_total cpu_seconds
+go_cpu_classes_gc_pause_cpu_seconds_total 1.394509419 st@1794947452.621013779
+# HELP go_cpu_classes_gc_total_cpu_seconds_total Estimated total CPU time spent performing GC tasks. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sum of all metrics in /cpu/classes/gc. Sourced from /cpu/classes/gc/total:cpu-seconds.
+# TYPE go_cpu_classes_gc_total_cpu_seconds_total counter
+# UNIT go_cpu_classes_gc_total_cpu_seconds_total cpu_seconds
+go_cpu_classes_gc_total_cpu_seconds_total 4.320882246 st@1794947452.621052168
+# HELP go_cpu_classes_idle_cpu_seconds_total Estimated total available CPU time not spent executing any Go or Go runtime code. In other words, the part of /cpu/classes/total:cpu-seconds that was unused. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/idle:cpu-seconds.
+# TYPE go_cpu_classes_idle_cpu_seconds_total counter
+# UNIT go_cpu_classes_idle_cpu_seconds_total cpu_seconds
+go_cpu_classes_idle_cpu_seconds_total 61231.685722792 st@1794947452.621055613
+# HELP go_cpu_classes_scavenge_assist_cpu_seconds_total Estimated total CPU time spent returning unused memory to the underlying platform in response eagerly to memory pressure. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/scavenge/assist:cpu-seconds.
+# TYPE go_cpu_classes_scavenge_assist_cpu_seconds_total counter
+# UNIT go_cpu_classes_scavenge_assist_cpu_seconds_total cpu_seconds
+go_cpu_classes_scavenge_assist_cpu_seconds_total 6.3e-07 st@1794947452.62105851
+# HELP go_cpu_classes_scavenge_background_cpu_seconds_total Estimated total CPU time spent performing background tasks to return unused memory to the underlying platform. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/scavenge/background:cpu-seconds.
+# TYPE go_cpu_classes_scavenge_background_cpu_seconds_total counter
+# UNIT go_cpu_classes_scavenge_background_cpu_seconds_total cpu_seconds
+go_cpu_classes_scavenge_background_cpu_seconds_total 0.128932649 st@1794947452.621062412
+# HELP go_cpu_classes_scavenge_total_cpu_seconds_total Estimated total CPU time spent performing tasks that return unused memory to the underlying platform. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sum of all metrics in /cpu/classes/scavenge. Sourced from /cpu/classes/scavenge/total:cpu-seconds.
+# TYPE go_cpu_classes_scavenge_total_cpu_seconds_total counter
+# UNIT go_cpu_classes_scavenge_total_cpu_seconds_total cpu_seconds
+go_cpu_classes_scavenge_total_cpu_seconds_total 0.128933279 st@1794947452.621065009
+# HELP go_cpu_classes_total_cpu_seconds_total Estimated total available CPU time for user Go code or the Go runtime, as defined by GOMAXPROCS. In other words, GOMAXPROCS integrated over the wall-clock duration this process has been executing for. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sum of all metrics in /cpu/classes. Sourced from /cpu/classes/total:cpu-seconds.
+# TYPE go_cpu_classes_total_cpu_seconds_total counter
+# UNIT go_cpu_classes_total_cpu_seconds_total cpu_seconds
+go_cpu_classes_total_cpu_seconds_total 61291.644758328 st@1794947452.621067744
+# HELP go_cpu_classes_user_cpu_seconds_total Estimated total CPU time spent running user Go code. This may also include some small amount of time spent in the Go runtime. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/user:cpu-seconds.
+# TYPE go_cpu_classes_user_cpu_seconds_total counter
+# UNIT go_cpu_classes_user_cpu_seconds_total cpu_seconds
+go_cpu_classes_user_cpu_seconds_total 55.509220011 st@1794947452.62107007
+# HELP go_gc_cleanups_executed_cleanups_total Approximate total count of cleanup functions (created by runtime.AddCleanup) executed by the runtime. Subtract /gc/cleanups/queued:cleanups to approximate cleanup queue length. Useful for detecting slow cleanups holding up the queue. Sourced from /gc/cleanups/executed:cleanups.
+# TYPE go_gc_cleanups_executed_cleanups_total counter
+# UNIT go_gc_cleanups_executed_cleanups_total cleanups
+go_gc_cleanups_executed_cleanups_total 220.0 st@1794947452.621072694
+# HELP go_gc_cleanups_queued_cleanups_total Approximate total count of cleanup functions (created by runtime.AddCleanup) queued by the runtime for execution. Subtract from /gc/cleanups/executed:cleanups to approximate cleanup queue length. Useful for detecting slow cleanups holding up the queue. Sourced from /gc/cleanups/queued:cleanups.
+# TYPE go_gc_cleanups_queued_cleanups_total counter
+# UNIT go_gc_cleanups_queued_cleanups_total cleanups
+go_gc_cleanups_queued_cleanups_total 220.0 st@1794947452.621074959
+# HELP go_gc_cycles_automatic_gc_cycles_total Count of completed GC cycles generated by the Go runtime. Sourced from /gc/cycles/automatic:gc-cycles.
+# TYPE go_gc_cycles_automatic_gc_cycles_total counter
+# UNIT go_gc_cycles_automatic_gc_cycles_total gc_cycles
+go_gc_cycles_automatic_gc_cycles_total 121.0 st@1794947452.621078082
+# HELP go_gc_cycles_forced_gc_cycles_total Count of completed GC cycles forced by the application. Sourced from /gc/cycles/forced:gc-cycles.
+# TYPE go_gc_cycles_forced_gc_cycles_total counter
+# UNIT go_gc_cycles_forced_gc_cycles_total gc_cycles
+go_gc_cycles_forced_gc_cycles_total 0.0 st@1794947452.621080304
+# HELP go_gc_cycles_total_gc_cycles_total Count of all completed GC cycles. Sourced from /gc/cycles/total:gc-cycles.
+# TYPE go_gc_cycles_total_gc_cycles_total counter
+# UNIT go_gc_cycles_total_gc_cycles_total gc_cycles
+go_gc_cycles_total_gc_cycles_total 121.0 st@1794947452.621082967
+# HELP go_gc_duration_seconds A summary of the wall-time pause (stop-the-world) duration in garbage collection cycles.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds {count:121,sum:0.141261758,quantile:[0:0.000173296,0.25:0.000342295,0.5:0.000557324,0.75:0.001064615,1:0.016092205]}
+# HELP go_gc_finalizers_executed_finalizers_total Total count of finalizer functions (created by runtime.SetFinalizer) executed by the runtime. Subtract /gc/finalizers/queued:finalizers to approximate finalizer queue length. Useful for detecting finalizers overwhelming the queue, either by being too slow, or by there being too many of them. Sourced from /gc/finalizers/executed:finalizers.
+# TYPE go_gc_finalizers_executed_finalizers_total counter
+# UNIT go_gc_finalizers_executed_finalizers_total finalizers
+go_gc_finalizers_executed_finalizers_total 0.0 st@1794947452.621085756
+# HELP go_gc_finalizers_queued_finalizers_total Total count of finalizer functions (created by runtime.SetFinalizer) and queued by the runtime for execution. Subtract from /gc/finalizers/executed:finalizers to approximate finalizer queue length. Useful for detecting slow finalizers holding up the queue. Sourced from /gc/finalizers/queued:finalizers.
+# TYPE go_gc_finalizers_queued_finalizers_total counter
+# UNIT go_gc_finalizers_queued_finalizers_total finalizers
+go_gc_finalizers_queued_finalizers_total 0.0 st@1794947452.621088021
+# HELP go_gc_gogc_percent Heap size target percentage configured by the user, otherwise 100. This value is set by the GOGC environment variable, and the runtime/debug.SetGCPercent function. Sourced from /gc/gogc:percent.
+# TYPE go_gc_gogc_percent gauge
+# UNIT go_gc_gogc_percent percent
+go_gc_gogc_percent 100.0
+# HELP go_gc_gomemlimit_bytes Go runtime memory limit configured by the user, otherwise math.MaxInt64. This value is set by the GOMEMLIMIT environment variable, and the runtime/debug.SetMemoryLimit function. Sourced from /gc/gomemlimit:bytes.
+# TYPE go_gc_gomemlimit_bytes gauge
+# UNIT go_gc_gomemlimit_bytes bytes
+go_gc_gomemlimit_bytes 9.223372036854776e+18
+# HELP go_gc_heap_allocs_by_size_bytes Distribution of heap allocations by approximate size. Bucket counts increase monotonically. Note that this does not include tiny objects as defined by /gc/heap/tiny/allocs:objects, only tiny blocks. Sourced from /gc/heap/allocs-by-size:bytes.
+# TYPE go_gc_heap_allocs_by_size_bytes histogram
+# UNIT go_gc_heap_allocs_by_size_bytes bytes
+go_gc_heap_allocs_by_size_bytes {count:6377687,sum:1.117539168e+09,bucket:[8.999999999999998:188648,24.999999999999996:1925247,64.99999999999999:4395678,144.99999999999997:5838475,320.99999999999994:6111420,704.9999999999999:6210587,1536.9999999999998:6309808,3200.9999999999995:6355061,6528.999999999999:6370855,13568.999999999998:6372958,27264.999999999996:6375660,+Inf:6377687]}
+# HELP go_gc_heap_allocs_bytes_total Cumulative sum of memory allocated to the heap by the application. Sourced from /gc/heap/allocs:bytes.
+# TYPE go_gc_heap_allocs_bytes_total counter
+# UNIT go_gc_heap_allocs_bytes_total bytes
+go_gc_heap_allocs_bytes_total 1.117539168e+09 st@1794947452.621103105
+# HELP go_gc_heap_allocs_objects_total Cumulative count of heap allocations triggered by the application. Note that this does not include tiny objects as defined by /gc/heap/tiny/allocs:objects, only tiny blocks. Sourced from /gc/heap/allocs:objects.
+# TYPE go_gc_heap_allocs_objects_total counter
+# UNIT go_gc_heap_allocs_objects_total objects
+go_gc_heap_allocs_objects_total 6.377687e+06 st@1794947452.621106519
+# HELP go_gc_heap_frees_by_size_bytes Distribution of freed heap allocations by approximate size. Bucket counts increase monotonically. Note that this does not include tiny objects as defined by /gc/heap/tiny/allocs:objects, only tiny blocks. Sourced from /gc/heap/frees-by-size:bytes.
+# TYPE go_gc_heap_frees_by_size_bytes histogram
+# UNIT go_gc_heap_frees_by_size_bytes bytes
+go_gc_heap_frees_by_size_bytes {count:6314131,sum:1.105088144e+09,bucket:[8.999999999999998:186216,24.999999999999996:1907132,64.99999999999999:4352149,144.99999999999997:5784185,320.99999999999994:6050857,704.9999999999999:6148289,1536.9999999999998:6246880,3200.9999999999995:6291778,6528.999999999999:6307443,13568.999999999998:6309493,27264.999999999996:6312134,+Inf:6314131]}
+# HELP go_gc_heap_frees_bytes_total Cumulative sum of heap memory freed by the garbage collector. Sourced from /gc/heap/frees:bytes.
+# TYPE go_gc_heap_frees_bytes_total counter
+# UNIT go_gc_heap_frees_bytes_total bytes
+go_gc_heap_frees_bytes_total 1.105088144e+09 st@1794947452.621111714
+# HELP go_gc_heap_frees_objects_total Cumulative count of heap allocations whose storage was freed by the garbage collector. Note that this does not include tiny objects as defined by /gc/heap/tiny/allocs:objects, only tiny blocks. Sourced from /gc/heap/frees:objects.
+# TYPE go_gc_heap_frees_objects_total counter
+# UNIT go_gc_heap_frees_objects_total objects
+go_gc_heap_frees_objects_total 6.314131e+06 st@1794947452.621115352
+# HELP go_gc_heap_goal_bytes Heap size target for the end of the GC cycle. Sourced from /gc/heap/goal:bytes.
+# TYPE go_gc_heap_goal_bytes gauge
+# UNIT go_gc_heap_goal_bytes bytes
+go_gc_heap_goal_bytes 2.069321e+07
+# HELP go_gc_heap_live_bytes Heap memory occupied by live objects that were marked by the previous GC. Sourced from /gc/heap/live:bytes.
+# TYPE go_gc_heap_live_bytes gauge
+# UNIT go_gc_heap_live_bytes bytes
+go_gc_heap_live_bytes 1.000168e+07
+# HELP go_gc_heap_objects_objects Number of objects, live or unswept, occupying heap memory. Sourced from /gc/heap/objects:objects.
+# TYPE go_gc_heap_objects_objects gauge
+# UNIT go_gc_heap_objects_objects objects
+go_gc_heap_objects_objects 63556.0
+# HELP go_gc_heap_tiny_allocs_objects_total Count of small allocations that are packed together into blocks. These allocations are counted separately from other allocations because each individual allocation is not tracked by the runtime, only their block. Each block is already accounted for in allocs-by-size and frees-by-size. Sourced from /gc/heap/tiny/allocs:objects.
+# TYPE go_gc_heap_tiny_allocs_objects_total counter
+# UNIT go_gc_heap_tiny_allocs_objects_total objects
+go_gc_heap_tiny_allocs_objects_total 682277.0 st@1794947452.621124684
+# HELP go_gc_limiter_last_enabled_gc_cycle GC cycle the last time the GC CPU limiter was enabled. This metric is useful for diagnosing the root cause of an out-of-memory error, because the limiter trades memory for CPU time when the GC's CPU time gets too high. This is most likely to occur with use of SetMemoryLimit. The first GC cycle is cycle 1, so a value of 0 indicates that it was never enabled. Sourced from /gc/limiter/last-enabled:gc-cycle.
+# TYPE go_gc_limiter_last_enabled_gc_cycle gauge
+# UNIT go_gc_limiter_last_enabled_gc_cycle gc_cycle
+go_gc_limiter_last_enabled_gc_cycle 0.0
+# HELP go_gc_pauses_seconds Deprecated. Prefer the identical /sched/pauses/total/gc:seconds. Sourced from /gc/pauses:seconds.
+# TYPE go_gc_pauses_seconds histogram
+# UNIT go_gc_pauses_seconds seconds
+go_gc_pauses_seconds {count:242,sum:0.049302528,bucket:[6.399999999999999e-08:0,6.399999999999999e-07:0,7.167999999999999e-06:0,8.191999999999999e-05:69,0.0009175039999999999:212,0.010485759999999998:241,0.11744051199999998:242,+Inf:242]}
+# HELP go_gc_scan_globals_bytes The total amount of global variable space that is scannable. Sourced from /gc/scan/globals:bytes.
+# TYPE go_gc_scan_globals_bytes gauge
+# UNIT go_gc_scan_globals_bytes bytes
+go_gc_scan_globals_bytes 447914.0
+# HELP go_gc_scan_heap_bytes The total amount of heap space that is scannable. Sourced from /gc/scan/heap:bytes.
+# TYPE go_gc_scan_heap_bytes gauge
+# UNIT go_gc_scan_heap_bytes bytes
+go_gc_scan_heap_bytes 7.839816e+06
+# HELP go_gc_scan_stack_bytes The number of bytes of stack that were scanned last GC cycle. Sourced from /gc/scan/stack:bytes.
+# TYPE go_gc_scan_stack_bytes gauge
+# UNIT go_gc_scan_stack_bytes bytes
+go_gc_scan_stack_bytes 241936.0
+# HELP go_gc_scan_total_bytes The total amount space that is scannable. Sum of all metrics in /gc/scan. Sourced from /gc/scan/total:bytes.
+# TYPE go_gc_scan_total_bytes gauge
+# UNIT go_gc_scan_total_bytes bytes
+go_gc_scan_total_bytes 8.529666e+06
+# HELP go_gc_stack_starting_size_bytes The stack size of new goroutines. Sourced from /gc/stack/starting-size:bytes.
+# TYPE go_gc_stack_starting_size_bytes gauge
+# UNIT go_gc_stack_starting_size_bytes bytes
+go_gc_stack_starting_size_bytes 2048.0
+# HELP go_godebug_non_default_behavior_allowmultiplevcs_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=allowmultiplevcs=... setting. Sourced from /godebug/non-default-behavior/allowmultiplevcs:events.
+# TYPE go_godebug_non_default_behavior_allowmultiplevcs_events_total counter
+# UNIT go_godebug_non_default_behavior_allowmultiplevcs_events_total events
+go_godebug_non_default_behavior_allowmultiplevcs_events_total 0.0 st@1794947452.621144462
+# HELP go_godebug_non_default_behavior_containermaxprocs_events_total The number of non-default behaviors executed by the runtime package due to a non-default GODEBUG=containermaxprocs=... setting. Sourced from /godebug/non-default-behavior/containermaxprocs:events.
+# TYPE go_godebug_non_default_behavior_containermaxprocs_events_total counter
+# UNIT go_godebug_non_default_behavior_containermaxprocs_events_total events
+go_godebug_non_default_behavior_containermaxprocs_events_total 0.0 st@1794947452.621147224
+# HELP go_godebug_non_default_behavior_cryptocustomrand_events_total The number of non-default behaviors executed by the crypto package due to a non-default GODEBUG=cryptocustomrand=... setting. Sourced from /godebug/non-default-behavior/cryptocustomrand:events.
+# TYPE go_godebug_non_default_behavior_cryptocustomrand_events_total counter
+# UNIT go_godebug_non_default_behavior_cryptocustomrand_events_total events
+go_godebug_non_default_behavior_cryptocustomrand_events_total 0.0 st@1794947452.621151028
+# HELP go_godebug_non_default_behavior_embedfollowsymlinks_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=embedfollowsymlinks=... setting. Sourced from /godebug/non-default-behavior/embedfollowsymlinks:events.
+# TYPE go_godebug_non_default_behavior_embedfollowsymlinks_events_total counter
+# UNIT go_godebug_non_default_behavior_embedfollowsymlinks_events_total events
+go_godebug_non_default_behavior_embedfollowsymlinks_events_total 0.0 st@1794947452.621153936
+# HELP go_godebug_non_default_behavior_execerrdot_events_total The number of non-default behaviors executed by the os/exec package due to a non-default GODEBUG=execerrdot=... setting. Sourced from /godebug/non-default-behavior/execerrdot:events.
+# TYPE go_godebug_non_default_behavior_execerrdot_events_total counter
+# UNIT go_godebug_non_default_behavior_execerrdot_events_total events
+go_godebug_non_default_behavior_execerrdot_events_total 0.0 st@1794947452.621158078
+# HELP go_godebug_non_default_behavior_fips140ems_events_total The number of non-default behaviors executed by the crypto/tls package due to a non-default GODEBUG=fips140ems=... setting. Sourced from /godebug/non-default-behavior/fips140ems:events.
+# TYPE go_godebug_non_default_behavior_fips140ems_events_total counter
+# UNIT go_godebug_non_default_behavior_fips140ems_events_total events
+go_godebug_non_default_behavior_fips140ems_events_total 0.0 st@1794947452.621160394
+# HELP go_godebug_non_default_behavior_gocachehash_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=gocachehash=... setting. Sourced from /godebug/non-default-behavior/gocachehash:events.
+# TYPE go_godebug_non_default_behavior_gocachehash_events_total counter
+# UNIT go_godebug_non_default_behavior_gocachehash_events_total events
+go_godebug_non_default_behavior_gocachehash_events_total 0.0 st@1794947452.621163829
+# HELP go_godebug_non_default_behavior_gocachetest_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=gocachetest=... setting. Sourced from /godebug/non-default-behavior/gocachetest:events.
+# TYPE go_godebug_non_default_behavior_gocachetest_events_total counter
+# UNIT go_godebug_non_default_behavior_gocachetest_events_total events
+go_godebug_non_default_behavior_gocachetest_events_total 0.0 st@1794947452.62116611
+# HELP go_godebug_non_default_behavior_gocacheverify_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=gocacheverify=... setting. Sourced from /godebug/non-default-behavior/gocacheverify:events.
+# TYPE go_godebug_non_default_behavior_gocacheverify_events_total counter
+# UNIT go_godebug_non_default_behavior_gocacheverify_events_total events
+go_godebug_non_default_behavior_gocacheverify_events_total 0.0 st@1794947452.621169212
+# HELP go_godebug_non_default_behavior_gotestjsonbuildtext_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=gotestjsonbuildtext=... setting. Sourced from /godebug/non-default-behavior/gotestjsonbuildtext:events.
+# TYPE go_godebug_non_default_behavior_gotestjsonbuildtext_events_total counter
+# UNIT go_godebug_non_default_behavior_gotestjsonbuildtext_events_total events
+go_godebug_non_default_behavior_gotestjsonbuildtext_events_total 0.0 st@1794947452.621171719
+# HELP go_godebug_non_default_behavior_htmlmetacontenturlescape_events_total The number of non-default behaviors executed by the html/template package due to a non-default GODEBUG=htmlmetacontenturlescape=... setting. Sourced from /godebug/non-default-behavior/htmlmetacontenturlescape:events.
+# TYPE go_godebug_non_default_behavior_htmlmetacontenturlescape_events_total counter
+# UNIT go_godebug_non_default_behavior_htmlmetacontenturlescape_events_total events
+go_godebug_non_default_behavior_htmlmetacontenturlescape_events_total 0.0 st@1794947452.621174404
+# HELP go_godebug_non_default_behavior_http2client_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=http2client=... setting. Sourced from /godebug/non-default-behavior/http2client:events.
+# TYPE go_godebug_non_default_behavior_http2client_events_total counter
+# UNIT go_godebug_non_default_behavior_http2client_events_total events
+go_godebug_non_default_behavior_http2client_events_total 0.0 st@1794947452.621177092
+# HELP go_godebug_non_default_behavior_http2server_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=http2server=... setting. Sourced from /godebug/non-default-behavior/http2server:events.
+# TYPE go_godebug_non_default_behavior_http2server_events_total counter
+# UNIT go_godebug_non_default_behavior_http2server_events_total events
+go_godebug_non_default_behavior_http2server_events_total 0.0 st@1794947452.621179344
+# HELP go_godebug_non_default_behavior_httpcookiemaxnum_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=httpcookiemaxnum=... setting. Sourced from /godebug/non-default-behavior/httpcookiemaxnum:events.
+# TYPE go_godebug_non_default_behavior_httpcookiemaxnum_events_total counter
+# UNIT go_godebug_non_default_behavior_httpcookiemaxnum_events_total events
+go_godebug_non_default_behavior_httpcookiemaxnum_events_total 0.0 st@1794947452.621181519
+# HELP go_godebug_non_default_behavior_httplaxcontentlength_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=httplaxcontentlength=... setting. Sourced from /godebug/non-default-behavior/httplaxcontentlength:events.
+# TYPE go_godebug_non_default_behavior_httplaxcontentlength_events_total counter
+# UNIT go_godebug_non_default_behavior_httplaxcontentlength_events_total events
+go_godebug_non_default_behavior_httplaxcontentlength_events_total 0.0 st@1794947452.621184551
+# HELP go_godebug_non_default_behavior_httpmuxgo121_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=httpmuxgo121=... setting. Sourced from /godebug/non-default-behavior/httpmuxgo121:events.
+# TYPE go_godebug_non_default_behavior_httpmuxgo121_events_total counter
+# UNIT go_godebug_non_default_behavior_httpmuxgo121_events_total events
+go_godebug_non_default_behavior_httpmuxgo121_events_total 0.0 st@1794947452.62118671
+# HELP go_godebug_non_default_behavior_httpservecontentkeepheaders_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=httpservecontentkeepheaders=... setting. Sourced from /godebug/non-default-behavior/httpservecontentkeepheaders:events.
+# TYPE go_godebug_non_default_behavior_httpservecontentkeepheaders_events_total counter
+# UNIT go_godebug_non_default_behavior_httpservecontentkeepheaders_events_total events
+go_godebug_non_default_behavior_httpservecontentkeepheaders_events_total 0.0 st@1794947452.621189771
+# HELP go_godebug_non_default_behavior_httpservecontentmaxranges_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=httpservecontentmaxranges=... setting. Sourced from /godebug/non-default-behavior/httpservecontentmaxranges:events.
+# TYPE go_godebug_non_default_behavior_httpservecontentmaxranges_events_total counter
+# UNIT go_godebug_non_default_behavior_httpservecontentmaxranges_events_total events
+go_godebug_non_default_behavior_httpservecontentmaxranges_events_total 0.0 st@1794947452.621191933
+# HELP go_godebug_non_default_behavior_installgoroot_events_total The number of non-default behaviors executed by the go/build package due to a non-default GODEBUG=installgoroot=... setting. Sourced from /godebug/non-default-behavior/installgoroot:events.
+# TYPE go_godebug_non_default_behavior_installgoroot_events_total counter
+# UNIT go_godebug_non_default_behavior_installgoroot_events_total events
+go_godebug_non_default_behavior_installgoroot_events_total 0.0 st@1794947452.621194229
+# HELP go_godebug_non_default_behavior_multipartmaxheaders_events_total The number of non-default behaviors executed by the mime/multipart package due to a non-default GODEBUG=multipartmaxheaders=... setting. Sourced from /godebug/non-default-behavior/multipartmaxheaders:events.
+# TYPE go_godebug_non_default_behavior_multipartmaxheaders_events_total counter
+# UNIT go_godebug_non_default_behavior_multipartmaxheaders_events_total events
+go_godebug_non_default_behavior_multipartmaxheaders_events_total 0.0 st@1794947452.621196436
+# HELP go_godebug_non_default_behavior_multipartmaxparts_events_total The number of non-default behaviors executed by the mime/multipart package due to a non-default GODEBUG=multipartmaxparts=... setting. Sourced from /godebug/non-default-behavior/multipartmaxparts:events.
+# TYPE go_godebug_non_default_behavior_multipartmaxparts_events_total counter
+# UNIT go_godebug_non_default_behavior_multipartmaxparts_events_total events
+go_godebug_non_default_behavior_multipartmaxparts_events_total 0.0 st@1794947452.621198402
+# HELP go_godebug_non_default_behavior_multipathtcp_events_total The number of non-default behaviors executed by the net package due to a non-default GODEBUG=multipathtcp=... setting. Sourced from /godebug/non-default-behavior/multipathtcp:events.
+# TYPE go_godebug_non_default_behavior_multipathtcp_events_total counter
+# UNIT go_godebug_non_default_behavior_multipathtcp_events_total events
+go_godebug_non_default_behavior_multipathtcp_events_total 0.0 st@1794947452.621200359
+# HELP go_godebug_non_default_behavior_netedns0_events_total The number of non-default behaviors executed by the net package due to a non-default GODEBUG=netedns0=... setting. Sourced from /godebug/non-default-behavior/netedns0:events.
+# TYPE go_godebug_non_default_behavior_netedns0_events_total counter
+# UNIT go_godebug_non_default_behavior_netedns0_events_total events
+go_godebug_non_default_behavior_netedns0_events_total 0.0 st@1794947452.621203763
+# HELP go_godebug_non_default_behavior_panicnil_events_total The number of non-default behaviors executed by the runtime package due to a non-default GODEBUG=panicnil=... setting. Sourced from /godebug/non-default-behavior/panicnil:events.
+# TYPE go_godebug_non_default_behavior_panicnil_events_total counter
+# UNIT go_godebug_non_default_behavior_panicnil_events_total events
+go_godebug_non_default_behavior_panicnil_events_total 0.0 st@1794947452.621206929
+# HELP go_godebug_non_default_behavior_randautoseed_events_total The number of non-default behaviors executed by the math/rand package due to a non-default GODEBUG=randautoseed=... setting. Sourced from /godebug/non-default-behavior/randautoseed:events.
+# TYPE go_godebug_non_default_behavior_randautoseed_events_total counter
+# UNIT go_godebug_non_default_behavior_randautoseed_events_total events
+go_godebug_non_default_behavior_randautoseed_events_total 0.0 st@1794947452.621209076
+# HELP go_godebug_non_default_behavior_randseednop_events_total The number of non-default behaviors executed by the math/rand package due to a non-default GODEBUG=randseednop=... setting. Sourced from /godebug/non-default-behavior/randseednop:events.
+# TYPE go_godebug_non_default_behavior_randseednop_events_total counter
+# UNIT go_godebug_non_default_behavior_randseednop_events_total events
+go_godebug_non_default_behavior_randseednop_events_total 0.0 st@1794947452.621211733
+# HELP go_godebug_non_default_behavior_rsa1024min_events_total The number of non-default behaviors executed by the crypto/rsa package due to a non-default GODEBUG=rsa1024min=... setting. Sourced from /godebug/non-default-behavior/rsa1024min:events.
+# TYPE go_godebug_non_default_behavior_rsa1024min_events_total counter
+# UNIT go_godebug_non_default_behavior_rsa1024min_events_total events
+go_godebug_non_default_behavior_rsa1024min_events_total 0.0 st@1794947452.621213946
+# HELP go_godebug_non_default_behavior_tarinsecurepath_events_total The number of non-default behaviors executed by the archive/tar package due to a non-default GODEBUG=tarinsecurepath=... setting. Sourced from /godebug/non-default-behavior/tarinsecurepath:events.
+# TYPE go_godebug_non_default_behavior_tarinsecurepath_events_total counter
+# UNIT go_godebug_non_default_behavior_tarinsecurepath_events_total events
+go_godebug_non_default_behavior_tarinsecurepath_events_total 0.0 st@1794947452.62121625
+# HELP go_godebug_non_default_behavior_tlsmaxrsasize_events_total The number of non-default behaviors executed by the crypto/tls package due to a non-default GODEBUG=tlsmaxrsasize=... setting. Sourced from /godebug/non-default-behavior/tlsmaxrsasize:events.
+# TYPE go_godebug_non_default_behavior_tlsmaxrsasize_events_total counter
+# UNIT go_godebug_non_default_behavior_tlsmaxrsasize_events_total events
+go_godebug_non_default_behavior_tlsmaxrsasize_events_total 0.0 st@1794947452.621218337
+# HELP go_godebug_non_default_behavior_tlssha1_events_total The number of non-default behaviors executed by the crypto/tls package due to a non-default GODEBUG=tlssha1=... setting. Sourced from /godebug/non-default-behavior/tlssha1:events.
+# TYPE go_godebug_non_default_behavior_tlssha1_events_total counter
+# UNIT go_godebug_non_default_behavior_tlssha1_events_total events
+go_godebug_non_default_behavior_tlssha1_events_total 0.0 st@1794947452.621220216
+# HELP go_godebug_non_default_behavior_updatemaxprocs_events_total The number of non-default behaviors executed by the runtime package due to a non-default GODEBUG=updatemaxprocs=... setting. Sourced from /godebug/non-default-behavior/updatemaxprocs:events.
+# TYPE go_godebug_non_default_behavior_updatemaxprocs_events_total counter
+# UNIT go_godebug_non_default_behavior_updatemaxprocs_events_total events
+go_godebug_non_default_behavior_updatemaxprocs_events_total 0.0 st@1794947452.621223616
+# HELP go_godebug_non_default_behavior_urlmaxqueryparams_events_total The number of non-default behaviors executed by the net/url package due to a non-default GODEBUG=urlmaxqueryparams=... setting. Sourced from /godebug/non-default-behavior/urlmaxqueryparams:events.
+# TYPE go_godebug_non_default_behavior_urlmaxqueryparams_events_total counter
+# UNIT go_godebug_non_default_behavior_urlmaxqueryparams_events_total events
+go_godebug_non_default_behavior_urlmaxqueryparams_events_total 0.0 st@1794947452.621225731
+# HELP go_godebug_non_default_behavior_urlstrictcolons_events_total The number of non-default behaviors executed by the net/url package due to a non-default GODEBUG=urlstrictcolons=... setting. Sourced from /godebug/non-default-behavior/urlstrictcolons:events.
+# TYPE go_godebug_non_default_behavior_urlstrictcolons_events_total counter
+# UNIT go_godebug_non_default_behavior_urlstrictcolons_events_total events
+go_godebug_non_default_behavior_urlstrictcolons_events_total 0.0 st@1794947452.621227803
+# HELP go_godebug_non_default_behavior_winreadlinkvolume_events_total The number of non-default behaviors executed by the os package due to a non-default GODEBUG=winreadlinkvolume=... setting. Sourced from /godebug/non-default-behavior/winreadlinkvolume:events.
+# TYPE go_godebug_non_default_behavior_winreadlinkvolume_events_total counter
+# UNIT go_godebug_non_default_behavior_winreadlinkvolume_events_total events
+go_godebug_non_default_behavior_winreadlinkvolume_events_total 0.0 st@1794947452.62123001
+# HELP go_godebug_non_default_behavior_winsymlink_events_total The number of non-default behaviors executed by the os package due to a non-default GODEBUG=winsymlink=... setting. Sourced from /godebug/non-default-behavior/winsymlink:events.
+# TYPE go_godebug_non_default_behavior_winsymlink_events_total counter
+# UNIT go_godebug_non_default_behavior_winsymlink_events_total events
+go_godebug_non_default_behavior_winsymlink_events_total 0.0 st@1794947452.621232136
+# HELP go_godebug_non_default_behavior_x509negativeserial_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509negativeserial=... setting. Sourced from /godebug/non-default-behavior/x509negativeserial:events.
+# TYPE go_godebug_non_default_behavior_x509negativeserial_events_total counter
+# UNIT go_godebug_non_default_behavior_x509negativeserial_events_total events
+go_godebug_non_default_behavior_x509negativeserial_events_total 0.0 st@1794947452.62123428
+# HELP go_godebug_non_default_behavior_x509rsacrt_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509rsacrt=... setting. Sourced from /godebug/non-default-behavior/x509rsacrt:events.
+# TYPE go_godebug_non_default_behavior_x509rsacrt_events_total counter
+# UNIT go_godebug_non_default_behavior_x509rsacrt_events_total events
+go_godebug_non_default_behavior_x509rsacrt_events_total 0.0 st@1794947452.621236372
+# HELP go_godebug_non_default_behavior_x509sha256skid_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509sha256skid=... setting. Sourced from /godebug/non-default-behavior/x509sha256skid:events.
+# TYPE go_godebug_non_default_behavior_x509sha256skid_events_total counter
+# UNIT go_godebug_non_default_behavior_x509sha256skid_events_total events
+go_godebug_non_default_behavior_x509sha256skid_events_total 0.0 st@1794947452.621238521
+# HELP go_godebug_non_default_behavior_x509sslcertoverrideplatform_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509sslcertoverrideplatform=... setting. Sourced from /godebug/non-default-behavior/x509sslcertoverrideplatform:events.
+# TYPE go_godebug_non_default_behavior_x509sslcertoverrideplatform_events_total counter
+# UNIT go_godebug_non_default_behavior_x509sslcertoverrideplatform_events_total events
+go_godebug_non_default_behavior_x509sslcertoverrideplatform_events_total 0.0 st@1794947452.621240776
+# HELP go_godebug_non_default_behavior_x509usefallbackroots_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509usefallbackroots=... setting. Sourced from /godebug/non-default-behavior/x509usefallbackroots:events.
+# TYPE go_godebug_non_default_behavior_x509usefallbackroots_events_total counter
+# UNIT go_godebug_non_default_behavior_x509usefallbackroots_events_total events
+go_godebug_non_default_behavior_x509usefallbackroots_events_total 0.0 st@1794947452.621243187
+# HELP go_godebug_non_default_behavior_x509usepolicies_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509usepolicies=... setting. Sourced from /godebug/non-default-behavior/x509usepolicies:events.
+# TYPE go_godebug_non_default_behavior_x509usepolicies_events_total counter
+# UNIT go_godebug_non_default_behavior_x509usepolicies_events_total events
+go_godebug_non_default_behavior_x509usepolicies_events_total 0.0 st@1794947452.621245418
+# HELP go_godebug_non_default_behavior_zipinsecurepath_events_total The number of non-default behaviors executed by the archive/zip package due to a non-default GODEBUG=zipinsecurepath=... setting. Sourced from /godebug/non-default-behavior/zipinsecurepath:events.
+# TYPE go_godebug_non_default_behavior_zipinsecurepath_events_total counter
+# UNIT go_godebug_non_default_behavior_zipinsecurepath_events_total events
+go_godebug_non_default_behavior_zipinsecurepath_events_total 0.0 st@1794947452.621247444
+# HELP go_goroutines Number of goroutines that currently exist.
+# TYPE go_goroutines gauge
+go_goroutines 220.0
+# HELP go_info Information about the Go environment.
+# TYPE go_info gauge
+go_info{version="go1.27.4"} 1.0
+# HELP go_memory_classes_heap_free_bytes Memory that is completely free and eligible to be returned to the underlying system, but has not been. This metric is the runtime's estimate of free address space that is backed by physical memory. Sourced from /memory/classes/heap/free:bytes.
+# TYPE go_memory_classes_heap_free_bytes gauge
+# UNIT go_memory_classes_heap_free_bytes bytes
+go_memory_classes_heap_free_bytes 4.038656e+06
+# HELP go_memory_classes_heap_objects_bytes Memory occupied by live objects and dead objects that have not yet been marked free by the garbage collector. Sourced from /memory/classes/heap/objects:bytes.
+# TYPE go_memory_classes_heap_objects_bytes gauge
+# UNIT go_memory_classes_heap_objects_bytes bytes
+go_memory_classes_heap_objects_bytes 1.2451024e+07
+# HELP go_memory_classes_heap_released_bytes Memory that is completely free and has been returned to the underlying system. This metric is the runtime's estimate of free address space that is still mapped into the process, but is not backed by physical memory. Sourced from /memory/classes/heap/released:bytes.
+# TYPE go_memory_classes_heap_released_bytes gauge
+# UNIT go_memory_classes_heap_released_bytes bytes
+go_memory_classes_heap_released_bytes 1.9693568e+07
+# HELP go_memory_classes_heap_stacks_bytes Memory allocated from the heap that is reserved for stack space, whether or not it is currently in-use. Currently, this represents all stack memory for goroutines. It also includes all OS thread stacks in non-cgo programs. Note that stacks may be allocated differently in the future, and this may change. Sourced from /memory/classes/heap/stacks:bytes.
+# TYPE go_memory_classes_heap_stacks_bytes gauge
+# UNIT go_memory_classes_heap_stacks_bytes bytes
+go_memory_classes_heap_stacks_bytes 3.145728e+06
+# HELP go_memory_classes_heap_unused_bytes Memory that is reserved for heap objects but is not currently used to hold heap objects. Sourced from /memory/classes/heap/unused:bytes.
+# TYPE go_memory_classes_heap_unused_bytes gauge
+# UNIT go_memory_classes_heap_unused_bytes bytes
+go_memory_classes_heap_unused_bytes 6.808368e+06
+# HELP go_memory_classes_metadata_mcache_free_bytes Memory that is reserved for runtime mcache structures, but not in-use. Sourced from /memory/classes/metadata/mcache/free:bytes.
+# TYPE go_memory_classes_metadata_mcache_free_bytes gauge
+# UNIT go_memory_classes_metadata_mcache_free_bytes bytes
+go_memory_classes_metadata_mcache_free_bytes 9184.0
+# HELP go_memory_classes_metadata_mcache_inuse_bytes Memory that is occupied by runtime mcache structures that are currently being used. Sourced from /memory/classes/metadata/mcache/inuse:bytes.
+# TYPE go_memory_classes_metadata_mcache_inuse_bytes gauge
+# UNIT go_memory_classes_metadata_mcache_inuse_bytes bytes
+go_memory_classes_metadata_mcache_inuse_bytes 55104.0
+# HELP go_memory_classes_metadata_mspan_free_bytes Memory that is reserved for runtime mspan structures, but not in-use. Sourced from /memory/classes/metadata/mspan/free:bytes.
+# TYPE go_memory_classes_metadata_mspan_free_bytes gauge
+# UNIT go_memory_classes_metadata_mspan_free_bytes bytes
+go_memory_classes_metadata_mspan_free_bytes 133920.0
+# HELP go_memory_classes_metadata_mspan_inuse_bytes Memory that is occupied by runtime mspan structures that are currently being used. Sourced from /memory/classes/metadata/mspan/inuse:bytes.
+# TYPE go_memory_classes_metadata_mspan_inuse_bytes gauge
+# UNIT go_memory_classes_metadata_mspan_inuse_bytes bytes
+go_memory_classes_metadata_mspan_inuse_bytes 437280.0
+# HELP go_memory_classes_metadata_other_bytes Memory that is reserved for or used to hold runtime metadata. Sourced from /memory/classes/metadata/other:bytes.
+# TYPE go_memory_classes_metadata_other_bytes gauge
+# UNIT go_memory_classes_metadata_other_bytes bytes
+go_memory_classes_metadata_other_bytes 4.461824e+06
+# HELP go_memory_classes_os_stacks_bytes Stack memory allocated by the underlying operating system. In non-cgo programs this metric is currently zero. This may change in the future.In cgo programs this metric includes OS thread stacks allocated directly from the OS. Currently, this only accounts for one stack in c-shared and c-archive build modes, and other sources of stacks from the OS are not measured. This too may change in the future. Sourced from /memory/classes/os-stacks:bytes.
+# TYPE go_memory_classes_os_stacks_bytes gauge
+# UNIT go_memory_classes_os_stacks_bytes bytes
+go_memory_classes_os_stacks_bytes 0.0
+# HELP go_memory_classes_other_bytes Memory used by execution trace buffers, structures for debugging the runtime, finalizer and profiler specials, and more. Sourced from /memory/classes/other:bytes.
+# TYPE go_memory_classes_other_bytes gauge
+# UNIT go_memory_classes_other_bytes bytes
+go_memory_classes_other_bytes 5.236855e+06
+# HELP go_memory_classes_profiling_buckets_bytes Memory that is used by the stack trace hash map used for profiling. Sourced from /memory/classes/profiling/buckets:bytes.
+# TYPE go_memory_classes_profiling_buckets_bytes gauge
+# UNIT go_memory_classes_profiling_buckets_bytes bytes
+go_memory_classes_profiling_buckets_bytes 1.767745e+06
+# HELP go_memory_classes_total_bytes All memory mapped by the Go runtime into the current process as read-write. Note that this does not include memory mapped by code called via cgo or via the syscall package. Sum of all metrics in /memory/classes. Sourced from /memory/classes/total:bytes.
+# TYPE go_memory_classes_total_bytes gauge
+# UNIT go_memory_classes_total_bytes bytes
+go_memory_classes_total_bytes 5.8239256e+07
+# HELP go_memstats_alloc_bytes Number of bytes allocated in heap and currently in use. Equals to /memory/classes/heap/objects:bytes.
+# TYPE go_memstats_alloc_bytes gauge
+go_memstats_alloc_bytes 1.2451024e+07
+# HELP go_memstats_alloc_bytes_total Total number of bytes allocated in heap until now, even if released already. Equals to /gc/heap/allocs:bytes.
+# TYPE go_memstats_alloc_bytes_total counter
+go_memstats_alloc_bytes_total 1.117539168e+09
+# HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table. Equals to /memory/classes/profiling/buckets:bytes.
+# TYPE go_memstats_buck_hash_sys_bytes gauge
+go_memstats_buck_hash_sys_bytes 1.767745e+06
+# HELP go_memstats_frees_total Total number of heap objects frees. Equals to /gc/heap/frees:objects + /gc/heap/tiny/allocs:objects.
+# TYPE go_memstats_frees_total counter
+go_memstats_frees_total 6.996408e+06
+# HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata. Equals to /memory/classes/metadata/other:bytes.
+# TYPE go_memstats_gc_sys_bytes gauge
+go_memstats_gc_sys_bytes 4.461824e+06
+# HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and currently in use, same as go_memstats_alloc_bytes. Equals to /memory/classes/heap/objects:bytes.
+# TYPE go_memstats_heap_alloc_bytes gauge
+go_memstats_heap_alloc_bytes 1.2451024e+07
+# HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used. Equals to /memory/classes/heap/released:bytes + /memory/classes/heap/free:bytes.
+# TYPE go_memstats_heap_idle_bytes gauge
+go_memstats_heap_idle_bytes 2.3732224e+07
+# HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use. Equals to /memory/classes/heap/objects:bytes + /memory/classes/heap/unused:bytes
+# TYPE go_memstats_heap_inuse_bytes gauge
+go_memstats_heap_inuse_bytes 1.9259392e+07
+# HELP go_memstats_heap_objects Number of currently allocated objects. Equals to /gc/heap/objects:objects.
+# TYPE go_memstats_heap_objects gauge
+go_memstats_heap_objects 63556.0
+# HELP go_memstats_heap_released_bytes Number of heap bytes released to OS. Equals to /memory/classes/heap/released:bytes.
+# TYPE go_memstats_heap_released_bytes gauge
+go_memstats_heap_released_bytes 1.9693568e+07
+# HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system. Equals to /memory/classes/heap/objects:bytes + /memory/classes/heap/unused:bytes + /memory/classes/heap/released:bytes + /memory/classes/heap/free:bytes.
+# TYPE go_memstats_heap_sys_bytes gauge
+go_memstats_heap_sys_bytes 4.2991616e+07
+# HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
+# TYPE go_memstats_last_gc_time_seconds gauge
+go_memstats_last_gc_time_seconds 1.794950006404758e+09
+# HELP go_memstats_mallocs_total Total number of heap objects allocated, both live and gc-ed. Semantically a counter version for go_memstats_heap_objects gauge. Equals to /gc/heap/allocs:objects + /gc/heap/tiny/allocs:objects.
+# TYPE go_memstats_mallocs_total counter
+go_memstats_mallocs_total 7.059964e+06
+# HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures. Equals to /memory/classes/metadata/mcache/inuse:bytes.
+# TYPE go_memstats_mcache_inuse_bytes gauge
+go_memstats_mcache_inuse_bytes 55104.0
+# HELP go_memstats_mcache_sys_bytes Number of bytes used for mcache structures obtained from system. Equals to /memory/classes/metadata/mcache/inuse:bytes + /memory/classes/metadata/mcache/free:bytes.
+# TYPE go_memstats_mcache_sys_bytes gauge
+go_memstats_mcache_sys_bytes 64288.0
+# HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures. Equals to /memory/classes/metadata/mspan/inuse:bytes.
+# TYPE go_memstats_mspan_inuse_bytes gauge
+go_memstats_mspan_inuse_bytes 437280.0
+# HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system. Equals to /memory/classes/metadata/mspan/inuse:bytes + /memory/classes/metadata/mspan/free:bytes.
+# TYPE go_memstats_mspan_sys_bytes gauge
+go_memstats_mspan_sys_bytes 571200.0
+# HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place. Equals to /gc/heap/goal:bytes.
+# TYPE go_memstats_next_gc_bytes gauge
+go_memstats_next_gc_bytes 2.069321e+07
+# HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations. Equals to /memory/classes/other:bytes.
+# TYPE go_memstats_other_sys_bytes gauge
+go_memstats_other_sys_bytes 5.236855e+06
+# HELP go_memstats_stack_inuse_bytes Number of bytes obtained from system for stack allocator in non-CGO environments. Equals to /memory/classes/heap/stacks:bytes.
+# TYPE go_memstats_stack_inuse_bytes gauge
+go_memstats_stack_inuse_bytes 3.145728e+06
+# HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator. Equals to /memory/classes/heap/stacks:bytes + /memory/classes/os-stacks:bytes.
+# TYPE go_memstats_stack_sys_bytes gauge
+go_memstats_stack_sys_bytes 3.145728e+06
+# HELP go_memstats_sys_bytes Number of bytes obtained from system. Equals to /memory/classes/total:byte.
+# TYPE go_memstats_sys_bytes gauge
+go_memstats_sys_bytes 5.8239256e+07
+# HELP go_sched_gomaxprocs_threads The current runtime.GOMAXPROCS setting, or the number of operating system threads that can execute user-level Go code simultaneously. Sourced from /sched/gomaxprocs:threads.
+# TYPE go_sched_gomaxprocs_threads gauge
+# UNIT go_sched_gomaxprocs_threads threads
+go_sched_gomaxprocs_threads 24.0
+# HELP go_sched_goroutines_created_goroutines_total Count of goroutines created since program start. Sourced from /sched/goroutines-created:goroutines.
+# TYPE go_sched_goroutines_created_goroutines_total counter
+# UNIT go_sched_goroutines_created_goroutines_total goroutines
+go_sched_goroutines_created_goroutines_total 53560.0 st@1794947452.621435923
+# HELP go_sched_goroutines_goroutines Count of live goroutines. Sourced from /sched/goroutines:goroutines.
+# TYPE go_sched_goroutines_goroutines gauge
+# UNIT go_sched_goroutines_goroutines goroutines
+go_sched_goroutines_goroutines 256.0
+# HELP go_sched_goroutines_not_in_go_goroutines Approximate count of goroutines running or blocked in a system call or cgo call. Not guaranteed to add up to /sched/goroutines:goroutines with other goroutine metrics. Sourced from /sched/goroutines/not-in-go:goroutines.
+# TYPE go_sched_goroutines_not_in_go_goroutines gauge
+# UNIT go_sched_goroutines_not_in_go_goroutines goroutines
+go_sched_goroutines_not_in_go_goroutines 1.0
+# HELP go_sched_goroutines_runnable_goroutines Approximate count of goroutines ready to execute, but not executing. Not guaranteed to add up to /sched/goroutines:goroutines with other goroutine metrics. Sourced from /sched/goroutines/runnable:goroutines.
+# TYPE go_sched_goroutines_runnable_goroutines gauge
+# UNIT go_sched_goroutines_runnable_goroutines goroutines
+go_sched_goroutines_runnable_goroutines 0.0
+# HELP go_sched_goroutines_running_goroutines Approximate count of goroutines executing. Always less than or equal to /sched/gomaxprocs:threads. Not guaranteed to add up to /sched/goroutines:goroutines with other goroutine metrics. Sourced from /sched/goroutines/running:goroutines.
+# TYPE go_sched_goroutines_running_goroutines gauge
+# UNIT go_sched_goroutines_running_goroutines goroutines
+go_sched_goroutines_running_goroutines 3.0
+# HELP go_sched_goroutines_waiting_goroutines Approximate count of goroutines waiting on a resource (I/O or sync primitives). Not guaranteed to add up to /sched/goroutines:goroutines with other goroutine metrics. Sourced from /sched/goroutines/waiting:goroutines.
+# TYPE go_sched_goroutines_waiting_goroutines gauge
+# UNIT go_sched_goroutines_waiting_goroutines goroutines
+go_sched_goroutines_waiting_goroutines 252.0
+# HELP go_sched_latencies_seconds Distribution of the time goroutines have spent in the scheduler in a runnable state before actually running. Bucket counts increase monotonically. Sourced from /sched/latencies:seconds.
+# TYPE go_sched_latencies_seconds histogram
+# UNIT go_sched_latencies_seconds seconds
+go_sched_latencies_seconds {count:46130,sum:0.5000861440000001,bucket:[6.399999999999999e-08:8519,6.399999999999999e-07:11989,7.167999999999999e-06:29785,8.191999999999999e-05:43319,0.0009175039999999999:45960,0.010485759999999998:46128,0.11744051199999998:46130,+Inf:46130]}
+# HELP go_sched_pauses_stopping_gc_seconds Distribution of individual GC-related stop-the-world stopping latencies. This is the time it takes from deciding to stop the world until all Ps are stopped. This is a subset of the total GC-related stop-the-world time (/sched/pauses/total/gc:seconds). During this time, some threads may be executing. Bucket counts increase monotonically. Sourced from /sched/pauses/stopping/gc:seconds.
+# TYPE go_sched_pauses_stopping_gc_seconds histogram
+# UNIT go_sched_pauses_stopping_gc_seconds seconds
+go_sched_pauses_stopping_gc_seconds {count:242,sum:0.016176511999999997,bucket:[6.399999999999999e-08:0,6.399999999999999e-07:0,7.167999999999999e-06:39,8.191999999999999e-05:146,0.0009175039999999999:233,0.010485759999999998:242,0.11744051199999998:242,+Inf:242]}
+# HELP go_sched_pauses_stopping_other_seconds Distribution of individual non-GC-related stop-the-world stopping latencies. This is the time it takes from deciding to stop the world until all Ps are stopped. This is a subset of the total non-GC-related stop-the-world time (/sched/pauses/total/other:seconds). During this time, some threads may be executing. Bucket counts increase monotonically. Sourced from /sched/pauses/stopping/other:seconds.
+# TYPE go_sched_pauses_stopping_other_seconds histogram
+# UNIT go_sched_pauses_stopping_other_seconds seconds
+go_sched_pauses_stopping_other_seconds {count:0,sum:0,bucket:[6.399999999999999e-08:0,6.399999999999999e-07:0,7.167999999999999e-06:0,8.191999999999999e-05:0,0.0009175039999999999:0,0.010485759999999998:0,0.11744051199999998:0,+Inf:0]}
+# HELP go_sched_pauses_total_gc_seconds Distribution of individual GC-related stop-the-world pause latencies. This is the time from deciding to stop the world until the world is started again. Some of this time is spent getting all threads to stop (this is measured directly in /sched/pauses/stopping/gc:seconds), during which some threads may still be running. Bucket counts increase monotonically. Sourced from /sched/pauses/total/gc:seconds.
+# TYPE go_sched_pauses_total_gc_seconds histogram
+# UNIT go_sched_pauses_total_gc_seconds seconds
+go_sched_pauses_total_gc_seconds {count:242,sum:0.049302528,bucket:[6.399999999999999e-08:0,6.399999999999999e-07:0,7.167999999999999e-06:0,8.191999999999999e-05:69,0.0009175039999999999:212,0.010485759999999998:241,0.11744051199999998:242,+Inf:242]}
+# HELP go_sched_pauses_total_other_seconds Distribution of individual non-GC-related stop-the-world pause latencies. This is the time from deciding to stop the world until the world is started again. Some of this time is spent getting all threads to stop (measured directly in /sched/pauses/stopping/other:seconds). Bucket counts increase monotonically. Sourced from /sched/pauses/total/other:seconds.
+# TYPE go_sched_pauses_total_other_seconds histogram
+# UNIT go_sched_pauses_total_other_seconds seconds
+go_sched_pauses_total_other_seconds {count:0,sum:0,bucket:[6.399999999999999e-08:0,6.399999999999999e-07:0,7.167999999999999e-06:0,8.191999999999999e-05:0,0.0009175039999999999:0,0.010485759999999998:0,0.11744051199999998:0,+Inf:0]}
+# HELP go_sched_threads_total_threads The current count of live threads that are owned by the Go runtime. Sourced from /sched/threads/total:threads.
+# TYPE go_sched_threads_total_threads gauge
+# UNIT go_sched_threads_total_threads threads
+go_sched_threads_total_threads 24.0
+# HELP go_sync_mutex_wait_total_seconds_total Approximate cumulative time goroutines have spent blocked on a sync.Mutex, sync.RWMutex, or runtime-internal lock. This metric is useful for identifying global changes in lock contention. Collect a mutex or block profile using the runtime/pprof package for more detailed contention data. Sourced from /sync/mutex/wait/total:seconds.
+# TYPE go_sync_mutex_wait_total_seconds_total counter
+# UNIT go_sync_mutex_wait_total_seconds_total seconds
+go_sync_mutex_wait_total_seconds_total 1.146068144 st@1794947452.621487257
+# HELP go_threads Number of OS threads created.
+# TYPE go_threads gauge
+go_threads 24.0
+# HELP hidden_metrics_total [BETA] The count of hidden metrics.
+# TYPE hidden_metrics_total counter
+hidden_metrics_total 0.0 st@1794947452.622905398
+# HELP informer_processing_latency_seconds [ALPHA] Time taken to process events after popping from the queue.
+# TYPE informer_processing_latency_seconds histogram
+informer_processing_latency_seconds{group="",name="kube-scheduler",resource="namespaces",version="v1"} {count:48,sum:0.000464004,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-141:15,9:1],positive_buckets:[1,1,4,4,4,4,9,4,0,8,2,3,1,0,1,2],bucket:[0.001:48,0.005:48,0.01:48,0.025:48,0.05:48,0.1:48,0.25:48,0.5:48,1:48,2.5:48,5:48,10:48,+Inf:48]} st@1794947453.084157204
+informer_processing_latency_seconds{group="",name="kube-scheduler",resource="nodes",version="v1"} {count:63,sum:0.000826114,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:22,5:1],positive_buckets:[5,1,6,10,6,1,4,8,1,1,1,1,1,4,3,0,3,1,0,2,2,1,1],bucket:[0.001:63,0.005:63,0.01:63,0.025:63,0.05:63,0.1:63,0.25:63,0.5:63,1:63,2.5:63,5:63,10:63,+Inf:63]} st@1794947453.082828697
+informer_processing_latency_seconds{group="",name="kube-scheduler",resource="persistentvolumeclaims",version="v1"} {count:48,sum:0.000574397,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-140:12,3:1,3:1,6:1,11:1],positive_buckets:[2,1,6,8,7,6,3,6,3,0,0,2,1,1,1,1],bucket:[0.001:48,0.005:48,0.01:48,0.025:48,0.05:48,0.1:48,0.25:48,0.5:48,1:48,2.5:48,5:48,10:48,+Inf:48]} st@1794947453.083025022
+informer_processing_latency_seconds{group="",name="kube-scheduler",resource="persistentvolumes",version="v1"} {count:48,sum:0.000551586,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:14,6:6],positive_buckets:[2,5,6,5,6,5,3,5,1,1,1,1,1,2,1,0,1,1,0,1],bucket:[0.001:48,0.005:48,0.01:48,0.025:48,0.05:48,0.1:48,0.25:48,0.5:48,1:48,2.5:48,5:48,10:48,+Inf:48]} st@1794947453.08541947
+informer_processing_latency_seconds{group="",name="kube-scheduler",resource="pods",version="v1"} {count:123,sum:0.0023559620000000005,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-140:21,3:9,13:1],positive_buckets:[1,3,5,6,10,8,3,6,2,2,3,2,9,15,9,4,4,10,4,6,2,3,0,2,0,1,1,0,0,1,1],bucket:[0.001:123,0.005:123,0.01:123,0.025:123,0.05:123,0.1:123,0.25:123,0.5:123,1:123,2.5:123,5:123,10:123,+Inf:123]} st@1794947453.08207959
+informer_processing_latency_seconds{group="",name="kube-scheduler",resource="replicationcontrollers",version="v1"} {count:49,sum:0.0004710090000000001,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-143:1,3:11,3:4,6:1],positive_buckets:[1,1,4,4,8,8,5,7,3,2,1,2,1,0,0,1,1],bucket:[0.001:49,0.005:49,0.01:49,0.025:49,0.05:49,0.1:49,0.25:49,0.5:49,1:49,2.5:49,5:49,10:49,+Inf:49]} st@1794947453.082713306
+informer_processing_latency_seconds{group="",name="kube-scheduler",resource="services",version="v1"} {count:53,sum:0.0023480400000000005,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:13,3:7,5:1,37:1],positive_buckets:[2,5,7,12,8,6,2,1,1,0,2,0,1,1,0,0,2,0,0,1,1,1],bucket:[0.001:52,0.005:53,0.01:53,0.025:53,0.05:53,0.1:53,0.25:53,0.5:53,1:53,2.5:53,5:53,10:53,+Inf:53]} st@1794947453.08464261
+informer_processing_latency_seconds{group="apps",name="kube-scheduler",resource="replicasets",version="v1"} {count:70,sum:0.0008781579999999998,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-141:18,3:3,4:1,7:1],positive_buckets:[1,0,2,8,4,16,7,3,2,3,4,1,6,1,2,1,2,2,2,0,1,1,1],bucket:[0.001:70,0.005:70,0.01:70,0.025:70,0.05:70,0.1:70,0.25:70,0.5:70,1:70,2.5:70,5:70,10:70,+Inf:70]} st@1794947453.085392249
+informer_processing_latency_seconds{group="apps",name="kube-scheduler",resource="statefulsets",version="v1"} {count:48,sum:0.0004325090000000001,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-140:18],positive_buckets:[1,1,3,5,9,9,5,3,4,3,1,0,1,1,0,1,0,1],bucket:[0.001:48,0.005:48,0.01:48,0.025:48,0.05:48,0.1:48,0.25:48,0.5:48,1:48,2.5:48,5:48,10:48,+Inf:48]} st@1794947453.084438858
+informer_processing_latency_seconds{group="policy",name="kube-scheduler",resource="poddisruptionbudgets",version="v1"} {count:45,sum:0.00036169900000000005,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:11],positive_buckets:[3,5,9,4,6,3,11,3,0,0,1],bucket:[0.001:45,0.005:45,0.01:45,0.025:45,0.05:45,0.1:45,0.25:45,0.5:45,1:45,2.5:45,5:45,10:45,+Inf:45]} st@1794947453.08397968
+informer_processing_latency_seconds{group="resource.k8s.io",name="kube-scheduler",resource="deviceclasses",version="v1"} {count:49,sum:0.00044111700000000004,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:16],positive_buckets:[2,6,4,7,8,3,6,4,2,3,0,2,0,1,0,1],bucket:[0.001:49,0.005:49,0.01:49,0.025:49,0.05:49,0.1:49,0.25:49,0.5:49,1:49,2.5:49,5:49,10:49,+Inf:49]} st@1794947453.082593738
+informer_processing_latency_seconds{group="resource.k8s.io",name="kube-scheduler",resource="devicetaintrules",version="v1"} {count:47,sum:0.000445779,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-140:18,8:1],positive_buckets:[1,3,5,8,8,4,3,2,5,0,2,3,0,0,1,0,0,1,1],bucket:[0.001:47,0.005:47,0.01:47,0.025:47,0.05:47,0.1:47,0.25:47,0.5:47,1:47,2.5:47,5:47,10:47,+Inf:47]} st@1794947453.082119145
+informer_processing_latency_seconds{group="resource.k8s.io",name="kube-scheduler",resource="resourceclaims",version="v1"} {count:49,sum:0.00043391199999999995,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:14,5:1],positive_buckets:[3,4,6,13,4,6,5,0,3,0,0,1,2,1,1],bucket:[0.001:49,0.005:49,0.01:49,0.025:49,0.05:49,0.1:49,0.25:49,0.5:49,1:49,2.5:49,5:49,10:49,+Inf:49]} st@1794947453.082989869
+informer_processing_latency_seconds{group="resource.k8s.io",name="kube-scheduler",resource="resourceslices",version="v1"} {count:46,sum:0.00045525900000000007,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:10,3:1,5:1,9:1],positive_buckets:[3,2,11,7,7,2,8,0,2,1,1,1,1],bucket:[0.001:46,0.005:46,0.01:46,0.025:46,0.05:46,0.1:46,0.25:46,0.5:46,1:46,2.5:46,5:46,10:46,+Inf:46]} st@1794947453.08219804
+informer_processing_latency_seconds{group="storage.k8s.io",name="kube-scheduler",resource="csidrivers",version="v1"} {count:47,sum:0.00042688199999999996,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:11,9:1],positive_buckets:[1,4,2,11,10,1,5,5,4,2,1,1],bucket:[0.001:47,0.005:47,0.01:47,0.025:47,0.05:47,0.1:47,0.25:47,0.5:47,1:47,2.5:47,5:47,10:47,+Inf:47]} st@1794947453.084572902
+informer_processing_latency_seconds{group="storage.k8s.io",name="kube-scheduler",resource="csinodes",version="v1"} {count:49,sum:0.0006135399999999999,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:13,4:2,19:1],positive_buckets:[1,4,7,4,8,8,3,5,0,2,0,2,2,1,1,1],bucket:[0.001:49,0.005:49,0.01:49,0.025:49,0.05:49,0.1:49,0.25:49,0.5:49,1:49,2.5:49,5:49,10:49,+Inf:49]} st@1794947453.083614255
+informer_processing_latency_seconds{group="storage.k8s.io",name="kube-scheduler",resource="csistoragecapacities",version="v1"} {count:46,sum:0.00036678199999999996,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-143:1,3:9,5:1],positive_buckets:[1,1,5,8,8,8,7,4,2,1,1],bucket:[0.001:46,0.005:46,0.01:46,0.025:46,0.05:46,0.1:46,0.25:46,0.5:46,1:46,2.5:46,5:46,10:46,+Inf:46]} st@1794947453.082781162
+informer_processing_latency_seconds{group="storage.k8s.io",name="kube-scheduler",resource="storageclasses",version="v1"} {count:50,sum:0.000492723,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-140:17,5:4],positive_buckets:[1,4,3,8,6,4,5,9,1,2,2,0,1,0,1,0,1,1,0,0,1],bucket:[0.001:50,0.005:50,0.01:50,0.025:50,0.05:50,0.1:50,0.25:50,0.5:50,1:50,2.5:50,5:50,10:50,+Inf:50]} st@1794947453.085213441
+informer_processing_latency_seconds{group="storage.k8s.io",name="kube-scheduler",resource="volumeattachments",version="v1"} {count:50,sum:0.000460131,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:20],positive_buckets:[3,3,7,11,9,3,2,1,3,3,1,0,1,0,1,0,0,1,0,1],bucket:[0.001:50,0.005:50,0.01:50,0.025:50,0.05:50,0.1:50,0.25:50,0.5:50,1:50,2.5:50,5:50,10:50,+Inf:50]} st@1794947453.084093613
+# HELP informer_queued_items [ALPHA] Number of items currently queued in the FIFO.
+# TYPE informer_queued_items gauge
+informer_queued_items{group="",name="kube-scheduler",resource="namespaces",version="v1"} 0.0
+informer_queued_items{group="",name="kube-scheduler",resource="nodes",version="v1"} 0.0
+informer_queued_items{group="",name="kube-scheduler",resource="persistentvolumeclaims",version="v1"} 0.0
+informer_queued_items{group="",name="kube-scheduler",resource="persistentvolumes",version="v1"} 0.0
+informer_queued_items{group="",name="kube-scheduler",resource="pods",version="v1"} 0.0
+informer_queued_items{group="",name="kube-scheduler",resource="replicationcontrollers",version="v1"} 0.0
+informer_queued_items{group="",name="kube-scheduler",resource="services",version="v1"} 0.0
+informer_queued_items{group="apps",name="kube-scheduler",resource="replicasets",version="v1"} 0.0
+informer_queued_items{group="apps",name="kube-scheduler",resource="statefulsets",version="v1"} 0.0
+informer_queued_items{group="policy",name="kube-scheduler",resource="poddisruptionbudgets",version="v1"} 0.0
+informer_queued_items{group="resource.k8s.io",name="kube-scheduler",resource="deviceclasses",version="v1"} 0.0
+informer_queued_items{group="resource.k8s.io",name="kube-scheduler",resource="devicetaintrules",version="v1"} 0.0
+informer_queued_items{group="resource.k8s.io",name="kube-scheduler",resource="resourceclaims",version="v1"} 0.0
+informer_queued_items{group="resource.k8s.io",name="kube-scheduler",resource="resourceslices",version="v1"} 0.0
+informer_queued_items{group="storage.k8s.io",name="kube-scheduler",resource="csidrivers",version="v1"} 0.0
+informer_queued_items{group="storage.k8s.io",name="kube-scheduler",resource="csinodes",version="v1"} 0.0
+informer_queued_items{group="storage.k8s.io",name="kube-scheduler",resource="csistoragecapacities",version="v1"} 0.0
+informer_queued_items{group="storage.k8s.io",name="kube-scheduler",resource="storageclasses",version="v1"} 0.0
+informer_queued_items{group="storage.k8s.io",name="kube-scheduler",resource="volumeattachments",version="v1"} 0.0
+# HELP informer_store_resource_version [ALPHA] The 15 least significant digits of the resource version of the store.
+# TYPE informer_store_resource_version gauge
+informer_store_resource_version{group="",name="kube-scheduler",resource="namespaces",version="v1"} 4127.0
+informer_store_resource_version{group="",name="kube-scheduler",resource="nodes",version="v1"} 4093.0
+informer_store_resource_version{group="",name="kube-scheduler",resource="persistentvolumeclaims",version="v1"} 4107.0
+informer_store_resource_version{group="",name="kube-scheduler",resource="persistentvolumes",version="v1"} 4158.0
+informer_store_resource_version{group="",name="kube-scheduler",resource="pods",version="v1"} 4134.0
+informer_store_resource_version{group="",name="kube-scheduler",resource="replicationcontrollers",version="v1"} 4097.0
+informer_store_resource_version{group="",name="kube-scheduler",resource="services",version="v1"} 4146.0
+informer_store_resource_version{group="apps",name="kube-scheduler",resource="replicasets",version="v1"} 4104.0
+informer_store_resource_version{group="apps",name="kube-scheduler",resource="statefulsets",version="v1"} 4109.0
+informer_store_resource_version{group="policy",name="kube-scheduler",resource="poddisruptionbudgets",version="v1"} 4144.0
+informer_store_resource_version{group="resource.k8s.io",name="kube-scheduler",resource="deviceclasses",version="v1"} 4123.0
+informer_store_resource_version{group="resource.k8s.io",name="kube-scheduler",resource="devicetaintrules",version="v1"} 4137.0
+informer_store_resource_version{group="resource.k8s.io",name="kube-scheduler",resource="resourceclaims",version="v1"} 4097.0
+informer_store_resource_version{group="resource.k8s.io",name="kube-scheduler",resource="resourceslices",version="v1"} 4111.0
+informer_store_resource_version{group="storage.k8s.io",name="kube-scheduler",resource="csidrivers",version="v1"} 4127.0
+informer_store_resource_version{group="storage.k8s.io",name="kube-scheduler",resource="csinodes",version="v1"} 4167.0
+informer_store_resource_version{group="storage.k8s.io",name="kube-scheduler",resource="csistoragecapacities",version="v1"} 4169.0
+informer_store_resource_version{group="storage.k8s.io",name="kube-scheduler",resource="storageclasses",version="v1"} 4104.0
+informer_store_resource_version{group="storage.k8s.io",name="kube-scheduler",resource="volumeattachments",version="v1"} 4176.0
+# HELP kubernetes_build_info [BETA] A metric with a constant '1' value labeled by major, minor, git version, git commit, git tree state, build date, Go version, and compiler from which Kubernetes was built, and platform on which it is running.
+# TYPE kubernetes_build_info gauge
+kubernetes_build_info{build_date="2026-11-17T20:24:16Z",compiler="gc",git_commit="$Format:%H$",git_tree_state="",git_version="v0.0.0-master+$Format:%H$",go_version="go1.27.4",major="",minor="",platform="linux/amd64"} 1.0
+# HELP kubernetes_feature_enabled [BETA] This metric records the data about the stage and enablement of a k8s feature.
+# TYPE kubernetes_feature_enabled gauge
+kubernetes_feature_enabled{name="APIResponseCompression",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="APIServerIdentity",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="APIServerWebhookAuthenticationToken",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="APIServingWithRoutine",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="AllAlpha",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="AllBeta",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="AllocatorPoolBufferCap",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="AllowDNSOnlyNodeCSR",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="AllowInsecureKubeletCertificateSigningRequests",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="AllowParsingUserUIDFromCertAuth",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="AllowServiceExternalIPs",stage=""} 1.0
+kubernetes_feature_enabled{name="AllowUnsafeMalformedObjectDeletion",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="AtomicFIFO",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="AtomicWriteVolumeUserFields",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="AuthorizePodWebsocketUpgradeCreatePermission",stage=""} 1.0
+kubernetes_feature_enabled{name="CBORServingAndStorage",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CPUManagerPolicyAlphaOptions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CPUManagerPolicyBetaOptions",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="CPUManagerPolicyOptions",stage=""} 1.0
+kubernetes_feature_enabled{name="CRDObservedGenerationTracking",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="CRIListStreaming",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="CSIGlobalMountReconstruction",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CSIServiceAccountTokenSecrets",stage=""} 1.0
+kubernetes_feature_enabled{name="CSIVolumeHealth",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CertificateSigningRequestMLDSA",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="CgroupOptions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ChangeContainerStatusOnKubeletRestart",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="ClearingNominatedNodeNameAfterBinding",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ClientsAllowCARotation",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ClientsAllowCBOR",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ClientsAllowConnectionPool",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ClientsAllowConnectionPoolFailureAvoidance",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ClientsAllowTLSCacheGC",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ClientsPreferCBOR",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CloudControllerManagerWatchBasedRoutesReconciliation",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="CloudControllerManagerWebhook",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CloudNodeAdditionalLabelsReconciliation",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ClusterTrustBundle",stage=""} 1.0
+kubernetes_feature_enabled{name="ClusterTrustBundleProjection",stage=""} 1.0
+kubernetes_feature_enabled{name="ComponentFlagz",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ComponentStatusz",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="CompositePodGroup",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="ConcurrentWatchObjectDecode",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ConditionalAuthorization",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ConsistentGetFromCache",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ConsistentListFromCacheSkipTimeoutFallback",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ConstrainedImpersonation",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ContainerCheckpoint",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ContainerRestartRules",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ContainerStopSignals",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ContextualLogging",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="CoordinatedLeaderElection",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="CrossNamespaceVolumeDataSource",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CustomCPUCFSQuotaPeriod",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAAdminAccess",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAConsumableCapacity",stage=""} 1.0
+kubernetes_feature_enabled{name="DRADerivedAttributes",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRADeviceBindingConditions",stage=""} 1.0
+kubernetes_feature_enabled{name="DRADeviceCompatibilityGroups",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRADeviceTaintRules",stage=""} 1.0
+kubernetes_feature_enabled{name="DRADeviceTaints",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAExtendedResource",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAExtendedResourceCapacity",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRAFractionalCapacityRange",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAListTypeAttributes",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DRANodeAllocatableResources",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="DRAOptionalNodeOperations",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DRAPartitionableDevices",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAPartitionableDevicesType",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRAPreemption",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRAPrioritizedList",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAResourceClaimDeviceStatus",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAResourceClaimGranularStatusAuthorization",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DRAResourcePoolStatus",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRASchedulerFilterTimeout",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DRASharedConsumableCapacity",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRAWorkloadResourceClaims",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="DeclarativeValidation",stage=""} 1.0
+kubernetes_feature_enabled{name="DeclarativeValidationBeta",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DeclarativeValidationTakeover",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="DefaultPodSysctls",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DeploymentReplicaSetTerminatingReplicas",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DetectCacheInconsistency",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DisableCPUQuotaWithExclusiveCPUs",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="DisableNodeKubeProxyVersion",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="DynamicContainers",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DynamicNodeLocalEphemeralVolumes",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="EmptyDirVolumeMode",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="EnvFiles",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="EtcdRangeStream",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="EventedPLEG",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="EvictionRequestAPI",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ExcludeAdmissionWebhookVirtualResources",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ExtendWebSocketsToKubelet",stage=""} 1.0
+kubernetes_feature_enabled{name="ExternalServiceAccountTokenSigner",stage=""} 1.0
+kubernetes_feature_enabled{name="GRPCContainerProbeTLS",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="GenericWorkload",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="GitRepoVolumeDriver",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="GracefulNodeShutdown",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="GracefulNodeShutdownBasedOnPodPriority",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="H2CContainerProbe",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="HPAConfigurableTolerance",stage=""} 1.0
+kubernetes_feature_enabled{name="HPAGeneration",stage=""} 1.0
+kubernetes_feature_enabled{name="HPAOptimizedSelectorStore",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="HPAScaleToZero",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="HostnameOverride",stage=""} 1.0
+kubernetes_feature_enabled{name="HugepageAwareEviction",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ImageMaximumGCAge",stage=""} 1.0
+kubernetes_feature_enabled{name="ImageVolume",stage=""} 1.0
+kubernetes_feature_enabled{name="ImageVolumeWithDigest",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="InOrderInformers",stage=""} 1.0
+kubernetes_feature_enabled{name="InOrderInformersBatchProcess",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="InPlaceNodeResourceResize",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="InPlacePodLevelResourcesVerticalScaling",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="InPlacePodVerticalScalingExclusiveCPUs",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="InPlacePodVerticalScalingExclusiveMemory",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="InPlacePodVerticalScalingInitContainers",stage=""} 1.0
+kubernetes_feature_enabled{name="InPlacePodVerticalScalingMemoryBackedVolumes",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="InPlacePodVerticalScalingSchedulerPreemption",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="InformerResourceVersion",stage=""} 1.0
+kubernetes_feature_enabled{name="InterPodAffinityHostnameFastPath",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="KMSv1",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="KubeAPIServerWorkloadsTrust",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="KubeProxyIPVS",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="KubeProxyNFTablesLocalhostNodePorts",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="KubeletAllocatedPodsEndpoint",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="KubeletCgroupDriverFromCRI",stage=""} 1.0
+kubernetes_feature_enabled{name="KubeletCrashLoopBackOffMax",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="KubeletEnsureSecretPulledImages",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="KubeletFineGrainedAuthz",stage=""} 1.0
+kubernetes_feature_enabled{name="KubeletInUserNamespace",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="KubeletPSI",stage=""} 1.0
+kubernetes_feature_enabled{name="KubeletPodResourcesDynamicResources",stage=""} 1.0
+kubernetes_feature_enabled{name="KubeletPodResourcesGet",stage=""} 1.0
+kubernetes_feature_enabled{name="KubeletPodResourcesListUseActivePods",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="KubeletRegistrationGetOnExistsOnly",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="KubeletSeparateDiskGC",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="KubeletServiceAccountTokenForCredentialProviders",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ListFromCacheSnapshot",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="LocalStorageCapacityIsolationFSQuotaMonitoring",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="LoggingAlphaOptions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="LoggingBetaOptions",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ManagedFieldsOptOut",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ManagedFieldsOptOutClient",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ManifestBasedAdmissionControlConfig",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MatchLabelKeysInPodTopologySpread",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MatchLabelKeysInPodTopologySpreadSelectorMerge",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MaxUnavailableStatefulSet",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MemoryQoS",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MutableCSINodeAllocatableCount",stage=""} 1.0
+kubernetes_feature_enabled{name="MutablePVNodeAffinity",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="MutablePodResourcesForSuspendedJobs",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MutableSchedulingDirectivesForSuspendedJobs",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MutatingAdmissionPolicy",stage=""} 1.0
+kubernetes_feature_enabled{name="NFTablesNetlink",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="NativeHistograms",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="NetworkIsolatedPods",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="NodeControllerLeaseCircuitBreaker",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="NodeDeclaredFeatures",stage=""} 1.0
+kubernetes_feature_enabled{name="NodeInclusionPolicyInPodTopologySpread",stage=""} 1.0
+kubernetes_feature_enabled{name="NodeLifecycleConditions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="NodeLogQuery",stage=""} 1.0
+kubernetes_feature_enabled{name="NominatedNodeNameForExpectation",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="OpenAPIEnums",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="OpenAPIV2LazyBuild",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="OpportunisticBatching",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PLEGOnDemandRelist",stage=""} 1.0
+kubernetes_feature_enabled{name="PersistentVolumeClaimUnusedSinceTime",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodAndContainerStatsFromCRI",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="PodCertificateMLDSA",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="PodCertificateRequest",stage=""} 1.0
+kubernetes_feature_enabled{name="PodDeletionCost",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodFailurePolicyName",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="PodLevelResourceManagers",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="PodLevelResources",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodLevelResourcesFixDefaulting",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodLevelResourcesFixKubeletQOSClass",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodLogsQuerySplitStreams",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="PodObservedGenerationTracking",stage=""} 1.0
+kubernetes_feature_enabled{name="PodReadyToStartContainersCondition",stage=""} 1.0
+kubernetes_feature_enabled{name="PodTopologyLabelsAdmission",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodsAPI",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PortForwardWebsockets",stage=""} 1.0
+kubernetes_feature_enabled{name="ProcMountType",stage=""} 1.0
+kubernetes_feature_enabled{name="QOSReserved",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ReduceDefaultCrashLoopBackOffDecay",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="RelaxedServiceNameValidation",stage=""} 1.0
+kubernetes_feature_enabled{name="ReloadKubeletClientCAFile",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ReloadKubeletServerCertificateFile",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="RemoteRequestHeaderUID",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="RequestCostAggregation",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ResourceHealthStatus",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ResourceHealthStatusMessage",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="RestartAllContainersOnContainerExits",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="RotateKubeletServerCertificate",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="RuntimeClassInImageCriApi",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="SELinuxChangePolicy",stage=""} 1.0
+kubernetes_feature_enabled{name="SELinuxMount",stage=""} 1.0
+kubernetes_feature_enabled{name="SELinuxMountReadWriteOncePod",stage=""} 1.0
+kubernetes_feature_enabled{name="SchedulerAsyncAPICalls",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="SchedulerAsyncPreemption",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="SchedulerPopFromBackoffQ",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="SchedulerPreQueueingHints",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="SecurityProfileOCI",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="SeparateCacheWatchRPC",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="ServiceAccountNodeAudienceRestriction",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ServiceAccountTokenMLDSA",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="ServiceCIDRStatusFieldWiping",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="ShardedListAndWatch",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="SizeBasedListCostEstimate",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StaleControllerConsistencyDaemonSet",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StaleControllerConsistencyHPA",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StaleControllerConsistencyJob",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StaleControllerConsistencyReplicaSet",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StaleControllerConsistencyStatefulSet",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StatefulSetRecreateStrategy",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StatefulSetSemanticRevisionComparison",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StorageCapacityScoring",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StorageNamespaceIndex",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="StorageVersionAPI",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="StorageVersionHash",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StorageVersionMigrator",stage=""} 1.0
+kubernetes_feature_enabled{name="StrictIPCIDRValidation",stage=""} 1.0
+kubernetes_feature_enabled{name="StructuredAuthenticationConfigurationEgressSelector",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StructuredAuthenticationConfigurationJWKSMetrics",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="TaintTolerationComparisonOperators",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="TokenRequestServiceAccountUIDValidation",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="TopologyAwareWorkloadScheduling",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="TopologyManagerPolicyAlphaOptions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="TopologyManagerPolicyBetaOptions",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="TopologyManagerPolicyOptions",stage=""} 1.0
+kubernetes_feature_enabled{name="TranslateStreamCloseWebsocketRequests",stage=""} 1.0
+kubernetes_feature_enabled{name="UnauthenticatedHTTP2DOSMitigation",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="UnknownVersionInteroperabilityProxy",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="UnlockWhileProcessingFIFO",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="UserNamespacesHostNetworkSupport",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="UserNamespacesSupport",stage=""} 1.0
+kubernetes_feature_enabled{name="VolumeAttributesClass",stage=""} 1.0
+kubernetes_feature_enabled{name="VolumeBindMountOptions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="VolumeLimitScaling",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WatchCacheInitializationPostStartHook",stage=""} 1.0
+kubernetes_feature_enabled{name="WatchCacheStallResume",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WatchFromStorageWithoutPrevKV",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WatchList",stage=""} 1.0
+kubernetes_feature_enabled{name="WatchListClient",stage=""} 1.0
+kubernetes_feature_enabled{name="WatchListClientConcurrentDecoding",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WatchListCompression",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WebhookRoundTripLoadBalancing",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WindowsCPUAndMemoryAffinity",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WindowsGracefulNodeShutdown",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WorkloadWithDeployment",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="WorkloadWithJob",stage="BETA"} 0.0
+# HELP leader_election_master_status [ALPHA] Gauge of if the reporting system is master of the relevant lease, 0 indicates backup, 1 indicates master. 'name' is the string used to identify the lease. Please make sure to group by name.
+# TYPE leader_election_master_status gauge
+leader_election_master_status{name="kube-scheduler"} 1.0
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 58.84
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 2.147483584e+09
+# HELP process_network_receive_bytes_total Number of bytes received by the process over the network.
+# TYPE process_network_receive_bytes_total counter
+process_network_receive_bytes_total 1.715760603e+09
+# HELP process_network_transmit_bytes_total Number of bytes sent by the process over the network.
+# TYPE process_network_transmit_bytes_total counter
+process_network_transmit_bytes_total 9.15155929e+08
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 10.0
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 6.5855488e+07
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.79494745187e+09
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 1.415499776e+09
+# HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
+# TYPE process_virtual_memory_max_bytes gauge
+process_virtual_memory_max_bytes 1.8446744073709552e+19
+# HELP registered_metrics_total [BETA] The count of registered metrics broken by stability level and deprecation version.
+# TYPE registered_metrics_total counter
+registered_metrics_total{deprecated_version="",stability_level="ALPHA"} 95.0 st@1794947452.623852802
+registered_metrics_total{deprecated_version="",stability_level="BETA"} 28.0 st@1794947452.622344125
+registered_metrics_total{deprecated_version="",stability_level="INTERNAL"} 1.0 st@1794947452.62870754
+registered_metrics_total{deprecated_version="",stability_level="STABLE"} 13.0 st@1794947452.630068925
+registered_metrics_total{deprecated_version="1.37.0",stability_level="ALPHA"} 1.0 st@1794947453.062056518
+registered_metrics_total{deprecated_version="1.38.0",stability_level="BETA"} 2.0 st@1794947452.630750784
+# HELP rest_client_exec_plugin_certificate_rotation_age [ALPHA] Histogram of the number of seconds the last auth exec plugin client certificate lived before being rotated. If auth exec plugin client certificates are unused, histogram will contain no data.
+# TYPE rest_client_exec_plugin_certificate_rotation_age histogram
+rest_client_exec_plugin_certificate_rotation_age {count:0,sum:0,bucket:[600:0,1800:0,3600:0,14400:0,86400:0,604800:0,2.592e+06:0,7.776e+06:0,1.5552e+07:0,3.1104e+07:0,1.24416e+08:0,+Inf:0]} st@1794947453.055658981
+# HELP rest_client_exec_plugin_ttl_seconds [ALPHA] Gauge of the shortest TTL (time-to-live) of the client certificate(s) managed by the auth exec plugin. The value is in seconds until certificate expiry (negative if already expired). If auth exec plugins are unused or manage no TLS certificates, the value will be +INF.
+# TYPE rest_client_exec_plugin_ttl_seconds gauge
+rest_client_exec_plugin_ttl_seconds +Inf
+# HELP rest_client_rate_limiter_duration_seconds [ALPHA] Client side rate limiter latency in seconds. Broken down by verb, and host.
+# TYPE rest_client_rate_limiter_duration_seconds histogram
+rest_client_rate_limiter_duration_seconds{host="192.168.8.2:6443",verb="GET"} {count:23,sum:5.5026000000000005e-05,bucket:[0.005:23,0.025:23,0.1:23,0.25:23,0.5:23,1:23,2:23,4:23,8:23,15:23,30:23,60:23,+Inf:23]} st@1794947453.057033268
+rest_client_rate_limiter_duration_seconds{host="192.168.8.2:6443",verb="PATCH"} {count:3,sum:7.054e-06,bucket:[0.005:3,0.025:3,0.1:3,0.25:3,0.5:3,1:3,2:3,4:3,8:3,15:3,30:3,60:3,+Inf:3]} st@1794947465.496839021
+rest_client_rate_limiter_duration_seconds{host="192.168.8.2:6443",verb="POST"} {count:391,sum:0.0016864790000000003,bucket:[0.005:391,0.025:391,0.1:391,0.25:391,0.5:391,1:391,2:391,4:391,8:391,15:391,30:391,60:391,+Inf:391]} st@1794947455.514402165
+rest_client_rate_limiter_duration_seconds{host="192.168.8.2:6443",verb="PUT"} {count:1271,sum:0.0058420610000000026,bucket:[0.005:1271,0.025:1271,0.1:1271,0.25:1271,0.5:1271,1:1271,2:1271,4:1271,8:1271,15:1271,30:1271,60:1271,+Inf:1271]} st@1794947458.616984084
+# HELP rest_client_request_duration_seconds [ALPHA] Request latency in seconds. Broken down by verb, and host.
+# TYPE rest_client_request_duration_seconds histogram
+rest_client_request_duration_seconds{host="192.168.8.2:6443",verb="GET"} {count:23,sum:0.2913622739999999,bucket:[0.005:5,0.025:23,0.1:23,0.25:23,0.5:23,1:23,2:23,4:23,8:23,15:23,30:23,60:23,+Inf:23]} st@1794947453.057513982
+rest_client_request_duration_seconds{host="192.168.8.2:6443",verb="PATCH"} {count:3,sum:0.030140752,bucket:[0.005:0,0.025:3,0.1:3,0.25:3,0.5:3,1:3,2:3,4:3,8:3,15:3,30:3,60:3,+Inf:3]} st@1794947465.507303721
+rest_client_request_duration_seconds{host="192.168.8.2:6443",verb="POST"} {count:391,sum:1.6180026640000005,bucket:[0.005:341,0.025:388,0.1:391,0.25:391,0.5:391,1:391,2:391,4:391,8:391,15:391,30:391,60:391,+Inf:391]} st@1794947455.517258908
+rest_client_request_duration_seconds{host="192.168.8.2:6443",verb="PUT"} {count:1271,sum:11.92762642400001,bucket:[0.005:0,0.025:1261,0.1:1269,0.25:1270,0.5:1271,1:1271,2:1271,4:1271,8:1271,15:1271,30:1271,60:1271,+Inf:1271]} st@1794947458.626608764
+# HELP rest_client_request_size_bytes [ALPHA] Request size in bytes. Broken down by verb and host.
+# TYPE rest_client_request_size_bytes histogram
+rest_client_request_size_bytes{host="192.168.8.2:6443",verb="GET"} {count:23,sum:0,bucket:[64:23,256:23,512:23,1024:23,4096:23,16384:23,65536:23,262144:23,1.048576e+06:23,4.194304e+06:23,1.6777216e+07:23,+Inf:23]} st@1794947453.05746054
+rest_client_request_size_bytes{host="192.168.8.2:6443",verb="PATCH"} {count:3,sum:1005,bucket:[64:0,256:0,512:3,1024:3,4096:3,16384:3,65536:3,262144:3,1.048576e+06:3,4.194304e+06:3,1.6777216e+07:3,+Inf:3]} st@1794947465.507007518
+rest_client_request_size_bytes{host="192.168.8.2:6443",verb="POST"} {count:391,sum:94320,bucket:[64:0,256:378,512:391,1024:391,4096:391,16384:391,65536:391,262144:391,1.048576e+06:391,4.194304e+06:391,1.6777216e+07:391,+Inf:391]} st@1794947455.516877584
+rest_client_request_size_bytes{host="192.168.8.2:6443",verb="PUT"} {count:1271,sum:557502,bucket:[64:0,256:0,512:1271,1024:1271,4096:1271,16384:1271,65536:1271,262144:1271,1.048576e+06:1271,4.194304e+06:1271,1.6777216e+07:1271,+Inf:1271]} st@1794947458.626547675
+# HELP rest_client_requests_total [ALPHA] Number of HTTP requests, partitioned by status code, method, and host.
+# TYPE rest_client_requests_total counter
+rest_client_requests_total{code="200",host="192.168.8.2:6443",method="GET"} 117.0 st@1794947456.945985311
+rest_client_requests_total{code="200",host="192.168.8.2:6443",method="PATCH"} 3.0 st@1794947465.507023554
+rest_client_requests_total{code="200",host="192.168.8.2:6443",method="PUT"} 1271.0 st@1794947458.62656246
+rest_client_requests_total{code="201",host="192.168.8.2:6443",method="POST"} 389.0 st@1794947456.509226207
+rest_client_requests_total{code="403",host="192.168.8.2:6443",method="GET"} 40.0 st@1794947455.255295673
+rest_client_requests_total{code="403",host="192.168.8.2:6443",method="POST"} 2.0 st@1794947455.517009692
+rest_client_requests_total{code="404",host="192.168.8.2:6443",method="GET"} 1.0 st@1794947458.610168151
+rest_client_requests_total{code="<error>",host="192.168.8.2:6443",method="GET"} 22.0 st@1794947453.057471348
+# HELP rest_client_response_size_bytes [ALPHA] Response size in bytes. Broken down by verb and host.
+# TYPE rest_client_response_size_bytes histogram
+rest_client_response_size_bytes{host="192.168.8.2:6443",verb="GET"} {count:21,sum:4983,bucket:[64:0,256:13,512:21,1024:21,4096:21,16384:21,65536:21,262144:21,1.048576e+06:21,4.194304e+06:21,1.6777216e+07:21,+Inf:21]} st@1794947455.264707273
+rest_client_response_size_bytes{host="192.168.8.2:6443",verb="PATCH"} {count:3,sum:11654,bucket:[64:0,256:0,512:0,1024:0,4096:1,16384:3,65536:3,262144:3,1.048576e+06:3,4.194304e+06:3,1.6777216e+07:3,+Inf:3]} st@1794947465.507313995
+rest_client_response_size_bytes{host="192.168.8.2:6443",verb="POST"} {count:391,sum:253400,bucket:[64:9,256:9,512:12,1024:391,4096:391,16384:391,65536:391,262144:391,1.048576e+06:391,4.194304e+06:391,1.6777216e+07:391,+Inf:391]} st@1794947455.51727773
+rest_client_response_size_bytes{host="192.168.8.2:6443",verb="PUT"} {count:1271,sum:557503,bucket:[64:0,256:0,512:1271,1024:1271,4096:1271,16384:1271,65536:1271,262144:1271,1.048576e+06:1271,4.194304e+06:1271,1.6777216e+07:1271,+Inf:1271]} st@1794947458.626622916
+# HELP rest_client_transport_cache_entries [ALPHA] Number of transport entries in the internal cache.
+# TYPE rest_client_transport_cache_entries gauge
+rest_client_transport_cache_entries 2.0
+# HELP rest_client_transport_cert_rotation_gc_calls_total [ALPHA] Number of times a cert rotation goroutine cancel func is called via GC cleanup of the associated transport
+# TYPE rest_client_transport_cert_rotation_gc_calls_total counter
+rest_client_transport_cert_rotation_gc_calls_total 0.0 st@1794947453.055716376
+# HELP rest_client_transport_create_calls_total [ALPHA] Number of calls to get a new transport, partitioned by the result of the operation hit: obtained from the cache, miss: created and added to the cache, miss-gc: recreated and added back to the cache after being garbage collected, uncacheable: created and not cached
+# TYPE rest_client_transport_create_calls_total counter
+rest_client_transport_create_calls_total{result="hit"} 4.0 st@1794947453.058519233
+rest_client_transport_create_calls_total{result="miss"} 2.0 st@1794947453.055764289
+# HELP scheduler_batch_attempts_total [ALPHA] Counts of results when we attempt to use batching, by scheduler profile. 'no_hint' covers every pod that asked for a hint and got none, including pods that later fail to schedule. 'hint_used' and 'hint_not_used' are recorded only when a node is selected, and say whether it was the hinted one.
+# TYPE scheduler_batch_attempts_total counter
+scheduler_batch_attempts_total{profile="default-scheduler",result="no_hint"} 12.0 st@1794947465.406256093
+# HELP scheduler_cache_size [ALPHA] Number of nodes, pods, and assumed (bound) pods in the scheduler cache.
+# TYPE scheduler_cache_size gauge
+scheduler_cache_size{type="assumed_pods"} 0.0
+scheduler_cache_size{type="nodes"} 1.0
+scheduler_cache_size{type="pods"} 13.0
+# HELP scheduler_event_handling_duration_seconds [ALPHA] Event handling latency in seconds.
+# TYPE scheduler_event_handling_duration_seconds histogram
+scheduler_event_handling_duration_seconds{event="AssignedPodAdd"} {count:13,sum:0.001124056,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-117:3,4:12],positive_buckets:[2,0,1,2,2,1,1,0,1,1,0,1,0,0,1],bucket:[0.0001:9,0.0002:13,0.0004:13,0.0008:13,0.0016:13,0.0032:13,0.0064:13,0.0128:13,0.0256:13,0.0512:13,0.1024:13,0.2048:13,+Inf:13]} st@1794947458.503454347
+scheduler_event_handling_duration_seconds{event="AssignedPodUpdate"} {count:112,sum:0.02474861000000001,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-112:18,9:2,3:1,3:2,8:2],positive_buckets:[2,2,1,7,11,13,10,12,11,10,6,6,2,4,2,2,1,2,1,1,2,1,1,1,1],bucket:[0.0001:44,0.0002:99,0.0004:104,0.0008:106,0.0016:110,0.0032:110,0.0064:112,0.0128:112,0.0256:112,0.0512:112,0.1024:112,0.2048:112,+Inf:112]} st@1794947458.851802632
+scheduler_event_handling_duration_seconds{event="NodeAdd"} {count:1,sum:0.000147235,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-101:1],positive_buckets:[1],bucket:[0.0001:0,0.0002:1,0.0004:1,0.0008:1,0.0016:1,0.0032:1,0.0064:1,0.0128:1,0.0256:1,0.0512:1,0.1024:1,0.2048:1,+Inf:1]} st@1794947457.086887315
+scheduler_event_handling_duration_seconds{event="NodeUpdateNodeAnnotation"} {count:1,sum:0.000238682,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-96:1],positive_buckets:[1],bucket:[0.0001:0,0.0002:0,0.0004:1,0.0008:1,0.0016:1,0.0032:1,0.0064:1,0.0128:1,0.0256:1,0.0512:1,0.1024:1,0.2048:1,+Inf:1]} st@1794947465.188945354
+scheduler_event_handling_duration_seconds{event="NodeUpdateNodeCondition"} {count:1,sum:0.003130081,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-66:1],positive_buckets:[1],bucket:[0.0001:0,0.0002:0,0.0004:0,0.0008:0,0.0016:0,0.0032:1,0.0064:1,0.0128:1,0.0256:1,0.0512:1,0.1024:1,0.2048:1,+Inf:1]} st@1794947491.332756784
+scheduler_event_handling_duration_seconds{event="NodeUpdateNodeLabel"} {count:2,sum:0.000637188,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-105:1,17:1],positive_buckets:[1,1],bucket:[0.0001:0,0.0002:1,0.0004:1,0.0008:2,0.0016:2,0.0032:2,0.0064:2,0.0128:2,0.0256:2,0.0512:2,0.1024:2,0.2048:2,+Inf:2]} st@1794947458.581417657
+scheduler_event_handling_duration_seconds{event="NodeUpdateNodeTaint"} {count:3,sum:0.009358341,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-108:1,20:1,32:1],positive_buckets:[1,1,1],bucket:[0.0001:1,0.0002:1,0.0004:1,0.0008:2,0.0016:2,0.0032:2,0.0064:2,0.0128:3,0.0256:3,0.0512:3,0.1024:3,0.2048:3,+Inf:3]} st@1794947458.58143684
+scheduler_event_handling_duration_seconds{event="UnscheduledPodAdd"} {count:9,sum:0.004280174,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-100:8,3:1,11:2],positive_buckets:[1,1,1,1,0,1,0,1,1,1,1],bucket:[0.0001:0,0.0002:3,0.0004:6,0.0008:7,0.0016:9,0.0032:9,0.0064:9,0.0128:9,0.0256:9,0.0512:9,0.1024:9,0.2048:9,+Inf:9]} st@1794947465.405990167
+scheduler_event_handling_duration_seconds{event="UnscheduledPodDelete"} {count:9,sum:0.000154083,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-137:1,7:4,3:2],positive_buckets:[1,1,2,0,3,1,1],bucket:[0.0001:9,0.0002:9,0.0004:9,0.0008:9,0.0016:9,0.0032:9,0.0064:9,0.0128:9,0.0256:9,0.0512:9,0.1024:9,0.2048:9,+Inf:9]} st@1794947465.419124028
+scheduler_event_handling_duration_seconds{event="UnscheduledPodUpdate"} {count:3,sum:0.000607378,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-101:3,3:1],positive_buckets:[1,0,1,1],bucket:[0.0001:0,0.0002:2,0.0004:3,0.0008:3,0.0016:3,0.0032:3,0.0064:3,0.0128:3,0.0256:3,0.0512:3,0.1024:3,0.2048:3,+Inf:3]} st@1794947465.507681877
+scheduler_event_handling_duration_seconds{event="storage.k8s.io/CSINodeAdd"} {count:1,sum:0.000309113,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-93:1],positive_buckets:[1],bucket:[0.0001:0,0.0002:0,0.0004:1,0.0008:1,0.0016:1,0.0032:1,0.0064:1,0.0128:1,0.0256:1,0.0512:1,0.1024:1,0.2048:1,+Inf:1]} st@1794947457.220964125
+scheduler_event_handling_duration_seconds{event="storage.k8s.io/StorageClassAdd"} {count:1,sum:0.000106031,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-105:1],positive_buckets:[1],bucket:[0.0001:0,0.0002:1,0.0004:1,0.0008:1,0.0016:1,0.0032:1,0.0064:1,0.0128:1,0.0256:1,0.0512:1,0.1024:1,0.2048:1,+Inf:1]} st@1794947463.225661036
+# HELP scheduler_framework_extension_point_duration_seconds [STABLE] Latency for running all plugins of a specific extension point, by scheduler profile.
+# TYPE scheduler_framework_extension_point_duration_seconds histogram
+scheduler_framework_extension_point_duration_seconds{extension_point="Bind",profile="default-scheduler",status="Success"} {count:9,sum:0.129756269,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-53:4,3:1,3:1],positive_buckets:[1,2,2,1,2,1],bucket:[0.0001:0,0.0002:0,0.0004:0,0.0008:0,0.0016:0,0.0032:0,0.0064:0,0.0128:6,0.0256:8,0.0512:9,0.1024:9,0.2048:9,+Inf:9]} st@1794947465.418526164
+scheduler_framework_extension_point_duration_seconds{extension_point="Filter",profile="default-scheduler",status="Success"} {count:12,sum:0.004157173,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-116:13,8:1,28:1],positive_buckets:[1,2,1,0,2,0,0,1,0,0,1,1,1,1,1],bucket:[0.0001:7,0.0002:10,0.0004:11,0.0008:11,0.0016:11,0.0032:11,0.0064:12,0.0128:12,0.0256:12,0.0512:12,0.1024:12,0.2048:12,+Inf:12]} st@1794947465.406527621
+scheduler_framework_extension_point_duration_seconds{extension_point="Permit",profile="default-scheduler",status="Success"} {count:9,sum:1.7395000000000002e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-159:7,7:3],positive_buckets:[1,0,1,0,1,1,3,1,0,1],bucket:[0.0001:9,0.0002:9,0.0004:9,0.0008:9,0.0016:9,0.0032:9,0.0064:9,0.0128:9,0.0256:9,0.0512:9,0.1024:9,0.2048:9,+Inf:9]} st@1794947465.406678776
+scheduler_framework_extension_point_duration_seconds{extension_point="PostBind",profile="default-scheduler",status="Success"} {count:9,sum:4.097100000000001e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-153:8,8:2,5:1],positive_buckets:[1,0,0,1,1,1,1,1,1,1,1],bucket:[0.0001:9,0.0002:9,0.0004:9,0.0008:9,0.0016:9,0.0032:9,0.0064:9,0.0128:9,0.0256:9,0.0512:9,0.1024:9,0.2048:9,+Inf:9]} st@1794947465.418612141
+scheduler_framework_extension_point_duration_seconds{extension_point="PostFilter",profile="default-scheduler",status="Unschedulable"} {count:3,sum:9.253899999999999e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-125:1,11:1],positive_buckets:[2,1],bucket:[0.0001:3,0.0002:3,0.0004:3,0.0008:3,0.0016:3,0.0032:3,0.0064:3,0.0128:3,0.0256:3,0.0512:3,0.1024:3,0.2048:3,+Inf:3]} st@1794947465.495756469
+scheduler_framework_extension_point_duration_seconds{extension_point="PreBind",profile="default-scheduler",status="Success"} {count:9,sum:0.000165377,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-142:10,28:1],positive_buckets:[1,0,1,1,1,0,1,2,0,1,1],bucket:[0.0001:8,0.0002:9,0.0004:9,0.0008:9,0.0016:9,0.0032:9,0.0064:9,0.0128:9,0.0256:9,0.0512:9,0.1024:9,0.2048:9,+Inf:9]} st@1794947465.406761959
+scheduler_framework_extension_point_duration_seconds{extension_point="PreBindPreFlight",profile="default-scheduler",status="Skip"} {count:9,sum:0.000104435,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-141:11,16:1],positive_buckets:[3,1,0,0,1,0,1,1,0,0,1,1],bucket:[0.0001:9,0.0002:9,0.0004:9,0.0008:9,0.0016:9,0.0032:9,0.0064:9,0.0128:9,0.0256:9,0.0512:9,0.1024:9,0.2048:9,+Inf:9]} st@1794947465.406744194
+scheduler_framework_extension_point_duration_seconds{extension_point="PreEnqueue",profile="default-scheduler",status="Success"} {count:12,sum:0.0027337829999999996,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:4,5:3,4:7,47:1],positive_buckets:[1,0,0,1,2,0,3,1,0,0,1,0,1,1,1],bucket:[0.0001:11,0.0002:11,0.0004:11,0.0008:11,0.0016:11,0.0032:12,0.0064:12,0.0128:12,0.0256:12,0.0512:12,0.1024:12,0.2048:12,+Inf:12]} st@1794947465.405840048
+scheduler_framework_extension_point_duration_seconds{extension_point="PreFilter",profile="default-scheduler",status="Success"} {count:12,sum:0.00942666,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-119:1,6:4,4:5,44:1],positive_buckets:[1,1,2,1,1,1,0,2,1,1,1],bucket:[0.0001:6,0.0002:11,0.0004:11,0.0008:11,0.0016:11,0.0032:11,0.0064:11,0.0128:12,0.0256:12,0.0512:12,0.1024:12,0.2048:12,+Inf:12]} st@1794947465.406243673
+scheduler_framework_extension_point_duration_seconds{extension_point="Reserve",profile="default-scheduler",status="Success"} {count:9,sum:0.0017594140000000002,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-150:1,7:4,5:4,56:1],positive_buckets:[1,2,1,1,1,1,0,0,1,1],bucket:[0.0001:8,0.0002:8,0.0004:8,0.0008:8,0.0016:8,0.0032:9,0.0064:9,0.0128:9,0.0256:9,0.0512:9,0.1024:9,0.2048:9,+Inf:9]} st@1794947465.406673747
+scheduler_framework_extension_point_duration_seconds{extension_point="Sign",profile="default-scheduler",status="Success"} {count:15,sum:0.0038104220000000004,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-112:13,8:1,11:2],positive_buckets:[1,1,0,2,0,0,2,0,1,2,2,0,1,1,1,1],bucket:[0.0001:5,0.0002:12,0.0004:13,0.0008:13,0.0016:15,0.0032:15,0.0064:15,0.0128:15,0.0256:15,0.0512:15,0.1024:15,0.2048:15,+Inf:15]} st@1794947466.071453178
+# HELP scheduler_get_node_hint_duration_seconds [ALPHA] Latency for getting a node hint, by scheduler profile.
+# TYPE scheduler_get_node_hint_duration_seconds histogram
+scheduler_get_node_hint_duration_seconds{hinted="no_hint",profile="default-scheduler"} {count:12,sum:8.6198e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-150:1,8:11,3:1],positive_buckets:[1,4,0,0,1,1,1,1,0,0,1,1,1],bucket:[1e-05:10,2e-05:12,4e-05:12,8e-05:12,0.00016:12,0.00032:12,0.00064:12,0.00128:12,0.00256:12,0.00512:12,0.01024:12,0.02048:12,+Inf:12]} st@1794947465.406260413
+# HELP scheduler_goroutines [BETA] Number of running goroutines split by the work they do such as binding.
+# TYPE scheduler_goroutines gauge
+scheduler_goroutines{operation="Filter"} 0.0
+scheduler_goroutines{operation="InterPodAffinity"} 0.0
+scheduler_goroutines{operation="binding"} 0.0
+# HELP scheduler_inflight_events [ALPHA] Number of events currently tracked in the scheduling queue.
+# TYPE scheduler_inflight_events gauge
+scheduler_inflight_events{event="PodPopped"} 0.0
+# HELP scheduler_pending_pods [STABLE] Number of pending pods, by the queue type. 'active' means number of pods in activeQ; 'backoff' means number of pods in backoffQ; 'unschedulable' means number of pods in unschedulableEntities that the scheduler attempted to schedule and failed; 'gated' is the number of unschedulable pods that the scheduler never attempted to schedule because they are gated; 'incomplete' means number of pods in incompletePodGroupPods; 'pending' means number of pods in pendingPodGroupPods.
+# TYPE scheduler_pending_pods gauge
+scheduler_pending_pods{queue="active"} 0.0
+scheduler_pending_pods{queue="backoff"} 0.0
+scheduler_pending_pods{queue="gated"} 0.0
+scheduler_pending_pods{queue="incomplete"} 0.0
+scheduler_pending_pods{queue="pending"} 0.0
+scheduler_pending_pods{queue="unschedulable"} 0.0
+# HELP scheduler_plugin_evaluation_total [BETA] Number of attempts to schedule pods by each plugin and the extension point (available only in PreFilter, Filter, PreScore, and Score), by scheduler profile.
+# TYPE scheduler_plugin_evaluation_total counter
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="DeferredPodScheduling",profile="default-scheduler"} 0.0 st@1794947453.071142968
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="DynamicResources",profile="default-scheduler"} 0.0 st@1794947453.071159406
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="InterPodAffinity",profile="default-scheduler"} 0.0 st@1794947453.071157161
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="NodeAffinity",profile="default-scheduler"} 7.0 st@1794947453.071138599
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="NodeDeclaredFeatures",profile="default-scheduler"} 0.0 st@1794947453.071161148
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="NodeName",profile="default-scheduler"} 12.0 st@1794947453.071130007
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="NodePorts",profile="default-scheduler"} 1.0 st@1794947453.071140447
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="NodeResourcesFit",profile="default-scheduler"} 9.0 st@1794947453.071147587
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="NodeUnschedulable",profile="default-scheduler"} 12.0 st@1794947453.071132798
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="NodeVolumeLimits",profile="default-scheduler"} 0.0 st@1794947453.071151447
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="PodTopologySpread",profile="default-scheduler"} 0.0 st@1794947453.071155794
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="TaintToleration",profile="default-scheduler"} 12.0 st@1794947453.071137222
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="VolumeBinding",profile="default-scheduler"} 0.0 st@1794947453.071153116
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="VolumeRestrictions",profile="default-scheduler"} 0.0 st@1794947453.071149413
+scheduler_plugin_evaluation_total{extension_point="Filter",plugin="VolumeZone",profile="default-scheduler"} 0.0 st@1794947453.071154551
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="DeferredPodScheduling",profile="default-scheduler"} 0.0 st@1794947453.07110143
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="DynamicResources",profile="default-scheduler"} 0.0 st@1794947453.071126175
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="InterPodAffinity",profile="default-scheduler"} 0.0 st@1794947453.071124253
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="NodeAffinity",profile="default-scheduler"} 10.0 st@1794947453.071097861
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="NodeDeclaredFeatures",profile="default-scheduler"} 0.0 st@1794947453.071128236
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="NodeName",profile="default-scheduler"} 12.0 st@1794947453.071093439
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="NodePorts",profile="default-scheduler"} 1.0 st@1794947453.071099656
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="NodeResourcesFit",profile="default-scheduler"} 12.0 st@1794947453.071106687
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="NodeVolumeLimits",profile="default-scheduler"} 0.0 st@1794947453.071114111
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="PodTopologySpread",profile="default-scheduler"} 0.0 st@1794947453.071121665
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="VolumeBinding",profile="default-scheduler"} 0.0 st@1794947453.071115898
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="VolumeRestrictions",profile="default-scheduler"} 0.0 st@1794947453.071111173
+scheduler_plugin_evaluation_total{extension_point="PreFilter",plugin="VolumeZone",profile="default-scheduler"} 0.0 st@1794947453.071117798
+scheduler_plugin_evaluation_total{extension_point="PreScore",plugin="InterPodAffinity",profile="default-scheduler"} 0.0 st@1794947453.071178012
+scheduler_plugin_evaluation_total{extension_point="PreScore",plugin="NodeAffinity",profile="default-scheduler"} 0.0 st@1794947453.071169006
+scheduler_plugin_evaluation_total{extension_point="PreScore",plugin="NodeResourcesBalancedAllocation",profile="default-scheduler"} 0.0 st@1794947453.071180013
+scheduler_plugin_evaluation_total{extension_point="PreScore",plugin="NodeResourcesFit",profile="default-scheduler"} 0.0 st@1794947453.071170457
+scheduler_plugin_evaluation_total{extension_point="PreScore",plugin="PodTopologySpread",profile="default-scheduler"} 0.0 st@1794947453.07117371
+scheduler_plugin_evaluation_total{extension_point="PreScore",plugin="TaintToleration",profile="default-scheduler"} 0.0 st@1794947453.071163261
+scheduler_plugin_evaluation_total{extension_point="PreScore",plugin="VolumeBinding",profile="default-scheduler"} 0.0 st@1794947453.071172078
+scheduler_plugin_evaluation_total{extension_point="Score",plugin="DynamicResources",profile="default-scheduler"} 0.0 st@1794947453.071194068
+scheduler_plugin_evaluation_total{extension_point="Score",plugin="ImageLocality",profile="default-scheduler"} 0.0 st@1794947453.0711996
+scheduler_plugin_evaluation_total{extension_point="Score",plugin="InterPodAffinity",profile="default-scheduler"} 0.0 st@1794947453.0711925
+scheduler_plugin_evaluation_total{extension_point="Score",plugin="NodeAffinity",profile="default-scheduler"} 0.0 st@1794947453.071184099
+scheduler_plugin_evaluation_total{extension_point="Score",plugin="NodeResourcesBalancedAllocation",profile="default-scheduler"} 0.0 st@1794947453.071195821
+scheduler_plugin_evaluation_total{extension_point="Score",plugin="NodeResourcesFit",profile="default-scheduler"} 0.0 st@1794947453.071185986
+scheduler_plugin_evaluation_total{extension_point="Score",plugin="PodTopologySpread",profile="default-scheduler"} 0.0 st@1794947453.071190168
+scheduler_plugin_evaluation_total{extension_point="Score",plugin="TaintToleration",profile="default-scheduler"} 0.0 st@1794947453.071182167
+scheduler_plugin_evaluation_total{extension_point="Score",plugin="VolumeBinding",profile="default-scheduler"} 0.0 st@1794947453.071188201
+# HELP scheduler_plugin_execution_duration_seconds [BETA] Duration for running a plugin at a specific extension point.
+# TYPE scheduler_plugin_execution_duration_seconds histogram
+scheduler_plugin_execution_duration_seconds{extension_point="Bind",plugin="DefaultBinder",status="Success"} {count:2,sum:0.024291713,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-51:2],positive_buckets:[1,1],bucket:[1e-05:0,1.5000000000000002e-05:0,2.2500000000000005e-05:0,3.375000000000001e-05:0,5.062500000000001e-05:0,7.593750000000002e-05:0,0.00011390625000000003:0,0.00017085937500000006:0,0.0002562890625000001:0,0.00038443359375000017:0,0.0005766503906250003:0,0.0008649755859375004:0,0.0012974633789062506:0,0.0019461950683593758:0,0.0029192926025390638:0,0.004378938903808595:0,0.006568408355712893:0,0.009852612533569338:0,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.072184898
+scheduler_plugin_execution_duration_seconds{extension_point="Bind",plugin="DeferredPodScheduling",status="Skip"} {count:2,sum:1.798e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-164:1,6:1],positive_buckets:[1,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.072158029
+scheduler_plugin_execution_duration_seconds{extension_point="Filter",plugin="NodeAffinity",status="Success"} {count:2,sum:0.000102607,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-136:1,29:1],positive_buckets:[1,1],bucket:[1e-05:1,1.5000000000000002e-05:1,2.2500000000000005e-05:1,3.375000000000001e-05:1,5.062500000000001e-05:1,7.593750000000002e-05:1,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.072029909
+scheduler_plugin_execution_duration_seconds{extension_point="Filter",plugin="NodeName",status="Success"} {count:2,sum:2e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-170:1,16:1],positive_buckets:[1,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.07197302
+scheduler_plugin_execution_duration_seconds{extension_point="Filter",plugin="NodeResourcesFit",status="Success"} {count:2,sum:0.001093856,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-134:1,55:1],positive_buckets:[1,1],bucket:[1e-05:1,1.5000000000000002e-05:1,2.2500000000000005e-05:1,3.375000000000001e-05:1,5.062500000000001e-05:1,7.593750000000002e-05:1,0.00011390625000000003:1,0.00017085937500000006:1,0.0002562890625000001:1,0.00038443359375000017:1,0.0005766503906250003:1,0.0008649755859375004:1,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.072035069
+scheduler_plugin_execution_duration_seconds{extension_point="Filter",plugin="NodeUnschedulable",status="Success"} {count:2,sum:2.841e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-167:1,17:1],positive_buckets:[1,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.072003112
+scheduler_plugin_execution_duration_seconds{extension_point="Filter",plugin="TaintToleration",status="Success"} {count:2,sum:6.263e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-147:3],positive_buckets:[1,0,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.072009348
+scheduler_plugin_execution_duration_seconds{extension_point="PreBindPreFlight",plugin="DynamicResources",status="Skip"} {count:2,sum:1.868e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-163:1,5:1],positive_buckets:[1,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.072152646
+scheduler_plugin_execution_duration_seconds{extension_point="PreBindPreFlight",plugin="VolumeBinding",status="Skip"} {count:2,sum:3.499e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-159:1,10:1],positive_buckets:[1,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.072147808
+scheduler_plugin_execution_duration_seconds{extension_point="PreEnqueue",plugin="DefaultPreemption",status="Success"} {count:1,sum:1.7115e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-126:1],positive_buckets:[1],bucket:[1e-05:0,1.5000000000000002e-05:0,2.2500000000000005e-05:1,3.375000000000001e-05:1,5.062500000000001e-05:1,7.593750000000002e-05:1,0.00011390625000000003:1,0.00017085937500000006:1,0.0002562890625000001:1,0.00038443359375000017:1,0.0005766503906250003:1,0.0008649755859375004:1,0.0012974633789062506:1,0.0019461950683593758:1,0.0029192926025390638:1,0.004378938903808595:1,0.006568408355712893:1,0.009852612533569338:1,0.014778918800354007:1,0.02216837820053101:1,+Inf:1]} st@1794947503.110272992
+scheduler_plugin_execution_duration_seconds{extension_point="PreEnqueue",plugin="DynamicResources",status="Success"} {count:1,sum:1.57e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-154:1],positive_buckets:[1],bucket:[1e-05:1,1.5000000000000002e-05:1,2.2500000000000005e-05:1,3.375000000000001e-05:1,5.062500000000001e-05:1,7.593750000000002e-05:1,0.00011390625000000003:1,0.00017085937500000006:1,0.0002562890625000001:1,0.00038443359375000017:1,0.0005766503906250003:1,0.0008649755859375004:1,0.0012974633789062506:1,0.0019461950683593758:1,0.0029192926025390638:1,0.004378938903808595:1,0.006568408355712893:1,0.009852612533569338:1,0.014778918800354007:1,0.02216837820053101:1,+Inf:1]} st@1794947503.110268214
+scheduler_plugin_execution_duration_seconds{extension_point="PreEnqueue",plugin="SchedulingGates",status="Success"} {count:1,sum:1.145e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-157:1],positive_buckets:[1],bucket:[1e-05:1,1.5000000000000002e-05:1,2.2500000000000005e-05:1,3.375000000000001e-05:1,5.062500000000001e-05:1,7.593750000000002e-05:1,0.00011390625000000003:1,0.00017085937500000006:1,0.0002562890625000001:1,0.00038443359375000017:1,0.0005766503906250003:1,0.0008649755859375004:1,0.0012974633789062506:1,0.0019461950683593758:1,0.0029192926025390638:1,0.004378938903808595:1,0.006568408355712893:1,0.009852612533569338:1,0.014778918800354007:1,0.02216837820053101:1,+Inf:1]} st@1794947503.110251784
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="DeferredPodScheduling",status="Skip"} {count:2,sum:2.74e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-159:1,6:1],positive_buckets:[1,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071473515
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="DynamicResources",status="Skip"} {count:2,sum:0.0015237500000000001,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-112:1,36:1],positive_buckets:[1,1],bucket:[1e-05:0,1.5000000000000002e-05:0,2.2500000000000005e-05:0,3.375000000000001e-05:0,5.062500000000001e-05:0,7.593750000000002e-05:1,0.00011390625000000003:1,0.00017085937500000006:1,0.0002562890625000001:1,0.00038443359375000017:1,0.0005766503906250003:1,0.0008649755859375004:1,0.0012974633789062506:1,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071504197
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="InterPodAffinity",status="Skip"} {count:2,sum:0.00016006,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-126:1,23:1],positive_buckets:[1,1],bucket:[1e-05:0,1.5000000000000002e-05:0,2.2500000000000005e-05:1,3.375000000000001e-05:1,5.062500000000001e-05:1,7.593750000000002e-05:1,0.00011390625000000003:1,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071501099
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="NodeAffinity",status="Success"} {count:2,sum:4.0295e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-131:1,10:1],positive_buckets:[1,1],bucket:[1e-05:0,1.5000000000000002e-05:1,2.2500000000000005e-05:1,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071462657
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="NodeDeclaredFeatures",status="Skip"} {count:2,sum:1.6233000000000002e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-138:1,5:1],positive_buckets:[1,1],bucket:[1e-05:1,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071507387
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="NodeName",status="Success"} {count:2,sum:5.5795000000000004e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-149:1,35:1],positive_buckets:[1,1],bucket:[1e-05:1,1.5000000000000002e-05:1,2.2500000000000005e-05:1,3.375000000000001e-05:1,5.062500000000001e-05:1,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071458422
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="NodePorts",status="Skip"} {count:2,sum:3.88e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-156:1,7:1],positive_buckets:[1,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071466979
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="NodeResourcesFit",status="Success"} {count:2,sum:2.467e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:1,13:1],positive_buckets:[1,1],bucket:[1e-05:1,1.5000000000000002e-05:1,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071477417
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="NodeVolumeLimits",status="Skip"} {count:2,sum:0.004898587,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:1,77:1],positive_buckets:[1,1],bucket:[1e-05:1,1.5000000000000002e-05:1,2.2500000000000005e-05:1,3.375000000000001e-05:1,5.062500000000001e-05:1,7.593750000000002e-05:1,0.00011390625000000003:1,0.00017085937500000006:1,0.0002562890625000001:1,0.00038443359375000017:1,0.0005766503906250003:1,0.0008649755859375004:1,0.0012974633789062506:1,0.0019461950683593758:1,0.0029192926025390638:1,0.004378938903808595:1,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071486846
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="PodTopologySpread",status="Skip"} {count:2,sum:9.2e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-147:1,8:1],positive_buckets:[1,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071498454
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="VolumeBinding",status="Skip"} {count:2,sum:1.7663e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-146:1,17:1],positive_buckets:[1,1],bucket:[1e-05:1,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071489542
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="VolumeRestrictions",status="Skip"} {count:2,sum:7.959e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-148:1,8:1],positive_buckets:[1,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071483326
+scheduler_plugin_execution_duration_seconds{extension_point="PreFilter",plugin="VolumeZone",status="Skip"} {count:2,sum:4.383e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-156:1,9:1],positive_buckets:[1,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.071493584
+scheduler_plugin_execution_duration_seconds{extension_point="Reserve",plugin="DynamicResources",status="Success"} {count:2,sum:0.001697142,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-149:1,75:1],positive_buckets:[1,1],bucket:[1e-05:1,1.5000000000000002e-05:1,2.2500000000000005e-05:1,3.375000000000001e-05:1,5.062500000000001e-05:1,7.593750000000002e-05:1,0.00011390625000000003:1,0.00017085937500000006:1,0.0002562890625000001:1,0.00038443359375000017:1,0.0005766503906250003:1,0.0008649755859375004:1,0.0012974633789062506:1,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.072143157
+scheduler_plugin_execution_duration_seconds{extension_point="Reserve",plugin="VolumeBinding",status="Success"} {count:2,sum:5.8899999999999995e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-152:1,8:1],positive_buckets:[1,1],bucket:[1e-05:2,1.5000000000000002e-05:2,2.2500000000000005e-05:2,3.375000000000001e-05:2,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:2,0.009852612533569338:2,0.014778918800354007:2,0.02216837820053101:2,+Inf:2]} st@1794947466.072127937
+scheduler_plugin_execution_duration_seconds{extension_point="Sign",plugin="DeferredPodScheduling",status="Success"} {count:15,sum:8.757e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-184:1,3:1,6:1,5:11],positive_buckets:[1,1,1,3,2,2,1,0,1,0,1,1,0,1],bucket:[1e-05:15,1.5000000000000002e-05:15,2.2500000000000005e-05:15,3.375000000000001e-05:15,5.062500000000001e-05:15,7.593750000000002e-05:15,0.00011390625000000003:15,0.00017085937500000006:15,0.0002562890625000001:15,0.00038443359375000017:15,0.0005766503906250003:15,0.0008649755859375004:15,0.0012974633789062506:15,0.0019461950683593758:15,0.0029192926025390638:15,0.004378938903808595:15,0.006568408355712893:15,0.009852612533569338:15,0.014778918800354007:15,0.02216837820053101:15,+Inf:15]} st@1794947466.071408031
+scheduler_plugin_execution_duration_seconds{extension_point="Sign",plugin="NodeAffinity",status="Success"} {count:15,sum:0.000206277,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-171:1,5:2,3:9,29:3,17:1],positive_buckets:[1,1,1,1,0,2,0,0,2,1,1,2,1,0,1,1],bucket:[1e-05:12,1.5000000000000002e-05:12,2.2500000000000005e-05:12,3.375000000000001e-05:14,5.062500000000001e-05:14,7.593750000000002e-05:14,0.00011390625000000003:14,0.00017085937500000006:15,0.0002562890625000001:15,0.00038443359375000017:15,0.0005766503906250003:15,0.0008649755859375004:15,0.0012974633789062506:15,0.0019461950683593758:15,0.0029192926025390638:15,0.004378938903808595:15,0.006568408355712893:15,0.009852612533569338:15,0.014778918800354007:15,0.02216837820053101:15,+Inf:15]} st@1794947466.071390207
+scheduler_plugin_execution_duration_seconds{extension_point="Sign",plugin="NodeName",status="Success"} {count:15,sum:2.2505999999999998e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-173:4,7:1,7:8],positive_buckets:[1,1,0,1,1,2,3,2,2,1,0,0,1],bucket:[1e-05:15,1.5000000000000002e-05:15,2.2500000000000005e-05:15,3.375000000000001e-05:15,5.062500000000001e-05:15,7.593750000000002e-05:15,0.00011390625000000003:15,0.00017085937500000006:15,0.0002562890625000001:15,0.00038443359375000017:15,0.0005766503906250003:15,0.0008649755859375004:15,0.0012974633789062506:15,0.0019461950683593758:15,0.0029192926025390638:15,0.004378938903808595:15,0.006568408355712893:15,0.009852612533569338:15,0.014778918800354007:15,0.02216837820053101:15,+Inf:15]} st@1794947466.071339494
+scheduler_plugin_execution_duration_seconds{extension_point="Sign",plugin="NodePorts",status="Success"} {count:15,sum:0.0009835710000000001,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-160:1,5:15,59:1],positive_buckets:[1,1,0,1,1,2,1,1,2,1,0,1,1,0,0,1,1],bucket:[1e-05:14,1.5000000000000002e-05:14,2.2500000000000005e-05:14,3.375000000000001e-05:14,5.062500000000001e-05:14,7.593750000000002e-05:14,0.00011390625000000003:14,0.00017085937500000006:14,0.0002562890625000001:14,0.00038443359375000017:14,0.0005766503906250003:14,0.0008649755859375004:14,0.0012974633789062506:15,0.0019461950683593758:15,0.0029192926025390638:15,0.004378938903808595:15,0.006568408355712893:15,0.009852612533569338:15,0.014778918800354007:15,0.02216837820053101:15,+Inf:15]} st@1794947466.071403094
+scheduler_plugin_execution_duration_seconds{extension_point="Sign",plugin="NodeResourcesFit",status="Success"} {count:15,sum:0.00012933900000000002,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-144:1,3:10,5:1],positive_buckets:[2,1,1,0,4,1,0,1,1,1,1,2],bucket:[1e-05:11,1.5000000000000002e-05:13,2.2500000000000005e-05:15,3.375000000000001e-05:15,5.062500000000001e-05:15,7.593750000000002e-05:15,0.00011390625000000003:15,0.00017085937500000006:15,0.0002562890625000001:15,0.00038443359375000017:15,0.0005766503906250003:15,0.0008649755859375004:15,0.0012974633789062506:15,0.0019461950683593758:15,0.0029192926025390638:15,0.004378938903808595:15,0.006568408355712893:15,0.009852612533569338:15,0.014778918800354007:15,0.02216837820053101:15,+Inf:15]} st@1794947466.071415114
+scheduler_plugin_execution_duration_seconds{extension_point="Sign",plugin="NodeVolumeLimits",status="Success"} {count:15,sum:0.000268152,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-139:12,13:1,6:1],positive_buckets:[1,0,0,1,3,2,0,1,1,3,0,1,1,1],bucket:[1e-05:7,1.5000000000000002e-05:13,2.2500000000000005e-05:13,3.375000000000001e-05:13,5.062500000000001e-05:14,7.593750000000002e-05:14,0.00011390625000000003:15,0.00017085937500000006:15,0.0002562890625000001:15,0.00038443359375000017:15,0.0005766503906250003:15,0.0008649755859375004:15,0.0012974633789062506:15,0.0019461950683593758:15,0.0029192926025390638:15,0.004378938903808595:15,0.006568408355712893:15,0.009852612533569338:15,0.014778918800354007:15,0.02216837820053101:15,+Inf:15]} st@1794947466.071424383
+scheduler_plugin_execution_duration_seconds{extension_point="Sign",plugin="PodTopologySpread",status="Unschedulable"} {count:15,sum:1.8069e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-170:6,5:9,5:1],positive_buckets:[1,0,1,1,0,1,3,2,1,1,1,0,0,1,1,1],bucket:[1e-05:15,1.5000000000000002e-05:15,2.2500000000000005e-05:15,3.375000000000001e-05:15,5.062500000000001e-05:15,7.593750000000002e-05:15,0.00011390625000000003:15,0.00017085937500000006:15,0.0002562890625000001:15,0.00038443359375000017:15,0.0005766503906250003:15,0.0008649755859375004:15,0.0012974633789062506:15,0.0019461950683593758:15,0.0029192926025390638:15,0.004378938903808595:15,0.006568408355712893:15,0.009852612533569338:15,0.014778918800354007:15,0.02216837820053101:15,+Inf:15]} st@1794947466.07144713
+scheduler_plugin_execution_duration_seconds{extension_point="Sign",plugin="VolumeBinding",status="Success"} {count:15,sum:0.00020700300000000004,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-141:1,5:9,3:1,8:1],positive_buckets:[1,3,0,1,3,1,2,0,1,1,1,1],bucket:[1e-05:5,1.5000000000000002e-05:12,2.2500000000000005e-05:13,3.375000000000001e-05:14,5.062500000000001e-05:15,7.593750000000002e-05:15,0.00011390625000000003:15,0.00017085937500000006:15,0.0002562890625000001:15,0.00038443359375000017:15,0.0005766503906250003:15,0.0008649755859375004:15,0.0012974633789062506:15,0.0019461950683593758:15,0.0029192926025390638:15,0.004378938903808595:15,0.006568408355712893:15,0.009852612533569338:15,0.014778918800354007:15,0.02216837820053101:15,+Inf:15]} st@1794947466.071427463
+scheduler_plugin_execution_duration_seconds{extension_point="Sign",plugin="VolumeRestrictions",status="Success"} {count:15,sum:0.0015957999999999999,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-127:2,4:1,5:9,4:1,3:1,14:1],positive_buckets:[1,1,2,3,2,0,1,0,1,0,0,1,1,1,1],bucket:[1e-05:0,1.5000000000000002e-05:0,2.2500000000000005e-05:2,3.375000000000001e-05:4,5.062500000000001e-05:9,7.593750000000002e-05:11,0.00011390625000000003:12,0.00017085937500000006:13,0.0002562890625000001:14,0.00038443359375000017:14,0.0005766503906250003:14,0.0008649755859375004:15,0.0012974633789062506:15,0.0019461950683593758:15,0.0029192926025390638:15,0.004378938903808595:15,0.006568408355712893:15,0.009852612533569338:15,0.014778918800354007:15,0.02216837820053101:15,+Inf:15]} st@1794947466.071420131
+scheduler_plugin_execution_duration_seconds{extension_point="Sign",plugin="VolumeZone",status="Success"} {count:15,sum:0.00019987199999999997,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-141:1,3:13,9:1],positive_buckets:[1,1,0,2,0,3,0,1,3,1,0,1,0,1,1],bucket:[1e-05:7,1.5000000000000002e-05:12,2.2500000000000005e-05:14,3.375000000000001e-05:14,5.062500000000001e-05:15,7.593750000000002e-05:15,0.00011390625000000003:15,0.00017085937500000006:15,0.0002562890625000001:15,0.00038443359375000017:15,0.0005766503906250003:15,0.0008649755859375004:15,0.0012974633789062506:15,0.0019461950683593758:15,0.0029192926025390638:15,0.004378938903808595:15,0.006568408355712893:15,0.009852612533569338:15,0.014778918800354007:15,0.02216837820053101:15,+Inf:15]} st@1794947466.07143256
+# HELP scheduler_pod_scheduled_after_flush_total [ALPHA] Number of pods that were successfully scheduled after being flushed from unschedulableEntities due to timeout. This metric helps detect potential queueing hint misconfigurations or event handling issues.
+# TYPE scheduler_pod_scheduled_after_flush_total counter
+scheduler_pod_scheduled_after_flush_total 0.0 st@1794947453.061715036
+# HELP scheduler_pod_scheduling_attempts [STABLE] Number of attempts to successfully schedule a pod.
+# TYPE scheduler_pod_scheduling_attempts histogram
+scheduler_pod_scheduling_attempts {count:9,sum:12,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[0:1,7:1],positive_buckets:[6,3],bucket:[1:6,2:9,4:9,8:9,16:9,+Inf:9]} st@1794947453.061695492
+# HELP scheduler_pod_scheduling_sli_duration_seconds [BETA] E2e latency for a pod being scheduled, from the time the pod enters the scheduling queue and might involve multiple scheduling attempts.
+# TYPE scheduler_pod_scheduling_sli_duration_seconds histogram
+scheduler_pod_scheduling_sli_duration_seconds{attempts="1"} {count:6,sum:0.10759321399999999,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-52:7,3:1],positive_buckets:[1,0,1,1,0,0,1,2],bucket:[0.01:0,0.02:4,0.04:6,0.08:6,0.16:6,0.32:6,0.64:6,1.28:6,2.56:6,5.12:6,10.24:6,20.48:6,40.96:6,81.92:6,163.84:6,327.68:6,655.36:6,1310.72:6,2621.44:6,5242.88:6,+Inf:6]} st@1794947465.41860617
+scheduler_pod_scheduling_sli_duration_seconds{attempts="2"} {count:3,sum:77.689874367,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[38:1],positive_buckets:[3],bucket:[0.01:0,0.02:0,0.04:0,0.08:0,0.16:0,0.32:0,0.64:0,1.28:0,2.56:0,5.12:0,10.24:0,20.48:0,40.96:3,81.92:3,163.84:3,327.68:3,655.36:3,1310.72:3,2621.44:3,5242.88:3,+Inf:3]} st@1794947491.396049691
+# HELP scheduler_preemption_attempts_total [STABLE] Total preemption attempts in the cluster till now
+# TYPE scheduler_preemption_attempts_total counter
+scheduler_preemption_attempts_total 3.0 st@1794947453.06162681
+# HELP scheduler_preemption_evaluation_duration_seconds [ALPHA] Duration in seconds for identifying the target preemption victims.
+# TYPE scheduler_preemption_evaluation_duration_seconds histogram
+scheduler_preemption_evaluation_duration_seconds{operation="initial_placement",preemptor="pod",result="Unschedulable"} {count:3,sum:6.6437e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-130:2,12:1],positive_buckets:[1,1,1],bucket:[0.001:3,0.002:3,0.004:3,0.008:3,0.016:3,0.032:3,0.064:3,0.128:3,0.256:3,0.512:3,1.024:3,2.048:3,4.096:3,8.192:3,16.384:3,32.768:3,+Inf:3]} st@1794947465.49573834
+# HELP scheduler_preemption_victims [STABLE] Number of selected preemption victims for preemption initiated by a single pod
+# TYPE scheduler_preemption_victims histogram
+scheduler_preemption_victims {count:0,sum:0,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,bucket:[1:0,2:0,4:0,8:0,16:0,32:0,64:0,+Inf:0]} st@1794947453.061613523
+# HELP scheduler_queue_incoming_entities_total [ALPHA] Number of scheduling entities added to scheduling queues by event, queue type, and entity type. Entity types are 'pod' (for individual pods that are not members of any podgroup), 'podgroup', or 'compositepodgroup'.
+# TYPE scheduler_queue_incoming_entities_total counter
+scheduler_queue_incoming_entities_total{entity="pod",event="NodeUpdateNodeTaint",queue="active"} 3.0 st@1794947491.361066654
+scheduler_queue_incoming_entities_total{entity="pod",event="UnscheduledPodAdd",queue="active"} 9.0 st@1794947465.405919425
+# HELP scheduler_queue_incoming_pods_total [STABLE] Number of pods added to scheduling queues by event and queue type.
+# TYPE scheduler_queue_incoming_pods_total counter
+scheduler_queue_incoming_pods_total{event="NodeUpdateNodeTaint",queue="active"} 3.0 st@1794947491.361059676
+scheduler_queue_incoming_pods_total{event="ScheduleAttemptFailure",queue="unschedulable"} 3.0 st@1794947465.495956425
+scheduler_queue_incoming_pods_total{event="UnscheduledPodAdd",queue="active"} 9.0 st@1794947465.40591425
+# HELP scheduler_queued_entities [ALPHA] Number of queued scheduling entities ('pod', 'podgroup', or 'compositepodgroup'; 'pod' stands for individual pods that are not members of any podgroup) by the queue type and operation ('initial_placement' or 'pod_resize'). 'active' means number of entities in activeQ; 'backoff' means number of entities in backoffQ; 'unschedulable' means number of entities in unschedulableEntities that the scheduler attempted to schedule and failed; 'gated' is the number of unschedulable entities that the scheduler never attempted to schedule because they are gated.
+# TYPE scheduler_queued_entities gauge
+scheduler_queued_entities{entity="pod",operation="initial_placement",queue="active"} 0.0
+scheduler_queued_entities{entity="pod",operation="initial_placement",queue="unschedulable"} 0.0
+# HELP scheduler_queueing_hint_execution_duration_seconds [ALPHA] Duration for running a queueing hint function of a plugin.
+# TYPE scheduler_queueing_hint_execution_duration_seconds histogram
+scheduler_queueing_hint_execution_duration_seconds{event="NodeUpdateNodeTaint",hint="Queue",plugin="TaintToleration"} {count:3,sum:0.004460236,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-130:1,12:1,54:1],positive_buckets:[1,1,1],bucket:[1e-05:0,1.5000000000000002e-05:1,2.2500000000000005e-05:1,3.375000000000001e-05:1,5.062500000000001e-05:2,7.593750000000002e-05:2,0.00011390625000000003:2,0.00017085937500000006:2,0.0002562890625000001:2,0.00038443359375000017:2,0.0005766503906250003:2,0.0008649755859375004:2,0.0012974633789062506:2,0.0019461950683593758:2,0.0029192926025390638:2,0.004378938903808595:2,0.006568408355712893:3,0.009852612533569338:3,0.014778918800354007:3,0.02216837820053101:3,+Inf:3]} st@1794947492.098914808
+# HELP scheduler_resize_preemption_attempts_total [ALPHA] Total preemption attempts initiated by deferred resize pods in the cluster till now
+# TYPE scheduler_resize_preemption_attempts_total counter
+scheduler_resize_preemption_attempts_total 0.0 st@1794947453.062200686
+# HELP scheduler_resize_preemption_victims [ALPHA] Number of selected preemption victims for preemption initiated by a deferred resize pod
+# TYPE scheduler_resize_preemption_victims histogram
+scheduler_resize_preemption_victims {count:0,sum:0,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,bucket:[1:0,2:0,4:0,8:0,16:0,32:0,64:0,+Inf:0]} st@1794947453.062214001
+# HELP scheduler_resize_scheduling_algorithm_duration_seconds [ALPHA] Resize scheduling algorithm latency in seconds
+# TYPE scheduler_resize_scheduling_algorithm_duration_seconds histogram
+scheduler_resize_scheduling_algorithm_duration_seconds {count:0,sum:0,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,bucket:[0.001:0,0.002:0,0.004:0,0.008:0,0.016:0,0.032:0,0.064:0,0.128:0,0.256:0,0.512:0,1.024:0,2.048:0,4.096:0,8.192:0,16.384:0,+Inf:0]} st@1794947453.062184487
+# HELP scheduler_schedule_attempts_total [STABLE] Number of attempts to schedule pods, by the result and scheduler profile. 'unschedulable' means a pod could not be scheduled, while 'error' means an internal scheduler problem.
+# TYPE scheduler_schedule_attempts_total counter
+scheduler_schedule_attempts_total{profile="default-scheduler",result="scheduled"} 9.0 st@1794947465.41860119
+scheduler_schedule_attempts_total{profile="default-scheduler",result="unschedulable"} 3.0 st@1794947465.49580236
+# HELP scheduler_scheduling_algorithm_duration_seconds [BETA] Scheduling algorithm latency in seconds
+# TYPE scheduler_scheduling_algorithm_duration_seconds histogram
+scheduler_scheduling_algorithm_duration_seconds {count:12,sum:0.021256349000000008,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-102:13,3:1,39:1],positive_buckets:[1,0,3,0,0,1,0,0,1,1,0,1,2,1,1],bucket:[0.001:11,0.002:11,0.004:11,0.008:11,0.016:11,0.032:12,0.064:12,0.128:12,0.256:12,0.512:12,1.024:12,2.048:12,4.096:12,8.192:12,16.384:12,+Inf:12]} st@1794947453.061593327
+# HELP scheduler_scheduling_attempt_duration_seconds [STABLE] Scheduling attempt latency in seconds (scheduling algorithm + binding), by scheduler profile.
+# TYPE scheduler_scheduling_attempt_duration_seconds histogram
+scheduler_scheduling_attempt_duration_seconds{profile="default-scheduler",result="scheduled"} {count:9,sum:0.16341259400000002,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-52:11,3:1],positive_buckets:[1,0,2,2,0,0,1,0,1,0,1,1],bucket:[0.001:0,0.002:0,0.004:0,0.008:0,0.016:5,0.032:8,0.064:9,0.128:9,0.256:9,0.512:9,1.024:9,2.048:9,4.096:9,8.192:9,16.384:9,+Inf:9]} st@1794947465.418588194
+scheduler_scheduling_attempt_duration_seconds{profile="default-scheduler",result="unschedulable"} {count:3,sum:0.000709974,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-98:1,5:1],positive_buckets:[2,1],bucket:[0.001:3,0.002:3,0.004:3,0.008:3,0.016:3,0.032:3,0.064:3,0.128:3,0.256:3,0.512:3,1.024:3,2.048:3,4.096:3,8.192:3,16.384:3,+Inf:3]} st@1794947465.495793886
+# HELP scheduler_store_schedule_results_duration_seconds [ALPHA] Latency for storing scheduling results for opportunistic batching, by scheduler profile.
+# TYPE scheduler_store_schedule_results_duration_seconds histogram
+scheduler_store_schedule_results_duration_seconds{profile="default-scheduler"} {count:9,sum:4.980999999999999e-05,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-148:5,5:1,4:1,4:1],positive_buckets:[1,0,1,2,2,1,1,1],bucket:[1e-05:8,2e-05:9,4e-05:9,8e-05:9,0.00016:9,0.00032:9,0.00064:9,0.00128:9,0.00256:9,0.00512:9,0.01024:9,0.02048:9,+Inf:9]} st@1794947465.40656854
+# HELP scheduler_store_schedule_results_total [ALPHA] Counts of the outcomes of storing scheduling results for batching, by scheduler profile. 'stored' means the pod seeded a batch, 'pod_not_batchable' means the pod has no signature, and 'empty_list' means no other feasible nodes were left to cache. Pods that used the hinted node store nothing.
+# TYPE scheduler_store_schedule_results_total counter
+scheduler_store_schedule_results_total{profile="default-scheduler",result="pod_not_batchable"} 9.0 st@1794947465.406563726
+# HELP scheduler_unschedulable_pods [BETA] The number of unschedulable pods broken down by plugin name and scheduler profile. A pod will increment the gauge for all plugins that caused it to not schedule and so this metric has meaning only when broken down by plugin.
+# TYPE scheduler_unschedulable_pods gauge
+scheduler_unschedulable_pods{plugin="TaintToleration",profile="default-scheduler"} 0.0
+# HELP version_info [ALPHA] Provides the compatibility version info of the component. The component label is the name of the component, usually kube, but is relevant for aggregated-apiservers.
+# TYPE version_info gauge
+version_info{binary="1.38",component="kube",emulation="1.38",min_compat="1.37"} 1.0
+# HELP workqueue_adds_total [BETA] Total number of adds handled by workqueue
+# TYPE workqueue_adds_total counter
+workqueue_adds_total{name="DynamicConfigMapCABundle-client-ca"} 44.0 st@1794947453.056812778
+workqueue_adds_total{name="DynamicServingCertificateController"} 44.0 st@1794947453.081022315
+workqueue_adds_total{name="RequestHeaderAuthRequestController"} 0.0 st@1794947453.056911354
+# HELP workqueue_depth [BETA] Current depth of workqueue
+# TYPE workqueue_depth gauge
+workqueue_depth{name="DynamicConfigMapCABundle-client-ca"} 0.0
+workqueue_depth{name="DynamicServingCertificateController"} 0.0
+workqueue_depth{name="RequestHeaderAuthRequestController"} 0.0
+# HELP workqueue_longest_running_processor_seconds [BETA] How many seconds has the longest running processor for workqueue been running.
+# TYPE workqueue_longest_running_processor_seconds gauge
+workqueue_longest_running_processor_seconds{name="DynamicConfigMapCABundle-client-ca"} 0.0
+workqueue_longest_running_processor_seconds{name="DynamicServingCertificateController"} 0.0
+workqueue_longest_running_processor_seconds{name="RequestHeaderAuthRequestController"} 0.0
+# HELP workqueue_queue_duration_seconds [BETA] How long in seconds an item stays in workqueue before being requested.
+# TYPE workqueue_queue_duration_seconds histogram
+workqueue_queue_duration_seconds{name="DynamicConfigMapCABundle-client-ca"} {count:44,sum:0.09196554200000003,bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:42,0.001:43,0.01:43,0.1:44,1:44,10:44,+Inf:44]} st@1794947453.056816271
+workqueue_queue_duration_seconds{name="DynamicServingCertificateController"} {count:44,sum:0.0018254650000000003,bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:42,0.001:44,0.01:44,0.1:44,1:44,10:44,+Inf:44]} st@1794947453.081025786
+workqueue_queue_duration_seconds{name="RequestHeaderAuthRequestController"} {count:0,sum:0,bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:0,0.001:0,0.01:0,0.1:0,1:0,10:0,+Inf:0]} st@1794947453.056912771
+# HELP workqueue_retries_total [BETA] Total number of retries handled by workqueue
+# TYPE workqueue_retries_total counter
+workqueue_retries_total{name="DynamicConfigMapCABundle-client-ca"} 0.0 st@1794947453.056843353
+workqueue_retries_total{name="DynamicServingCertificateController"} 0.0 st@1794947453.081094657
+workqueue_retries_total{name="RequestHeaderAuthRequestController"} 0.0 st@1794947453.056923823
+# HELP workqueue_unfinished_work_seconds [BETA] How many seconds of work has done that is in progress and hasn't been observed by work_duration. Large values indicate stuck threads. One can deduce the number of stuck threads by observing the rate at which this increases.
+# TYPE workqueue_unfinished_work_seconds gauge
+workqueue_unfinished_work_seconds{name="DynamicConfigMapCABundle-client-ca"} 0.0
+workqueue_unfinished_work_seconds{name="DynamicServingCertificateController"} 0.0
+workqueue_unfinished_work_seconds{name="RequestHeaderAuthRequestController"} 0.0
+# HELP workqueue_work_duration_seconds [BETA] How long in seconds processing an item from workqueue takes.
+# TYPE workqueue_work_duration_seconds histogram
+workqueue_work_duration_seconds{name="DynamicConfigMapCABundle-client-ca"} {count:44,sum:0.003743204,bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:1,9.999999999999999e-05:42,0.001:43,0.01:44,0.1:44,1:44,10:44,+Inf:44]} st@1794947453.056822225
+workqueue_work_duration_seconds{name="DynamicServingCertificateController"} {count:44,sum:0.0030372219999999996,bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:42,0.001:43,0.01:44,0.1:44,1:44,10:44,+Inf:44]} st@1794947453.081032533
+workqueue_work_duration_seconds{name="RequestHeaderAuthRequestController"} {count:0,sum:0,bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:0,0.001:0,0.01:0,0.1:0,1:0,10:0,+Inf:0]} st@1794947453.056915048
+# EOF

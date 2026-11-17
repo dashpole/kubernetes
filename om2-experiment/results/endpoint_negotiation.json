@@ -1,0 +1,458 @@
+{
+  "apiserver_metrics": {
+    "om100": {
+      "bytes": 4768391,
+      "content_type": "application/openmetrics-text; version=1.0.0; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 34988,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 303,
+      "unit_lines": 108
+    },
+    "om2rc": {
+      "bytes": 1089948,
+      "content_type": "application/openmetrics-text; version=2.0.0-rc; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 5445,
+      "native_hist_composite_lines": 1408,
+      "st_lines": 3498,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 202,
+      "type_lines": 303,
+      "unit_lines": 108
+    },
+    "prom004": {
+      "bytes": 4734210,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 34879,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 303,
+      "unit_lines": 0
+    }
+  },
+  "apiserver_slis": {
+    "om100": {
+      "bytes": 24724,
+      "content_type": "application/openmetrics-text; version=1.0.0; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 238,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 3,
+      "unit_lines": 0
+    },
+    "om2rc": {
+      "bytes": 27672,
+      "content_type": "application/openmetrics-text; version=2.0.0-rc; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 238,
+      "native_hist_composite_lines": 0,
+      "st_lines": 123,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 3,
+      "unit_lines": 0
+    },
+    "prom004": {
+      "bytes": 24270,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 237,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 3,
+      "unit_lines": 0
+    }
+  },
+  "controller_manager_metrics": {
+    "om100": {
+      "bytes": 440026,
+      "content_type": "application/openmetrics-text; version=1.0.0; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 4551,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 235,
+      "unit_lines": 108
+    },
+    "om2rc": {
+      "bytes": 200779,
+      "content_type": "application/openmetrics-text; version=2.0.0-rc; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 1676,
+      "native_hist_composite_lines": 71,
+      "st_lines": 457,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 155,
+      "type_lines": 235,
+      "unit_lines": 108
+    },
+    "prom004": {
+      "bytes": 432307,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 4442,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 235,
+      "unit_lines": 0
+    }
+  },
+  "kube_proxy_metrics": {
+    "om100": {
+      "bytes": 113449,
+      "content_type": "application/openmetrics-text; version=1.0.0; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 1267,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/1.1 200 OK",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 180,
+      "unit_lines": 108
+    },
+    "om2rc": {
+      "bytes": 93075,
+      "content_type": "application/openmetrics-text; version=2.0.0-rc; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 916,
+      "native_hist_composite_lines": 13,
+      "st_lines": 97,
+      "status": "HTTP/1.1 200 OK",
+      "summary_or_other_composite_lines": 9,
+      "type_lines": 180,
+      "unit_lines": 108
+    },
+    "prom004": {
+      "bytes": 107529,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 1158,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/1.1 200 OK",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 180,
+      "unit_lines": 0
+    }
+  },
+  "kube_state_metrics": {
+    "om100": {
+      "bytes": 153929,
+      "content_type": "application/openmetrics-text; version=1.0.0; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 1164,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 157,
+      "unit_lines": 0
+    },
+    "om2rc": {
+      "bytes": 153923,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8",
+      "has_eof": false,
+      "lines": 1163,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 157,
+      "unit_lines": 0
+    },
+    "prom004": {
+      "bytes": 153923,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8",
+      "has_eof": false,
+      "lines": 1163,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 157,
+      "unit_lines": 0
+    }
+  },
+  "kubelet_cadvisor": {
+    "om100": {
+      "bytes": 1207387,
+      "content_type": "application/openmetrics-text; version=1.0.0; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 3392,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 89,
+      "unit_lines": 0
+    },
+    "om2rc": {
+      "bytes": 1196379,
+      "content_type": "application/openmetrics-text; version=2.0.0-rc; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 3392,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 89,
+      "unit_lines": 0
+    },
+    "prom004": {
+      "bytes": 1189730,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 3391,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 89,
+      "unit_lines": 0
+    }
+  },
+  "kubelet_metrics": {
+    "om100": {
+      "bytes": 262976,
+      "content_type": "application/openmetrics-text; version=1.0.0; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 2744,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 266,
+      "unit_lines": 108
+    },
+    "om2rc": {
+      "bytes": 158557,
+      "content_type": "application/openmetrics-text; version=2.0.0-rc; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 1332,
+      "native_hist_composite_lines": 91,
+      "st_lines": 270,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 9,
+      "type_lines": 266,
+      "unit_lines": 108
+    },
+    "prom004": {
+      "bytes": 256338,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 2635,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 266,
+      "unit_lines": 0
+    }
+  },
+  "kubelet_probes": {
+    "om100": {
+      "bytes": 57639,
+      "content_type": "application/openmetrics-text; version=1.0.0; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 346,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 4,
+      "unit_lines": 0
+    },
+    "om2rc": {
+      "bytes": 17000,
+      "content_type": "application/openmetrics-text; version=2.0.0-rc; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 60,
+      "native_hist_composite_lines": 22,
+      "st_lines": 49,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 4,
+      "unit_lines": 0
+    },
+    "prom004": {
+      "bytes": 57457,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 345,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 4,
+      "unit_lines": 0
+    }
+  },
+  "kubelet_resource": {
+    "om100": {
+      "bytes": 16515,
+      "content_type": "application/openmetrics-text; version=1.0.0; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 136,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 13,
+      "unit_lines": 0
+    },
+    "om2rc": {
+      "bytes": 16175,
+      "content_type": "application/openmetrics-text; version=2.0.0-rc; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 136,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 13,
+      "unit_lines": 0
+    },
+    "prom004": {
+      "bytes": 16012,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 135,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 13,
+      "unit_lines": 0
+    }
+  },
+  "node_exporter_metrics": {
+    "om100": {
+      "bytes": 116180,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 1922,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 293,
+      "unit_lines": 0
+    },
+    "om2rc": {
+      "bytes": 116167,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 1922,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 293,
+      "unit_lines": 0
+    },
+    "prom004": {
+      "bytes": 116165,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 1922,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 293,
+      "unit_lines": 0
+    }
+  },
+  "scheduler_metrics": {
+    "om100": {
+      "bytes": 370782,
+      "content_type": "application/openmetrics-text; version=1.0.0; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 3330,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 220,
+      "unit_lines": 108
+    },
+    "om2rc": {
+      "bytes": 170333,
+      "content_type": "application/openmetrics-text; version=2.0.0-rc; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 1233,
+      "native_hist_composite_lines": 95,
+      "st_lines": 288,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 36,
+      "type_lines": 220,
+      "unit_lines": 108
+    },
+    "prom004": {
+      "bytes": 364547,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 3221,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 220,
+      "unit_lines": 0
+    }
+  },
+  "scheduler_resources": {
+    "om100": {
+      "bytes": 3746,
+      "content_type": "application/openmetrics-text; version=1.0.0; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 20,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 2,
+      "unit_lines": 0
+    },
+    "om2rc": {
+      "bytes": 3746,
+      "content_type": "application/openmetrics-text; version=2.0.0-rc; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": true,
+      "lines": 20,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 2,
+      "unit_lines": 0
+    },
+    "prom004": {
+      "bytes": 3740,
+      "content_type": "text/plain; version=0.0.4; charset=utf-8; escaping=allow-utf-8",
+      "has_eof": false,
+      "lines": 19,
+      "native_hist_composite_lines": 0,
+      "st_lines": 0,
+      "status": "HTTP/2 200",
+      "summary_or_other_composite_lines": 0,
+      "type_lines": 2,
+      "unit_lines": 0
+    }
+  }
+}

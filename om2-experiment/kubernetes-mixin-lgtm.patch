@@ -1,0 +1,29 @@
+diff --git a/scripts/lgtm.sh b/scripts/lgtm.sh
+index fb1e799..b430f70 100755
+--- a/scripts/lgtm.sh
++++ b/scripts/lgtm.sh
+@@ -26,13 +26,22 @@ kind: Cluster
+ apiVersion: kind.x-k8s.io/v1alpha4
+ nodes:
+   - role: control-plane
++    image: kindest/node:om2-test
+     kubeadmConfigPatches:
+       - |
+         kind: ClusterConfiguration
+         scheduler:
+           extraArgs:
+-            authorization-always-allow-paths: "/metrics,/metrics/resources"
+-            bind-address: "0.0.0.0"
++            - name: authorization-always-allow-paths
++              value: "/metrics,/metrics/resources"
++            - name: bind-address
++              value: "0.0.0.0"
++        controllerManager:
++          extraArgs:
++            - name: authorization-always-allow-paths
++              value: "/metrics"
++            - name: bind-address
++              value: "0.0.0.0"
+     extraMounts:
+     - hostPath: "$PWD/provisioning"
+       containerPath: /kubernetes-mixin/provisioning

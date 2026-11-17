@@ -1,0 +1,1332 @@
+# HELP apiserver_audit_event_total [ALPHA] Counter of audit events generated and sent to the audit backend.
+# TYPE apiserver_audit_event_total counter
+apiserver_audit_event_total 0.0 st@1794947459.479211151
+# HELP apiserver_audit_requests_rejected_total [ALPHA] Counter of apiserver requests rejected due to an error in audit logging backend.
+# TYPE apiserver_audit_requests_rejected_total counter
+apiserver_audit_requests_rejected_total 0.0 st@1794947459.479462911
+# HELP apiserver_client_certificate_expiration_seconds [ALPHA] Distribution of the remaining lifetime on the certificate used to authenticate a request.
+# TYPE apiserver_client_certificate_expiration_seconds histogram
+apiserver_client_certificate_expiration_seconds {count:2012,sum:6.344771680457576e+10,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[200:1],positive_buckets:[2012],bucket:[0:0,1800:0,3600:0,7200:0,21600:0,43200:0,86400:0,172800:0,345600:0,604800:0,2.592e+06:0,7.776e+06:0,1.5552e+07:0,3.1104e+07:0,+Inf:2012]} st@1794947459.527729879
+# HELP apiserver_delegated_authz_request_duration_seconds [ALPHA] Request latency in seconds. Broken down by status code.
+# TYPE apiserver_delegated_authz_request_duration_seconds histogram
+apiserver_delegated_authz_request_duration_seconds{code="201"} {count:16,sum:0.065710953,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-70:13],positive_buckets:[1,1,0,0,1,2,4,2,1,0,1,1,2],bucket:[0.25:16,0.5:16,0.7:16,1:16,1.5:16,3:16,5:16,10:16,+Inf:16]} st@1794947585.075417787
+# HELP apiserver_delegated_authz_request_total [ALPHA] Number of HTTP requests partitioned by status code.
+# TYPE apiserver_delegated_authz_request_total counter
+apiserver_delegated_authz_request_total{code="201"} 16.0 st@1794947585.075409793
+# HELP apiserver_validation_declarative_validation_mismatch_total [BETA] Number of times declarative validation results differed from handwritten validation results for core types.
+# TYPE apiserver_validation_declarative_validation_mismatch_total counter
+apiserver_validation_declarative_validation_mismatch_total 0.0 st@1794947459.480313085
+# HELP apiserver_validation_declarative_validation_panic_total [BETA] Number of times declarative validation has panicked during validation.
+# TYPE apiserver_validation_declarative_validation_panic_total counter
+apiserver_validation_declarative_validation_panic_total 0.0 st@1794947459.48050532
+# HELP apiserver_validation_duplicate_validation_error_total [INTERNAL] Number of duplicate validation errors during validation.
+# TYPE apiserver_validation_duplicate_validation_error_total counter
+apiserver_validation_duplicate_validation_error_total 0.0 st@1794947459.480601245
+# HELP apiserver_webhooks_x509_insecure_sha1_total [BETA] Counts the number of requests to servers with insecure SHA1 signatures in their serving certificate OR the number of connection failures due to the insecure SHA1 signatures (either/or, based on the runtime environment)
+# TYPE apiserver_webhooks_x509_insecure_sha1_total counter
+apiserver_webhooks_x509_insecure_sha1_total 0.0 st@1794947459.494343334
+# HELP apiserver_webhooks_x509_missing_san_total [BETA] Counts the number of requests to servers missing SAN extension in their serving certificate OR the number of connection failures due to the lack of x509 certificate SAN extension missing (either/or, based on the runtime environment)
+# TYPE apiserver_webhooks_x509_missing_san_total counter
+apiserver_webhooks_x509_missing_san_total 0.0 st@1794947459.494293114
+# HELP cardinality_enforcement_unexpected_categorizations_total [ALPHA] The count of unexpected categorizations during cardinality enforcement.
+# TYPE cardinality_enforcement_unexpected_categorizations_total counter
+cardinality_enforcement_unexpected_categorizations_total 0.0 st@1794947459.479015479
+# HELP disabled_metrics_total [BETA] The count of disabled metrics.
+# TYPE disabled_metrics_total counter
+disabled_metrics_total 0.0 st@1794947459.47884482
+# HELP dra_operations_duration_seconds [ALPHA] Latency histogram in seconds for the duration of handling all ResourceClaims referenced by a pod when the pod starts or stops. Identified by the name of the operation (PrepareResources or UnprepareResources) and separated by the success of the operation. The number of failed operations is provided through the histogram's overall count.
+# TYPE dra_operations_duration_seconds histogram
+dra_operations_duration_seconds{is_error="false",operation_name="PrepareResources"} {count:9,sum:0.053083413999999995,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-64:13],positive_buckets:[1,2,1,0,0,2,1,0,0,1,0,0,1],bucket:[0.1:9,0.1534127404634391:9,0.23535468936502524:9,0.36106407876409946:9,0.5539182980610752:9,0.849781240983936:9,1.303672689737678:9,1.9999999999999993:9,3.0682548092687805:9,4.7070937873005025:9,7.221281575281985:9,11.078365961221499:9,16.995624819678714:9,26.07345379475354:9,39.99999999999997:9,+Inf:9]} st@1794947465.865535573
+# HELP dra_resource_claims_in_use [ALPHA] The number of ResourceClaims that are currently in use on the node, by driver name (driver_name label value) and across all drivers (special value <any> for driver_name). Note that the sum of all by-driver counts is not the total number of in-use ResourceClaims because the same ResourceClaim might use devices from different drivers. Instead, use the count for the <any> driver_name.
+# TYPE dra_resource_claims_in_use gauge
+dra_resource_claims_in_use{driver_name="<any>"} 0.0
+# HELP force_cleaned_failed_volume_operation_errors_total [ALPHA] The number of volumes that failed force cleanup after their reconstruction failed during kubelet startup.
+# TYPE force_cleaned_failed_volume_operation_errors_total counter
+force_cleaned_failed_volume_operation_errors_total 0.0 st@1794947459.614844085
+# HELP force_cleaned_failed_volume_operations_total [ALPHA] The number of volumes that were force cleaned after their reconstruction failed during kubelet startup. This includes both successful and failed cleanups.
+# TYPE force_cleaned_failed_volume_operations_total counter
+force_cleaned_failed_volume_operations_total 0.0 st@1794947459.614836
+# HELP go_cgo_go_to_c_calls_calls_total Count of calls made from Go to C by the current process. Sourced from /cgo/go-to-c-calls:calls.
+# TYPE go_cgo_go_to_c_calls_calls_total counter
+# UNIT go_cgo_go_to_c_calls_calls_total calls
+go_cgo_go_to_c_calls_calls_total 0.0 st@1794947459.477060414
+# HELP go_cpu_classes_gc_mark_assist_cpu_seconds_total Estimated total CPU time goroutines spent performing GC tasks to assist the GC and prevent it from falling behind the application. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/gc/mark/assist:cpu-seconds.
+# TYPE go_cpu_classes_gc_mark_assist_cpu_seconds_total counter
+# UNIT go_cpu_classes_gc_mark_assist_cpu_seconds_total cpu_seconds
+go_cpu_classes_gc_mark_assist_cpu_seconds_total 0.264991012 st@1794947459.477069272
+# HELP go_cpu_classes_gc_mark_dedicated_cpu_seconds_total Estimated total CPU time spent performing GC tasks on processors (as defined by GOMAXPROCS) dedicated to those tasks. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/gc/mark/dedicated:cpu-seconds.
+# TYPE go_cpu_classes_gc_mark_dedicated_cpu_seconds_total counter
+# UNIT go_cpu_classes_gc_mark_dedicated_cpu_seconds_total cpu_seconds
+go_cpu_classes_gc_mark_dedicated_cpu_seconds_total 21.456934558 st@1794947459.477075838
+# HELP go_cpu_classes_gc_mark_idle_cpu_seconds_total Estimated total CPU time spent performing GC tasks on spare CPU resources that the Go scheduler could not otherwise find a use for. This should be subtracted from the total GC CPU time to obtain a measure of compulsory GC CPU time. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/gc/mark/idle:cpu-seconds.
+# TYPE go_cpu_classes_gc_mark_idle_cpu_seconds_total counter
+# UNIT go_cpu_classes_gc_mark_idle_cpu_seconds_total cpu_seconds
+go_cpu_classes_gc_mark_idle_cpu_seconds_total 7.408978787 st@1794947459.47708237
+# HELP go_cpu_classes_gc_pause_cpu_seconds_total Estimated total CPU time spent with the application paused by the GC. Even if only one thread is running during the pause, this is computed as GOMAXPROCS times the pause latency because nothing else can be executing. This is the exact sum of samples in /sched/pauses/total/gc:seconds if each sample is multiplied by GOMAXPROCS at the time it is taken. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/gc/pause:cpu-seconds.
+# TYPE go_cpu_classes_gc_pause_cpu_seconds_total counter
+# UNIT go_cpu_classes_gc_pause_cpu_seconds_total cpu_seconds
+go_cpu_classes_gc_pause_cpu_seconds_total 6.45267198 st@1794947459.477087422
+# HELP go_cpu_classes_gc_total_cpu_seconds_total Estimated total CPU time spent performing GC tasks. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sum of all metrics in /cpu/classes/gc. Sourced from /cpu/classes/gc/total:cpu-seconds.
+# TYPE go_cpu_classes_gc_total_cpu_seconds_total counter
+# UNIT go_cpu_classes_gc_total_cpu_seconds_total cpu_seconds
+go_cpu_classes_gc_total_cpu_seconds_total 35.583576337 st@1794947459.477091872
+# HELP go_cpu_classes_idle_cpu_seconds_total Estimated total available CPU time not spent executing any Go or Go runtime code. In other words, the part of /cpu/classes/total:cpu-seconds that was unused. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/idle:cpu-seconds.
+# TYPE go_cpu_classes_idle_cpu_seconds_total counter
+# UNIT go_cpu_classes_idle_cpu_seconds_total cpu_seconds
+go_cpu_classes_idle_cpu_seconds_total 60995.413254516 st@1794947459.477096254
+# HELP go_cpu_classes_scavenge_assist_cpu_seconds_total Estimated total CPU time spent returning unused memory to the underlying platform in response eagerly to memory pressure. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/scavenge/assist:cpu-seconds.
+# TYPE go_cpu_classes_scavenge_assist_cpu_seconds_total counter
+# UNIT go_cpu_classes_scavenge_assist_cpu_seconds_total cpu_seconds
+go_cpu_classes_scavenge_assist_cpu_seconds_total 1.358e-06 st@1794947459.47710111
+# HELP go_cpu_classes_scavenge_background_cpu_seconds_total Estimated total CPU time spent performing background tasks to return unused memory to the underlying platform. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/scavenge/background:cpu-seconds.
+# TYPE go_cpu_classes_scavenge_background_cpu_seconds_total counter
+# UNIT go_cpu_classes_scavenge_background_cpu_seconds_total cpu_seconds
+go_cpu_classes_scavenge_background_cpu_seconds_total 0.84568417 st@1794947459.477105318
+# HELP go_cpu_classes_scavenge_total_cpu_seconds_total Estimated total CPU time spent performing tasks that return unused memory to the underlying platform. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sum of all metrics in /cpu/classes/scavenge. Sourced from /cpu/classes/scavenge/total:cpu-seconds.
+# TYPE go_cpu_classes_scavenge_total_cpu_seconds_total counter
+# UNIT go_cpu_classes_scavenge_total_cpu_seconds_total cpu_seconds
+go_cpu_classes_scavenge_total_cpu_seconds_total 0.845685528 st@1794947459.47710931
+# HELP go_cpu_classes_total_cpu_seconds_total Estimated total available CPU time for user Go code or the Go runtime, as defined by GOMAXPROCS. In other words, GOMAXPROCS integrated over the wall-clock duration this process has been executing for. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sum of all metrics in /cpu/classes. Sourced from /cpu/classes/total:cpu-seconds.
+# TYPE go_cpu_classes_total_cpu_seconds_total counter
+# UNIT go_cpu_classes_total_cpu_seconds_total cpu_seconds
+go_cpu_classes_total_cpu_seconds_total 61278.903403992 st@1794947459.477113042
+# HELP go_cpu_classes_user_cpu_seconds_total Estimated total CPU time spent running user Go code. This may also include some small amount of time spent in the Go runtime. This metric is an overestimate, and not directly comparable to system CPU time measurements. Compare only with other /cpu/classes metrics. Sourced from /cpu/classes/user:cpu-seconds.
+# TYPE go_cpu_classes_user_cpu_seconds_total counter
+# UNIT go_cpu_classes_user_cpu_seconds_total cpu_seconds
+go_cpu_classes_user_cpu_seconds_total 247.060887611 st@1794947459.477116772
+# HELP go_gc_cleanups_executed_cleanups_total Approximate total count of cleanup functions (created by runtime.AddCleanup) executed by the runtime. Subtract /gc/cleanups/queued:cleanups to approximate cleanup queue length. Useful for detecting slow cleanups holding up the queue. Sourced from /gc/cleanups/executed:cleanups.
+# TYPE go_gc_cleanups_executed_cleanups_total counter
+# UNIT go_gc_cleanups_executed_cleanups_total cleanups
+go_gc_cleanups_executed_cleanups_total 55.0 st@1794947459.477120494
+# HELP go_gc_cleanups_queued_cleanups_total Approximate total count of cleanup functions (created by runtime.AddCleanup) queued by the runtime for execution. Subtract from /gc/cleanups/executed:cleanups to approximate cleanup queue length. Useful for detecting slow cleanups holding up the queue. Sourced from /gc/cleanups/queued:cleanups.
+# TYPE go_gc_cleanups_queued_cleanups_total counter
+# UNIT go_gc_cleanups_queued_cleanups_total cleanups
+go_gc_cleanups_queued_cleanups_total 55.0 st@1794947459.477124142
+# HELP go_gc_cycles_automatic_gc_cycles_total Count of completed GC cycles generated by the Go runtime. Sourced from /gc/cycles/automatic:gc-cycles.
+# TYPE go_gc_cycles_automatic_gc_cycles_total counter
+# UNIT go_gc_cycles_automatic_gc_cycles_total gc_cycles
+go_gc_cycles_automatic_gc_cycles_total 623.0 st@1794947459.477129266
+# HELP go_gc_cycles_forced_gc_cycles_total Count of completed GC cycles forced by the application. Sourced from /gc/cycles/forced:gc-cycles.
+# TYPE go_gc_cycles_forced_gc_cycles_total counter
+# UNIT go_gc_cycles_forced_gc_cycles_total gc_cycles
+go_gc_cycles_forced_gc_cycles_total 0.0 st@1794947459.477133266
+# HELP go_gc_cycles_total_gc_cycles_total Count of all completed GC cycles. Sourced from /gc/cycles/total:gc-cycles.
+# TYPE go_gc_cycles_total_gc_cycles_total counter
+# UNIT go_gc_cycles_total_gc_cycles_total gc_cycles
+go_gc_cycles_total_gc_cycles_total 623.0 st@1794947459.477137633
+# HELP go_gc_duration_seconds A summary of the wall-time pause (stop-the-world) duration in garbage collection cycles.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds {count:623,sum:0.655640086,quantile:[0:0.000188159,0.25:0.000342154,0.5:0.000528739,0.75:0.000909857,1:0.046123637]}
+# HELP go_gc_finalizers_executed_finalizers_total Total count of finalizer functions (created by runtime.SetFinalizer) executed by the runtime. Subtract /gc/finalizers/queued:finalizers to approximate finalizer queue length. Useful for detecting finalizers overwhelming the queue, either by being too slow, or by there being too many of them. Sourced from /gc/finalizers/executed:finalizers.
+# TYPE go_gc_finalizers_executed_finalizers_total counter
+# UNIT go_gc_finalizers_executed_finalizers_total finalizers
+go_gc_finalizers_executed_finalizers_total 3.0 st@1794947459.477141406
+# HELP go_gc_finalizers_queued_finalizers_total Total count of finalizer functions (created by runtime.SetFinalizer) and queued by the runtime for execution. Subtract from /gc/finalizers/executed:finalizers to approximate finalizer queue length. Useful for detecting slow finalizers holding up the queue. Sourced from /gc/finalizers/queued:finalizers.
+# TYPE go_gc_finalizers_queued_finalizers_total counter
+# UNIT go_gc_finalizers_queued_finalizers_total finalizers
+go_gc_finalizers_queued_finalizers_total 3.0 st@1794947459.477145033
+# HELP go_gc_gogc_percent Heap size target percentage configured by the user, otherwise 100. This value is set by the GOGC environment variable, and the runtime/debug.SetGCPercent function. Sourced from /gc/gogc:percent.
+# TYPE go_gc_gogc_percent gauge
+# UNIT go_gc_gogc_percent percent
+go_gc_gogc_percent 100.0
+# HELP go_gc_gomemlimit_bytes Go runtime memory limit configured by the user, otherwise math.MaxInt64. This value is set by the GOMEMLIMIT environment variable, and the runtime/debug.SetMemoryLimit function. Sourced from /gc/gomemlimit:bytes.
+# TYPE go_gc_gomemlimit_bytes gauge
+# UNIT go_gc_gomemlimit_bytes bytes
+go_gc_gomemlimit_bytes 9.223372036854776e+18
+# HELP go_gc_heap_allocs_by_size_bytes Distribution of heap allocations by approximate size. Bucket counts increase monotonically. Note that this does not include tiny objects as defined by /gc/heap/tiny/allocs:objects, only tiny blocks. Sourced from /gc/heap/allocs-by-size:bytes.
+# TYPE go_gc_heap_allocs_by_size_bytes histogram
+# UNIT go_gc_heap_allocs_by_size_bytes bytes
+go_gc_heap_allocs_by_size_bytes {count:84352887,sum:1.0108914832e+10,bucket:[8.999999999999998:1297748,24.999999999999996:33465078,64.99999999999999:57098142,144.99999999999997:73977852,320.99999999999994:80252587,704.9999999999999:83294534,1536.9999999999998:83933884,3200.9999999999995:84077036,6528.999999999999:84246635,13568.999999999998:84334528,27264.999999999996:84344010,+Inf:84352887]}
+# HELP go_gc_heap_allocs_bytes_total Cumulative sum of memory allocated to the heap by the application. Sourced from /gc/heap/allocs:bytes.
+# TYPE go_gc_heap_allocs_bytes_total counter
+# UNIT go_gc_heap_allocs_bytes_total bytes
+go_gc_heap_allocs_bytes_total 1.0108914832e+10 st@1794947459.477164625
+# HELP go_gc_heap_allocs_objects_total Cumulative count of heap allocations triggered by the application. Note that this does not include tiny objects as defined by /gc/heap/tiny/allocs:objects, only tiny blocks. Sourced from /gc/heap/allocs:objects.
+# TYPE go_gc_heap_allocs_objects_total counter
+# UNIT go_gc_heap_allocs_objects_total objects
+go_gc_heap_allocs_objects_total 8.4352887e+07 st@1794947459.477168188
+# HELP go_gc_heap_frees_by_size_bytes Distribution of freed heap allocations by approximate size. Bucket counts increase monotonically. Note that this does not include tiny objects as defined by /gc/heap/tiny/allocs:objects, only tiny blocks. Sourced from /gc/heap/frees-by-size:bytes.
+# TYPE go_gc_heap_frees_by_size_bytes histogram
+# UNIT go_gc_heap_frees_by_size_bytes bytes
+go_gc_heap_frees_by_size_bytes {count:84248390,sum:1.0090402768e+10,bucket:[8.999999999999998:1294470,24.999999999999996:33432028,64.99999999999999:57029267,144.99999999999997:73895060,320.99999999999994:80154996,704.9999999999999:83192627,1536.9999999999998:83830335,3200.9999999999995:83973042,6528.999999999999:84142301,13568.999999999998:84230137,27264.999999999996:84239556,+Inf:84248390]}
+# HELP go_gc_heap_frees_bytes_total Cumulative sum of heap memory freed by the garbage collector. Sourced from /gc/heap/frees:bytes.
+# TYPE go_gc_heap_frees_bytes_total counter
+# UNIT go_gc_heap_frees_bytes_total bytes
+go_gc_heap_frees_bytes_total 1.0090402768e+10 st@1794947459.477176821
+# HELP go_gc_heap_frees_objects_total Cumulative count of heap allocations whose storage was freed by the garbage collector. Note that this does not include tiny objects as defined by /gc/heap/tiny/allocs:objects, only tiny blocks. Sourced from /gc/heap/frees:objects.
+# TYPE go_gc_heap_frees_objects_total counter
+# UNIT go_gc_heap_frees_objects_total objects
+go_gc_heap_frees_objects_total 8.424839e+07 st@1794947459.477181116
+# HELP go_gc_heap_goal_bytes Heap size target for the end of the GC cycle. Sourced from /gc/heap/goal:bytes.
+# TYPE go_gc_heap_goal_bytes gauge
+# UNIT go_gc_heap_goal_bytes bytes
+go_gc_heap_goal_bytes 3.8084378e+07
+# HELP go_gc_heap_live_bytes Heap memory occupied by live objects that were marked by the previous GC. Sourced from /gc/heap/live:bytes.
+# TYPE go_gc_heap_live_bytes gauge
+# UNIT go_gc_heap_live_bytes bytes
+go_gc_heap_live_bytes 1.8428736e+07
+# HELP go_gc_heap_objects_objects Number of objects, live or unswept, occupying heap memory. Sourced from /gc/heap/objects:objects.
+# TYPE go_gc_heap_objects_objects gauge
+# UNIT go_gc_heap_objects_objects objects
+go_gc_heap_objects_objects 104497.0
+# HELP go_gc_heap_tiny_allocs_objects_total Count of small allocations that are packed together into blocks. These allocations are counted separately from other allocations because each individual allocation is not tracked by the runtime, only their block. Each block is already accounted for in allocs-by-size and frees-by-size. Sourced from /gc/heap/tiny/allocs:objects.
+# TYPE go_gc_heap_tiny_allocs_objects_total counter
+# UNIT go_gc_heap_tiny_allocs_objects_total objects
+go_gc_heap_tiny_allocs_objects_total 8.964625e+06 st@1794947459.477195771
+# HELP go_gc_limiter_last_enabled_gc_cycle GC cycle the last time the GC CPU limiter was enabled. This metric is useful for diagnosing the root cause of an out-of-memory error, because the limiter trades memory for CPU time when the GC's CPU time gets too high. This is most likely to occur with use of SetMemoryLimit. The first GC cycle is cycle 1, so a value of 0 indicates that it was never enabled. Sourced from /gc/limiter/last-enabled:gc-cycle.
+# TYPE go_gc_limiter_last_enabled_gc_cycle gauge
+# UNIT go_gc_limiter_last_enabled_gc_cycle gc_cycle
+go_gc_limiter_last_enabled_gc_cycle 0.0
+# HELP go_gc_pauses_seconds Deprecated. Prefer the identical /sched/pauses/total/gc:seconds. Sourced from /gc/pauses:seconds.
+# TYPE go_gc_pauses_seconds histogram
+# UNIT go_gc_pauses_seconds seconds
+go_gc_pauses_seconds {count:1246,sum:0.18643660799999998,bucket:[6.399999999999999e-08:0,6.399999999999999e-07:0,7.167999999999999e-06:0,8.191999999999999e-05:357,0.0009175039999999999:1136,0.010485759999999998:1244,0.11744051199999998:1246,+Inf:1246]}
+# HELP go_gc_scan_globals_bytes The total amount of global variable space that is scannable. Sourced from /gc/scan/globals:bytes.
+# TYPE go_gc_scan_globals_bytes gauge
+# UNIT go_gc_scan_globals_bytes bytes
+go_gc_scan_globals_bytes 433866.0
+# HELP go_gc_scan_heap_bytes The total amount of heap space that is scannable. Sourced from /gc/scan/heap:bytes.
+# TYPE go_gc_scan_heap_bytes gauge
+# UNIT go_gc_scan_heap_bytes bytes
+go_gc_scan_heap_bytes 1.195828e+07
+# HELP go_gc_scan_stack_bytes The number of bytes of stack that were scanned last GC cycle. Sourced from /gc/scan/stack:bytes.
+# TYPE go_gc_scan_stack_bytes gauge
+# UNIT go_gc_scan_stack_bytes bytes
+go_gc_scan_stack_bytes 793040.0
+# HELP go_gc_scan_total_bytes The total amount space that is scannable. Sum of all metrics in /gc/scan. Sourced from /gc/scan/total:bytes.
+# TYPE go_gc_scan_total_bytes gauge
+# UNIT go_gc_scan_total_bytes bytes
+go_gc_scan_total_bytes 1.3185186e+07
+# HELP go_gc_stack_starting_size_bytes The stack size of new goroutines. Sourced from /gc/stack/starting-size:bytes.
+# TYPE go_gc_stack_starting_size_bytes gauge
+# UNIT go_gc_stack_starting_size_bytes bytes
+go_gc_stack_starting_size_bytes 4096.0
+# HELP go_godebug_non_default_behavior_allowmultiplevcs_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=allowmultiplevcs=... setting. Sourced from /godebug/non-default-behavior/allowmultiplevcs:events.
+# TYPE go_godebug_non_default_behavior_allowmultiplevcs_events_total counter
+# UNIT go_godebug_non_default_behavior_allowmultiplevcs_events_total events
+go_godebug_non_default_behavior_allowmultiplevcs_events_total 0.0 st@1794947459.477226805
+# HELP go_godebug_non_default_behavior_containermaxprocs_events_total The number of non-default behaviors executed by the runtime package due to a non-default GODEBUG=containermaxprocs=... setting. Sourced from /godebug/non-default-behavior/containermaxprocs:events.
+# TYPE go_godebug_non_default_behavior_containermaxprocs_events_total counter
+# UNIT go_godebug_non_default_behavior_containermaxprocs_events_total events
+go_godebug_non_default_behavior_containermaxprocs_events_total 0.0 st@1794947459.477230574
+# HELP go_godebug_non_default_behavior_cryptocustomrand_events_total The number of non-default behaviors executed by the crypto package due to a non-default GODEBUG=cryptocustomrand=... setting. Sourced from /godebug/non-default-behavior/cryptocustomrand:events.
+# TYPE go_godebug_non_default_behavior_cryptocustomrand_events_total counter
+# UNIT go_godebug_non_default_behavior_cryptocustomrand_events_total events
+go_godebug_non_default_behavior_cryptocustomrand_events_total 0.0 st@1794947459.477235147
+# HELP go_godebug_non_default_behavior_embedfollowsymlinks_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=embedfollowsymlinks=... setting. Sourced from /godebug/non-default-behavior/embedfollowsymlinks:events.
+# TYPE go_godebug_non_default_behavior_embedfollowsymlinks_events_total counter
+# UNIT go_godebug_non_default_behavior_embedfollowsymlinks_events_total events
+go_godebug_non_default_behavior_embedfollowsymlinks_events_total 0.0 st@1794947459.477240091
+# HELP go_godebug_non_default_behavior_execerrdot_events_total The number of non-default behaviors executed by the os/exec package due to a non-default GODEBUG=execerrdot=... setting. Sourced from /godebug/non-default-behavior/execerrdot:events.
+# TYPE go_godebug_non_default_behavior_execerrdot_events_total counter
+# UNIT go_godebug_non_default_behavior_execerrdot_events_total events
+go_godebug_non_default_behavior_execerrdot_events_total 0.0 st@1794947459.477246008
+# HELP go_godebug_non_default_behavior_fips140ems_events_total The number of non-default behaviors executed by the crypto/tls package due to a non-default GODEBUG=fips140ems=... setting. Sourced from /godebug/non-default-behavior/fips140ems:events.
+# TYPE go_godebug_non_default_behavior_fips140ems_events_total counter
+# UNIT go_godebug_non_default_behavior_fips140ems_events_total events
+go_godebug_non_default_behavior_fips140ems_events_total 0.0 st@1794947459.477251245
+# HELP go_godebug_non_default_behavior_gocachehash_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=gocachehash=... setting. Sourced from /godebug/non-default-behavior/gocachehash:events.
+# TYPE go_godebug_non_default_behavior_gocachehash_events_total counter
+# UNIT go_godebug_non_default_behavior_gocachehash_events_total events
+go_godebug_non_default_behavior_gocachehash_events_total 0.0 st@1794947459.47725571
+# HELP go_godebug_non_default_behavior_gocachetest_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=gocachetest=... setting. Sourced from /godebug/non-default-behavior/gocachetest:events.
+# TYPE go_godebug_non_default_behavior_gocachetest_events_total counter
+# UNIT go_godebug_non_default_behavior_gocachetest_events_total events
+go_godebug_non_default_behavior_gocachetest_events_total 0.0 st@1794947459.477287608
+# HELP go_godebug_non_default_behavior_gocacheverify_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=gocacheverify=... setting. Sourced from /godebug/non-default-behavior/gocacheverify:events.
+# TYPE go_godebug_non_default_behavior_gocacheverify_events_total counter
+# UNIT go_godebug_non_default_behavior_gocacheverify_events_total events
+go_godebug_non_default_behavior_gocacheverify_events_total 0.0 st@1794947459.477294829
+# HELP go_godebug_non_default_behavior_gotestjsonbuildtext_events_total The number of non-default behaviors executed by the cmd/go package due to a non-default GODEBUG=gotestjsonbuildtext=... setting. Sourced from /godebug/non-default-behavior/gotestjsonbuildtext:events.
+# TYPE go_godebug_non_default_behavior_gotestjsonbuildtext_events_total counter
+# UNIT go_godebug_non_default_behavior_gotestjsonbuildtext_events_total events
+go_godebug_non_default_behavior_gotestjsonbuildtext_events_total 0.0 st@1794947459.477299102
+# HELP go_godebug_non_default_behavior_htmlmetacontenturlescape_events_total The number of non-default behaviors executed by the html/template package due to a non-default GODEBUG=htmlmetacontenturlescape=... setting. Sourced from /godebug/non-default-behavior/htmlmetacontenturlescape:events.
+# TYPE go_godebug_non_default_behavior_htmlmetacontenturlescape_events_total counter
+# UNIT go_godebug_non_default_behavior_htmlmetacontenturlescape_events_total events
+go_godebug_non_default_behavior_htmlmetacontenturlescape_events_total 0.0 st@1794947459.477303743
+# HELP go_godebug_non_default_behavior_http2client_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=http2client=... setting. Sourced from /godebug/non-default-behavior/http2client:events.
+# TYPE go_godebug_non_default_behavior_http2client_events_total counter
+# UNIT go_godebug_non_default_behavior_http2client_events_total events
+go_godebug_non_default_behavior_http2client_events_total 0.0 st@1794947459.477368679
+# HELP go_godebug_non_default_behavior_http2server_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=http2server=... setting. Sourced from /godebug/non-default-behavior/http2server:events.
+# TYPE go_godebug_non_default_behavior_http2server_events_total counter
+# UNIT go_godebug_non_default_behavior_http2server_events_total events
+go_godebug_non_default_behavior_http2server_events_total 0.0 st@1794947459.477372788
+# HELP go_godebug_non_default_behavior_httpcookiemaxnum_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=httpcookiemaxnum=... setting. Sourced from /godebug/non-default-behavior/httpcookiemaxnum:events.
+# TYPE go_godebug_non_default_behavior_httpcookiemaxnum_events_total counter
+# UNIT go_godebug_non_default_behavior_httpcookiemaxnum_events_total events
+go_godebug_non_default_behavior_httpcookiemaxnum_events_total 0.0 st@1794947459.477378527
+# HELP go_godebug_non_default_behavior_httplaxcontentlength_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=httplaxcontentlength=... setting. Sourced from /godebug/non-default-behavior/httplaxcontentlength:events.
+# TYPE go_godebug_non_default_behavior_httplaxcontentlength_events_total counter
+# UNIT go_godebug_non_default_behavior_httplaxcontentlength_events_total events
+go_godebug_non_default_behavior_httplaxcontentlength_events_total 0.0 st@1794947459.477382559
+# HELP go_godebug_non_default_behavior_httpmuxgo121_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=httpmuxgo121=... setting. Sourced from /godebug/non-default-behavior/httpmuxgo121:events.
+# TYPE go_godebug_non_default_behavior_httpmuxgo121_events_total counter
+# UNIT go_godebug_non_default_behavior_httpmuxgo121_events_total events
+go_godebug_non_default_behavior_httpmuxgo121_events_total 0.0 st@1794947459.477387467
+# HELP go_godebug_non_default_behavior_httpservecontentkeepheaders_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=httpservecontentkeepheaders=... setting. Sourced from /godebug/non-default-behavior/httpservecontentkeepheaders:events.
+# TYPE go_godebug_non_default_behavior_httpservecontentkeepheaders_events_total counter
+# UNIT go_godebug_non_default_behavior_httpservecontentkeepheaders_events_total events
+go_godebug_non_default_behavior_httpservecontentkeepheaders_events_total 0.0 st@1794947459.477391788
+# HELP go_godebug_non_default_behavior_httpservecontentmaxranges_events_total The number of non-default behaviors executed by the net/http package due to a non-default GODEBUG=httpservecontentmaxranges=... setting. Sourced from /godebug/non-default-behavior/httpservecontentmaxranges:events.
+# TYPE go_godebug_non_default_behavior_httpservecontentmaxranges_events_total counter
+# UNIT go_godebug_non_default_behavior_httpservecontentmaxranges_events_total events
+go_godebug_non_default_behavior_httpservecontentmaxranges_events_total 0.0 st@1794947459.477396222
+# HELP go_godebug_non_default_behavior_installgoroot_events_total The number of non-default behaviors executed by the go/build package due to a non-default GODEBUG=installgoroot=... setting. Sourced from /godebug/non-default-behavior/installgoroot:events.
+# TYPE go_godebug_non_default_behavior_installgoroot_events_total counter
+# UNIT go_godebug_non_default_behavior_installgoroot_events_total events
+go_godebug_non_default_behavior_installgoroot_events_total 0.0 st@1794947459.477402405
+# HELP go_godebug_non_default_behavior_multipartmaxheaders_events_total The number of non-default behaviors executed by the mime/multipart package due to a non-default GODEBUG=multipartmaxheaders=... setting. Sourced from /godebug/non-default-behavior/multipartmaxheaders:events.
+# TYPE go_godebug_non_default_behavior_multipartmaxheaders_events_total counter
+# UNIT go_godebug_non_default_behavior_multipartmaxheaders_events_total events
+go_godebug_non_default_behavior_multipartmaxheaders_events_total 0.0 st@1794947459.477407363
+# HELP go_godebug_non_default_behavior_multipartmaxparts_events_total The number of non-default behaviors executed by the mime/multipart package due to a non-default GODEBUG=multipartmaxparts=... setting. Sourced from /godebug/non-default-behavior/multipartmaxparts:events.
+# TYPE go_godebug_non_default_behavior_multipartmaxparts_events_total counter
+# UNIT go_godebug_non_default_behavior_multipartmaxparts_events_total events
+go_godebug_non_default_behavior_multipartmaxparts_events_total 0.0 st@1794947459.477411625
+# HELP go_godebug_non_default_behavior_multipathtcp_events_total The number of non-default behaviors executed by the net package due to a non-default GODEBUG=multipathtcp=... setting. Sourced from /godebug/non-default-behavior/multipathtcp:events.
+# TYPE go_godebug_non_default_behavior_multipathtcp_events_total counter
+# UNIT go_godebug_non_default_behavior_multipathtcp_events_total events
+go_godebug_non_default_behavior_multipathtcp_events_total 0.0 st@1794947459.477415359
+# HELP go_godebug_non_default_behavior_netedns0_events_total The number of non-default behaviors executed by the net package due to a non-default GODEBUG=netedns0=... setting. Sourced from /godebug/non-default-behavior/netedns0:events.
+# TYPE go_godebug_non_default_behavior_netedns0_events_total counter
+# UNIT go_godebug_non_default_behavior_netedns0_events_total events
+go_godebug_non_default_behavior_netedns0_events_total 0.0 st@1794947459.477420231
+# HELP go_godebug_non_default_behavior_panicnil_events_total The number of non-default behaviors executed by the runtime package due to a non-default GODEBUG=panicnil=... setting. Sourced from /godebug/non-default-behavior/panicnil:events.
+# TYPE go_godebug_non_default_behavior_panicnil_events_total counter
+# UNIT go_godebug_non_default_behavior_panicnil_events_total events
+go_godebug_non_default_behavior_panicnil_events_total 0.0 st@1794947459.47742391
+# HELP go_godebug_non_default_behavior_randautoseed_events_total The number of non-default behaviors executed by the math/rand package due to a non-default GODEBUG=randautoseed=... setting. Sourced from /godebug/non-default-behavior/randautoseed:events.
+# TYPE go_godebug_non_default_behavior_randautoseed_events_total counter
+# UNIT go_godebug_non_default_behavior_randautoseed_events_total events
+go_godebug_non_default_behavior_randautoseed_events_total 0.0 st@1794947459.477444582
+# HELP go_godebug_non_default_behavior_randseednop_events_total The number of non-default behaviors executed by the math/rand package due to a non-default GODEBUG=randseednop=... setting. Sourced from /godebug/non-default-behavior/randseednop:events.
+# TYPE go_godebug_non_default_behavior_randseednop_events_total counter
+# UNIT go_godebug_non_default_behavior_randseednop_events_total events
+go_godebug_non_default_behavior_randseednop_events_total 0.0 st@1794947459.477448859
+# HELP go_godebug_non_default_behavior_rsa1024min_events_total The number of non-default behaviors executed by the crypto/rsa package due to a non-default GODEBUG=rsa1024min=... setting. Sourced from /godebug/non-default-behavior/rsa1024min:events.
+# TYPE go_godebug_non_default_behavior_rsa1024min_events_total counter
+# UNIT go_godebug_non_default_behavior_rsa1024min_events_total events
+go_godebug_non_default_behavior_rsa1024min_events_total 0.0 st@1794947459.477453666
+# HELP go_godebug_non_default_behavior_tarinsecurepath_events_total The number of non-default behaviors executed by the archive/tar package due to a non-default GODEBUG=tarinsecurepath=... setting. Sourced from /godebug/non-default-behavior/tarinsecurepath:events.
+# TYPE go_godebug_non_default_behavior_tarinsecurepath_events_total counter
+# UNIT go_godebug_non_default_behavior_tarinsecurepath_events_total events
+go_godebug_non_default_behavior_tarinsecurepath_events_total 0.0 st@1794947459.477457974
+# HELP go_godebug_non_default_behavior_tlsmaxrsasize_events_total The number of non-default behaviors executed by the crypto/tls package due to a non-default GODEBUG=tlsmaxrsasize=... setting. Sourced from /godebug/non-default-behavior/tlsmaxrsasize:events.
+# TYPE go_godebug_non_default_behavior_tlsmaxrsasize_events_total counter
+# UNIT go_godebug_non_default_behavior_tlsmaxrsasize_events_total events
+go_godebug_non_default_behavior_tlsmaxrsasize_events_total 0.0 st@1794947459.477462257
+# HELP go_godebug_non_default_behavior_tlssha1_events_total The number of non-default behaviors executed by the crypto/tls package due to a non-default GODEBUG=tlssha1=... setting. Sourced from /godebug/non-default-behavior/tlssha1:events.
+# TYPE go_godebug_non_default_behavior_tlssha1_events_total counter
+# UNIT go_godebug_non_default_behavior_tlssha1_events_total events
+go_godebug_non_default_behavior_tlssha1_events_total 0.0 st@1794947459.477466606
+# HELP go_godebug_non_default_behavior_updatemaxprocs_events_total The number of non-default behaviors executed by the runtime package due to a non-default GODEBUG=updatemaxprocs=... setting. Sourced from /godebug/non-default-behavior/updatemaxprocs:events.
+# TYPE go_godebug_non_default_behavior_updatemaxprocs_events_total counter
+# UNIT go_godebug_non_default_behavior_updatemaxprocs_events_total events
+go_godebug_non_default_behavior_updatemaxprocs_events_total 0.0 st@1794947459.477488336
+# HELP go_godebug_non_default_behavior_urlmaxqueryparams_events_total The number of non-default behaviors executed by the net/url package due to a non-default GODEBUG=urlmaxqueryparams=... setting. Sourced from /godebug/non-default-behavior/urlmaxqueryparams:events.
+# TYPE go_godebug_non_default_behavior_urlmaxqueryparams_events_total counter
+# UNIT go_godebug_non_default_behavior_urlmaxqueryparams_events_total events
+go_godebug_non_default_behavior_urlmaxqueryparams_events_total 0.0 st@1794947459.477493718
+# HELP go_godebug_non_default_behavior_urlstrictcolons_events_total The number of non-default behaviors executed by the net/url package due to a non-default GODEBUG=urlstrictcolons=... setting. Sourced from /godebug/non-default-behavior/urlstrictcolons:events.
+# TYPE go_godebug_non_default_behavior_urlstrictcolons_events_total counter
+# UNIT go_godebug_non_default_behavior_urlstrictcolons_events_total events
+go_godebug_non_default_behavior_urlstrictcolons_events_total 0.0 st@1794947459.477498699
+# HELP go_godebug_non_default_behavior_winreadlinkvolume_events_total The number of non-default behaviors executed by the os package due to a non-default GODEBUG=winreadlinkvolume=... setting. Sourced from /godebug/non-default-behavior/winreadlinkvolume:events.
+# TYPE go_godebug_non_default_behavior_winreadlinkvolume_events_total counter
+# UNIT go_godebug_non_default_behavior_winreadlinkvolume_events_total events
+go_godebug_non_default_behavior_winreadlinkvolume_events_total 0.0 st@1794947459.477502627
+# HELP go_godebug_non_default_behavior_winsymlink_events_total The number of non-default behaviors executed by the os package due to a non-default GODEBUG=winsymlink=... setting. Sourced from /godebug/non-default-behavior/winsymlink:events.
+# TYPE go_godebug_non_default_behavior_winsymlink_events_total counter
+# UNIT go_godebug_non_default_behavior_winsymlink_events_total events
+go_godebug_non_default_behavior_winsymlink_events_total 0.0 st@1794947459.477507488
+# HELP go_godebug_non_default_behavior_x509negativeserial_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509negativeserial=... setting. Sourced from /godebug/non-default-behavior/x509negativeserial:events.
+# TYPE go_godebug_non_default_behavior_x509negativeserial_events_total counter
+# UNIT go_godebug_non_default_behavior_x509negativeserial_events_total events
+go_godebug_non_default_behavior_x509negativeserial_events_total 0.0 st@1794947459.477512044
+# HELP go_godebug_non_default_behavior_x509rsacrt_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509rsacrt=... setting. Sourced from /godebug/non-default-behavior/x509rsacrt:events.
+# TYPE go_godebug_non_default_behavior_x509rsacrt_events_total counter
+# UNIT go_godebug_non_default_behavior_x509rsacrt_events_total events
+go_godebug_non_default_behavior_x509rsacrt_events_total 0.0 st@1794947459.477516197
+# HELP go_godebug_non_default_behavior_x509sha256skid_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509sha256skid=... setting. Sourced from /godebug/non-default-behavior/x509sha256skid:events.
+# TYPE go_godebug_non_default_behavior_x509sha256skid_events_total counter
+# UNIT go_godebug_non_default_behavior_x509sha256skid_events_total events
+go_godebug_non_default_behavior_x509sha256skid_events_total 0.0 st@1794947459.477520162
+# HELP go_godebug_non_default_behavior_x509sslcertoverrideplatform_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509sslcertoverrideplatform=... setting. Sourced from /godebug/non-default-behavior/x509sslcertoverrideplatform:events.
+# TYPE go_godebug_non_default_behavior_x509sslcertoverrideplatform_events_total counter
+# UNIT go_godebug_non_default_behavior_x509sslcertoverrideplatform_events_total events
+go_godebug_non_default_behavior_x509sslcertoverrideplatform_events_total 0.0 st@1794947459.477524543
+# HELP go_godebug_non_default_behavior_x509usefallbackroots_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509usefallbackroots=... setting. Sourced from /godebug/non-default-behavior/x509usefallbackroots:events.
+# TYPE go_godebug_non_default_behavior_x509usefallbackroots_events_total counter
+# UNIT go_godebug_non_default_behavior_x509usefallbackroots_events_total events
+go_godebug_non_default_behavior_x509usefallbackroots_events_total 0.0 st@1794947459.477528574
+# HELP go_godebug_non_default_behavior_x509usepolicies_events_total The number of non-default behaviors executed by the crypto/x509 package due to a non-default GODEBUG=x509usepolicies=... setting. Sourced from /godebug/non-default-behavior/x509usepolicies:events.
+# TYPE go_godebug_non_default_behavior_x509usepolicies_events_total counter
+# UNIT go_godebug_non_default_behavior_x509usepolicies_events_total events
+go_godebug_non_default_behavior_x509usepolicies_events_total 0.0 st@1794947459.477532462
+# HELP go_godebug_non_default_behavior_zipinsecurepath_events_total The number of non-default behaviors executed by the archive/zip package due to a non-default GODEBUG=zipinsecurepath=... setting. Sourced from /godebug/non-default-behavior/zipinsecurepath:events.
+# TYPE go_godebug_non_default_behavior_zipinsecurepath_events_total counter
+# UNIT go_godebug_non_default_behavior_zipinsecurepath_events_total events
+go_godebug_non_default_behavior_zipinsecurepath_events_total 0.0 st@1794947459.477536147
+# HELP go_goroutines Number of goroutines that currently exist.
+# TYPE go_goroutines gauge
+go_goroutines 310.0
+# HELP go_info Information about the Go environment.
+# TYPE go_info gauge
+go_info{version="go1.27.4"} 1.0
+# HELP go_memory_classes_heap_free_bytes Memory that is completely free and eligible to be returned to the underlying system, but has not been. This metric is the runtime's estimate of free address space that is backed by physical memory. Sourced from /memory/classes/heap/free:bytes.
+# TYPE go_memory_classes_heap_free_bytes gauge
+# UNIT go_memory_classes_heap_free_bytes bytes
+go_memory_classes_heap_free_bytes 8.257536e+06
+# HELP go_memory_classes_heap_objects_bytes Memory occupied by live objects and dead objects that have not yet been marked free by the garbage collector. Sourced from /memory/classes/heap/objects:bytes.
+# TYPE go_memory_classes_heap_objects_bytes gauge
+# UNIT go_memory_classes_heap_objects_bytes bytes
+go_memory_classes_heap_objects_bytes 1.8512064e+07
+# HELP go_memory_classes_heap_released_bytes Memory that is completely free and has been returned to the underlying system. This metric is the runtime's estimate of free address space that is still mapped into the process, but is not backed by physical memory. Sourced from /memory/classes/heap/released:bytes.
+# TYPE go_memory_classes_heap_released_bytes gauge
+# UNIT go_memory_classes_heap_released_bytes bytes
+go_memory_classes_heap_released_bytes 2.5010176e+07
+# HELP go_memory_classes_heap_stacks_bytes Memory allocated from the heap that is reserved for stack space, whether or not it is currently in-use. Currently, this represents all stack memory for goroutines. It also includes all OS thread stacks in non-cgo programs. Note that stacks may be allocated differently in the future, and this may change. Sourced from /memory/classes/heap/stacks:bytes.
+# TYPE go_memory_classes_heap_stacks_bytes gauge
+# UNIT go_memory_classes_heap_stacks_bytes bytes
+go_memory_classes_heap_stacks_bytes 6.422528e+06
+# HELP go_memory_classes_heap_unused_bytes Memory that is reserved for heap objects but is not currently used to hold heap objects. Sourced from /memory/classes/heap/unused:bytes.
+# TYPE go_memory_classes_heap_unused_bytes gauge
+# UNIT go_memory_classes_heap_unused_bytes bytes
+go_memory_classes_heap_unused_bytes 1.7295168e+07
+# HELP go_memory_classes_metadata_mcache_free_bytes Memory that is reserved for runtime mcache structures, but not in-use. Sourced from /memory/classes/metadata/mcache/free:bytes.
+# TYPE go_memory_classes_metadata_mcache_free_bytes gauge
+# UNIT go_memory_classes_metadata_mcache_free_bytes bytes
+go_memory_classes_metadata_mcache_free_bytes 9184.0
+# HELP go_memory_classes_metadata_mcache_inuse_bytes Memory that is occupied by runtime mcache structures that are currently being used. Sourced from /memory/classes/metadata/mcache/inuse:bytes.
+# TYPE go_memory_classes_metadata_mcache_inuse_bytes gauge
+# UNIT go_memory_classes_metadata_mcache_inuse_bytes bytes
+go_memory_classes_metadata_mcache_inuse_bytes 55104.0
+# HELP go_memory_classes_metadata_mspan_free_bytes Memory that is reserved for runtime mspan structures, but not in-use. Sourced from /memory/classes/metadata/mspan/free:bytes.
+# TYPE go_memory_classes_metadata_mspan_free_bytes gauge
+# UNIT go_memory_classes_metadata_mspan_free_bytes bytes
+go_memory_classes_metadata_mspan_free_bytes 369440.0
+# HELP go_memory_classes_metadata_mspan_inuse_bytes Memory that is occupied by runtime mspan structures that are currently being used. Sourced from /memory/classes/metadata/mspan/inuse:bytes.
+# TYPE go_memory_classes_metadata_mspan_inuse_bytes gauge
+# UNIT go_memory_classes_metadata_mspan_inuse_bytes bytes
+go_memory_classes_metadata_mspan_inuse_bytes 789280.0
+# HELP go_memory_classes_metadata_other_bytes Memory that is reserved for or used to hold runtime metadata. Sourced from /memory/classes/metadata/other:bytes.
+# TYPE go_memory_classes_metadata_other_bytes gauge
+# UNIT go_memory_classes_metadata_other_bytes bytes
+go_memory_classes_metadata_other_bytes 5.01376e+06
+# HELP go_memory_classes_os_stacks_bytes Stack memory allocated by the underlying operating system. In non-cgo programs this metric is currently zero. This may change in the future.In cgo programs this metric includes OS thread stacks allocated directly from the OS. Currently, this only accounts for one stack in c-shared and c-archive build modes, and other sources of stacks from the OS are not measured. This too may change in the future. Sourced from /memory/classes/os-stacks:bytes.
+# TYPE go_memory_classes_os_stacks_bytes gauge
+# UNIT go_memory_classes_os_stacks_bytes bytes
+go_memory_classes_os_stacks_bytes 0.0
+# HELP go_memory_classes_other_bytes Memory used by execution trace buffers, structures for debugging the runtime, finalizer and profiler specials, and more. Sourced from /memory/classes/other:bytes.
+# TYPE go_memory_classes_other_bytes gauge
+# UNIT go_memory_classes_other_bytes bytes
+go_memory_classes_other_bytes 3.76033e+06
+# HELP go_memory_classes_profiling_buckets_bytes Memory that is used by the stack trace hash map used for profiling. Sourced from /memory/classes/profiling/buckets:bytes.
+# TYPE go_memory_classes_profiling_buckets_bytes gauge
+# UNIT go_memory_classes_profiling_buckets_bytes bytes
+go_memory_classes_profiling_buckets_bytes 2.350574e+06
+# HELP go_memory_classes_total_bytes All memory mapped by the Go runtime into the current process as read-write. Note that this does not include memory mapped by code called via cgo or via the syscall package. Sum of all metrics in /memory/classes. Sourced from /memory/classes/total:bytes.
+# TYPE go_memory_classes_total_bytes gauge
+# UNIT go_memory_classes_total_bytes bytes
+go_memory_classes_total_bytes 8.7845144e+07
+# HELP go_memstats_alloc_bytes Number of bytes allocated in heap and currently in use. Equals to /memory/classes/heap/objects:bytes.
+# TYPE go_memstats_alloc_bytes gauge
+go_memstats_alloc_bytes 1.8512064e+07
+# HELP go_memstats_alloc_bytes_total Total number of bytes allocated in heap until now, even if released already. Equals to /gc/heap/allocs:bytes.
+# TYPE go_memstats_alloc_bytes_total counter
+go_memstats_alloc_bytes_total 1.0108914832e+10
+# HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table. Equals to /memory/classes/profiling/buckets:bytes.
+# TYPE go_memstats_buck_hash_sys_bytes gauge
+go_memstats_buck_hash_sys_bytes 2.350574e+06
+# HELP go_memstats_frees_total Total number of heap objects frees. Equals to /gc/heap/frees:objects + /gc/heap/tiny/allocs:objects.
+# TYPE go_memstats_frees_total counter
+go_memstats_frees_total 9.3213015e+07
+# HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata. Equals to /memory/classes/metadata/other:bytes.
+# TYPE go_memstats_gc_sys_bytes gauge
+go_memstats_gc_sys_bytes 5.01376e+06
+# HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and currently in use, same as go_memstats_alloc_bytes. Equals to /memory/classes/heap/objects:bytes.
+# TYPE go_memstats_heap_alloc_bytes gauge
+go_memstats_heap_alloc_bytes 1.8512064e+07
+# HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used. Equals to /memory/classes/heap/released:bytes + /memory/classes/heap/free:bytes.
+# TYPE go_memstats_heap_idle_bytes gauge
+go_memstats_heap_idle_bytes 3.3267712e+07
+# HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use. Equals to /memory/classes/heap/objects:bytes + /memory/classes/heap/unused:bytes
+# TYPE go_memstats_heap_inuse_bytes gauge
+go_memstats_heap_inuse_bytes 3.5807232e+07
+# HELP go_memstats_heap_objects Number of currently allocated objects. Equals to /gc/heap/objects:objects.
+# TYPE go_memstats_heap_objects gauge
+go_memstats_heap_objects 104497.0
+# HELP go_memstats_heap_released_bytes Number of heap bytes released to OS. Equals to /memory/classes/heap/released:bytes.
+# TYPE go_memstats_heap_released_bytes gauge
+go_memstats_heap_released_bytes 2.5010176e+07
+# HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system. Equals to /memory/classes/heap/objects:bytes + /memory/classes/heap/unused:bytes + /memory/classes/heap/released:bytes + /memory/classes/heap/free:bytes.
+# TYPE go_memstats_heap_sys_bytes gauge
+go_memstats_heap_sys_bytes 6.9074944e+07
+# HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
+# TYPE go_memstats_last_gc_time_seconds gauge
+go_memstats_last_gc_time_seconds 1.7949500127276692e+09
+# HELP go_memstats_mallocs_total Total number of heap objects allocated, both live and gc-ed. Semantically a counter version for go_memstats_heap_objects gauge. Equals to /gc/heap/allocs:objects + /gc/heap/tiny/allocs:objects.
+# TYPE go_memstats_mallocs_total counter
+go_memstats_mallocs_total 9.3317512e+07
+# HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures. Equals to /memory/classes/metadata/mcache/inuse:bytes.
+# TYPE go_memstats_mcache_inuse_bytes gauge
+go_memstats_mcache_inuse_bytes 55104.0
+# HELP go_memstats_mcache_sys_bytes Number of bytes used for mcache structures obtained from system. Equals to /memory/classes/metadata/mcache/inuse:bytes + /memory/classes/metadata/mcache/free:bytes.
+# TYPE go_memstats_mcache_sys_bytes gauge
+go_memstats_mcache_sys_bytes 64288.0
+# HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures. Equals to /memory/classes/metadata/mspan/inuse:bytes.
+# TYPE go_memstats_mspan_inuse_bytes gauge
+go_memstats_mspan_inuse_bytes 789280.0
+# HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system. Equals to /memory/classes/metadata/mspan/inuse:bytes + /memory/classes/metadata/mspan/free:bytes.
+# TYPE go_memstats_mspan_sys_bytes gauge
+go_memstats_mspan_sys_bytes 1.15872e+06
+# HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place. Equals to /gc/heap/goal:bytes.
+# TYPE go_memstats_next_gc_bytes gauge
+go_memstats_next_gc_bytes 3.8084378e+07
+# HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations. Equals to /memory/classes/other:bytes.
+# TYPE go_memstats_other_sys_bytes gauge
+go_memstats_other_sys_bytes 3.76033e+06
+# HELP go_memstats_stack_inuse_bytes Number of bytes obtained from system for stack allocator in non-CGO environments. Equals to /memory/classes/heap/stacks:bytes.
+# TYPE go_memstats_stack_inuse_bytes gauge
+go_memstats_stack_inuse_bytes 6.422528e+06
+# HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator. Equals to /memory/classes/heap/stacks:bytes + /memory/classes/os-stacks:bytes.
+# TYPE go_memstats_stack_sys_bytes gauge
+go_memstats_stack_sys_bytes 6.422528e+06
+# HELP go_memstats_sys_bytes Number of bytes obtained from system. Equals to /memory/classes/total:byte.
+# TYPE go_memstats_sys_bytes gauge
+go_memstats_sys_bytes 8.7845144e+07
+# HELP go_sched_gomaxprocs_threads The current runtime.GOMAXPROCS setting, or the number of operating system threads that can execute user-level Go code simultaneously. Sourced from /sched/gomaxprocs:threads.
+# TYPE go_sched_gomaxprocs_threads gauge
+# UNIT go_sched_gomaxprocs_threads threads
+go_sched_gomaxprocs_threads 24.0
+# HELP go_sched_goroutines_created_goroutines_total Count of goroutines created since program start. Sourced from /sched/goroutines-created:goroutines.
+# TYPE go_sched_goroutines_created_goroutines_total counter
+# UNIT go_sched_goroutines_created_goroutines_total goroutines
+go_sched_goroutines_created_goroutines_total 78207.0 st@1794947459.477600766
+# HELP go_sched_goroutines_goroutines Count of live goroutines. Sourced from /sched/goroutines:goroutines.
+# TYPE go_sched_goroutines_goroutines gauge
+# UNIT go_sched_goroutines_goroutines goroutines
+go_sched_goroutines_goroutines 344.0
+# HELP go_sched_goroutines_not_in_go_goroutines Approximate count of goroutines running or blocked in a system call or cgo call. Not guaranteed to add up to /sched/goroutines:goroutines with other goroutine metrics. Sourced from /sched/goroutines/not-in-go:goroutines.
+# TYPE go_sched_goroutines_not_in_go_goroutines gauge
+# UNIT go_sched_goroutines_not_in_go_goroutines goroutines
+go_sched_goroutines_not_in_go_goroutines 4.0
+# HELP go_sched_goroutines_runnable_goroutines Approximate count of goroutines ready to execute, but not executing. Not guaranteed to add up to /sched/goroutines:goroutines with other goroutine metrics. Sourced from /sched/goroutines/runnable:goroutines.
+# TYPE go_sched_goroutines_runnable_goroutines gauge
+# UNIT go_sched_goroutines_runnable_goroutines goroutines
+go_sched_goroutines_runnable_goroutines 0.0
+# HELP go_sched_goroutines_running_goroutines Approximate count of goroutines executing. Always less than or equal to /sched/gomaxprocs:threads. Not guaranteed to add up to /sched/goroutines:goroutines with other goroutine metrics. Sourced from /sched/goroutines/running:goroutines.
+# TYPE go_sched_goroutines_running_goroutines gauge
+# UNIT go_sched_goroutines_running_goroutines goroutines
+go_sched_goroutines_running_goroutines 3.0
+# HELP go_sched_goroutines_waiting_goroutines Approximate count of goroutines waiting on a resource (I/O or sync primitives). Not guaranteed to add up to /sched/goroutines:goroutines with other goroutine metrics. Sourced from /sched/goroutines/waiting:goroutines.
+# TYPE go_sched_goroutines_waiting_goroutines gauge
+# UNIT go_sched_goroutines_waiting_goroutines goroutines
+go_sched_goroutines_waiting_goroutines 337.0
+# HELP go_sched_latencies_seconds Distribution of the time goroutines have spent in the scheduler in a runnable state before actually running. Bucket counts increase monotonically. Sourced from /sched/latencies:seconds.
+# TYPE go_sched_latencies_seconds histogram
+# UNIT go_sched_latencies_seconds seconds
+go_sched_latencies_seconds {count:104540,sum:1.4829120639999998,bucket:[6.399999999999999e-08:13143,6.399999999999999e-07:26684,7.167999999999999e-06:53428,8.191999999999999e-05:95257,0.0009175039999999999:104113,0.010485759999999998:104535,0.11744051199999998:104540,+Inf:104540]}
+# HELP go_sched_pauses_stopping_gc_seconds Distribution of individual GC-related stop-the-world stopping latencies. This is the time it takes from deciding to stop the world until all Ps are stopped. This is a subset of the total GC-related stop-the-world time (/sched/pauses/total/gc:seconds). During this time, some threads may be executing. Bucket counts increase monotonically. Sourced from /sched/pauses/stopping/gc:seconds.
+# TYPE go_sched_pauses_stopping_gc_seconds histogram
+# UNIT go_sched_pauses_stopping_gc_seconds seconds
+go_sched_pauses_stopping_gc_seconds {count:1246,sum:0.065401728,bucket:[6.399999999999999e-08:0,6.399999999999999e-07:0,7.167999999999999e-06:203,8.191999999999999e-05:797,0.0009175039999999999:1217,0.010485759999999998:1246,0.11744051199999998:1246,+Inf:1246]}
+# HELP go_sched_pauses_stopping_other_seconds Distribution of individual non-GC-related stop-the-world stopping latencies. This is the time it takes from deciding to stop the world until all Ps are stopped. This is a subset of the total non-GC-related stop-the-world time (/sched/pauses/total/other:seconds). During this time, some threads may be executing. Bucket counts increase monotonically. Sourced from /sched/pauses/stopping/other:seconds.
+# TYPE go_sched_pauses_stopping_other_seconds histogram
+# UNIT go_sched_pauses_stopping_other_seconds seconds
+go_sched_pauses_stopping_other_seconds {count:0,sum:0,bucket:[6.399999999999999e-08:0,6.399999999999999e-07:0,7.167999999999999e-06:0,8.191999999999999e-05:0,0.0009175039999999999:0,0.010485759999999998:0,0.11744051199999998:0,+Inf:0]}
+# HELP go_sched_pauses_total_gc_seconds Distribution of individual GC-related stop-the-world pause latencies. This is the time from deciding to stop the world until the world is started again. Some of this time is spent getting all threads to stop (this is measured directly in /sched/pauses/stopping/gc:seconds), during which some threads may still be running. Bucket counts increase monotonically. Sourced from /sched/pauses/total/gc:seconds.
+# TYPE go_sched_pauses_total_gc_seconds histogram
+# UNIT go_sched_pauses_total_gc_seconds seconds
+go_sched_pauses_total_gc_seconds {count:1246,sum:0.18643660799999998,bucket:[6.399999999999999e-08:0,6.399999999999999e-07:0,7.167999999999999e-06:0,8.191999999999999e-05:357,0.0009175039999999999:1136,0.010485759999999998:1244,0.11744051199999998:1246,+Inf:1246]}
+# HELP go_sched_pauses_total_other_seconds Distribution of individual non-GC-related stop-the-world pause latencies. This is the time from deciding to stop the world until the world is started again. Some of this time is spent getting all threads to stop (measured directly in /sched/pauses/stopping/other:seconds). Bucket counts increase monotonically. Sourced from /sched/pauses/total/other:seconds.
+# TYPE go_sched_pauses_total_other_seconds histogram
+# UNIT go_sched_pauses_total_other_seconds seconds
+go_sched_pauses_total_other_seconds {count:0,sum:0,bucket:[6.399999999999999e-08:0,6.399999999999999e-07:0,7.167999999999999e-06:0,8.191999999999999e-05:0,0.0009175039999999999:0,0.010485759999999998:0,0.11744051199999998:0,+Inf:0]}
+# HELP go_sched_threads_total_threads The current count of live threads that are owned by the Go runtime. Sourced from /sched/threads/total:threads.
+# TYPE go_sched_threads_total_threads gauge
+# UNIT go_sched_threads_total_threads threads
+go_sched_threads_total_threads 30.0
+# HELP go_sync_mutex_wait_total_seconds_total Approximate cumulative time goroutines have spent blocked on a sync.Mutex, sync.RWMutex, or runtime-internal lock. This metric is useful for identifying global changes in lock contention. Collect a mutex or block profile using the runtime/pprof package for more detailed contention data. Sourced from /sync/mutex/wait/total:seconds.
+# TYPE go_sync_mutex_wait_total_seconds_total counter
+# UNIT go_sync_mutex_wait_total_seconds_total seconds
+go_sync_mutex_wait_total_seconds_total 2.492924208 st@1794947459.477674012
+# HELP go_threads Number of OS threads created.
+# TYPE go_threads gauge
+go_threads 30.0
+# HELP hidden_metrics_total [BETA] The count of hidden metrics.
+# TYPE hidden_metrics_total counter
+hidden_metrics_total 0.0 st@1794947459.478966768
+# HELP kubelet_active_pods [ALPHA] The number of pods the kubelet considers active and which are being considered when admitting new pods. static is true if the pod is not from the apiserver.
+# TYPE kubelet_active_pods gauge
+kubelet_active_pods{static=""} 9.0
+kubelet_active_pods{static="true"} 4.0
+# HELP kubelet_certificate_manager_client_expiration_renew_errors [ALPHA] Counter of certificate renewal errors.
+# TYPE kubelet_certificate_manager_client_expiration_renew_errors counter
+kubelet_certificate_manager_client_expiration_renew_errors 0.0 st@1794947459.524848596
+# HELP kubelet_certificate_manager_client_ttl_seconds [ALPHA] Gauge of the TTL (time-to-live) of the Kubelet's client certificate. The value is in seconds until certificate expiry (negative if already expired). If client certificate is invalid or unused, the value will be +INF.
+# TYPE kubelet_certificate_manager_client_ttl_seconds gauge
+kubelet_certificate_manager_client_ttl_seconds 3.1533432e+07
+# HELP kubelet_cgroup_manager_duration_seconds [ALPHA] Duration in seconds for cgroup manager operations. Broken down by method.
+# TYPE kubelet_cgroup_manager_duration_seconds histogram
+kubelet_cgroup_manager_duration_seconds{operation_type="create"} {count:9,sum:0.222019872,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-52:6,22:1],positive_buckets:[2,2,1,0,1,2,1],bucket:[0.005:0,0.01:0,0.025:8,0.05:8,0.1:8,0.25:9,0.5:9,1:9,2.5:9,5:9,10:9,+Inf:9]} st@1794947465.551970509
+kubelet_cgroup_manager_duration_seconds{operation_type="update"} {count:160,sum:0.5114154549999999,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-85:34,26:1],positive_buckets:[2,1,2,4,5,9,9,6,2,4,0,3,2,1,3,15,13,14,17,15,6,4,7,4,3,3,1,2,0,0,1,0,0,1,1],bucket:[0.005:151,0.01:158,0.025:159,0.05:159,0.1:159,0.25:160,0.5:160,1:160,2.5:160,5:160,10:160,+Inf:160]} st@1794947459.708698167
+# HELP kubelet_cgroup_version [ALPHA] cgroup version on the hosts.
+# TYPE kubelet_cgroup_version gauge
+kubelet_cgroup_version 2.0
+# HELP kubelet_container_log_filesystem_used_bytes [ALPHA] Bytes used by the container's logs on the filesystem.
+# TYPE kubelet_container_log_filesystem_used_bytes gauge
+kubelet_container_log_filesystem_used_bytes{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-4wmcc",uid="58d3f798-a249-4e03-8448-d4c4ed06ce6d"} 4096.0
+kubelet_container_log_filesystem_used_bytes{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-tgrqq",uid="78248871-7d5f-4221-bff7-f0baab0ee423"} 4096.0
+kubelet_container_log_filesystem_used_bytes{container="etcd",namespace="kube-system",pod="etcd-kubernetes-mixin-control-plane",uid="070774f69deb70aa0524733828e71b14"} 40960.0
+kubelet_container_log_filesystem_used_bytes{container="kindnet-cni",namespace="kube-system",pod="kindnet-rds6p",uid="c3b12de7-537a-4275-a87a-98c06b0583eb"} 65536.0
+kubelet_container_log_filesystem_used_bytes{container="kube-apiserver",namespace="kube-system",pod="kube-apiserver-kubernetes-mixin-control-plane",uid="206cc60892e670b1a78c91119dc60c84"} 28672.0
+kubelet_container_log_filesystem_used_bytes{container="kube-controller-manager",namespace="kube-system",pod="kube-controller-manager-kubernetes-mixin-control-plane",uid="a4abcfda90b9168050534fcad75ce438"} 40960.0
+kubelet_container_log_filesystem_used_bytes{container="kube-proxy",namespace="kube-system",pod="kube-proxy-phxl8",uid="fa40c593-4a24-4916-b4be-05c4773fe17a"} 4096.0
+kubelet_container_log_filesystem_used_bytes{container="kube-scheduler",namespace="kube-system",pod="kube-scheduler-kubernetes-mixin-control-plane",uid="777f2906fe5c52d4eb5de4b147f403ee"} 12288.0
+kubelet_container_log_filesystem_used_bytes{container="kube-state-metrics",namespace="default",pod="kube-state-metrics-c9c9b49cd-wtj8w",uid="8156f364-4881-44f1-80f5-c1ca5628d3cb"} 4096.0
+kubelet_container_log_filesystem_used_bytes{container="lgtm",namespace="default",pod="lgtm-98c8568-nhg45",uid="bd6c3e67-5bdd-4b5d-89dd-ed9e36c76151"} 696320.0
+kubelet_container_log_filesystem_used_bytes{container="local-path-provisioner",namespace="local-path-storage",pod="local-path-provisioner-7b47d68bb4-482nb",uid="480c64d3-28d8-45c7-bc19-15bdb753fdce"} 4096.0
+kubelet_container_log_filesystem_used_bytes{container="node-exporter",namespace="default",pod="prometheus-node-exporter-x69p9",uid="db16a5e6-2a1a-491e-b6d7-8d474d4c8193"} 8192.0
+kubelet_container_log_filesystem_used_bytes{container="opentelemetry-collector",namespace="default",pod="otel-collector-deployment-opentelemetry-collector-6968b676gxw2l",uid="1257a080-d38d-47d3-b7db-b70c6bfe01d2"} 20480.0
+# HELP kubelet_containers_per_pod_count [ALPHA] The number of containers per pod.
+# TYPE kubelet_containers_per_pod_count histogram
+kubelet_containers_per_pod_count {count:13,sum:13,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[0:1],positive_buckets:[13],bucket:[1:13,2:13,4:13,8:13,16:13,+Inf:13]} st@1794947459.612430262
+# HELP kubelet_cpu_manager_exclusive_cpu_allocation_count [ALPHA] The total number of CPUs exclusively allocated to containers running on this node
+# TYPE kubelet_cpu_manager_exclusive_cpu_allocation_count gauge
+kubelet_cpu_manager_exclusive_cpu_allocation_count 0.0
+# HELP kubelet_cpu_manager_pinning_errors_total [ALPHA] The number of cpu core allocations which required pinning failed.
+# TYPE kubelet_cpu_manager_pinning_errors_total counter
+kubelet_cpu_manager_pinning_errors_total 0.0 st@1794947459.61290935
+# HELP kubelet_cpu_manager_pinning_requests_total [ALPHA] The number of cpu core allocations which required pinning.
+# TYPE kubelet_cpu_manager_pinning_requests_total counter
+kubelet_cpu_manager_pinning_requests_total 0.0 st@1794947459.612901619
+# HELP kubelet_cpu_manager_shared_pool_size_millicores [ALPHA] The size of the shared CPU pool for non-guaranteed QoS pods, in millicores.
+# TYPE kubelet_cpu_manager_shared_pool_size_millicores gauge
+kubelet_cpu_manager_shared_pool_size_millicores 0.0
+# HELP kubelet_cri_list_streaming_total [ALPHA] Cumulative number of CRI list streaming RPC attempts by operation type and result (success, error, fallback).
+# TYPE kubelet_cri_list_streaming_total counter
+kubelet_cri_list_streaming_total{operation_type="list_containers",result="fallback"} 1.0 st@1794947459.613254093
+kubelet_cri_list_streaming_total{operation_type="list_images",result="fallback"} 2.0 st@1794947459.61501324
+# HELP kubelet_desired_pods [ALPHA] The number of pods the kubelet is being instructed to run. static is true if the pod is not from the apiserver.
+# TYPE kubelet_desired_pods gauge
+kubelet_desired_pods{static=""} 9.0
+kubelet_desired_pods{static="true"} 4.0
+# HELP kubelet_evented_pleg_connection_error_count [ALPHA] The number of errors encountered during the establishment of streaming connection with the CRI runtime.
+# TYPE kubelet_evented_pleg_connection_error_count counter
+kubelet_evented_pleg_connection_error_count 0.0 st@1794947459.612487691
+# HELP kubelet_evented_pleg_connection_latency_seconds [ALPHA] The latency of streaming connection with the CRI runtime, measured in seconds.
+# TYPE kubelet_evented_pleg_connection_latency_seconds histogram
+kubelet_evented_pleg_connection_latency_seconds {count:0,sum:0,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,bucket:[0.005:0,0.01:0,0.025:0,0.05:0,0.1:0,0.25:0,0.5:0,1:0,2.5:0,5:0,10:0,+Inf:0]} st@1794947459.612508307
+# HELP kubelet_evented_pleg_connection_success_count [ALPHA] The number of times a streaming client was obtained to receive CRI Events.
+# TYPE kubelet_evented_pleg_connection_success_count counter
+kubelet_evented_pleg_connection_success_count 0.0 st@1794947459.612499176
+# HELP kubelet_first_network_pod_start_sli_duration_seconds [INTERNAL] Duration in seconds to start the first network pod, excluding time to pull images and run init containers, measured from pod creation timestamp to when all its containers are reported as started and observed via watch
+# TYPE kubelet_first_network_pod_start_sli_duration_seconds gauge
+kubelet_first_network_pod_start_sli_duration_seconds 29.302868067
+# HELP kubelet_graceful_shutdown_end_time_seconds [ALPHA] Last graceful shutdown end time since unix epoch in seconds
+# TYPE kubelet_graceful_shutdown_end_time_seconds gauge
+kubelet_graceful_shutdown_end_time_seconds 0.0
+# HELP kubelet_graceful_shutdown_start_time_seconds [ALPHA] Last graceful shutdown start time since unix epoch in seconds
+# TYPE kubelet_graceful_shutdown_start_time_seconds gauge
+kubelet_graceful_shutdown_start_time_seconds 0.0
+# HELP kubelet_http_inflight_requests [ALPHA] Number of the inflight http requests
+# TYPE kubelet_http_inflight_requests gauge
+kubelet_http_inflight_requests{long_running="false",method="GET",path="containerLogs",server_type="readwrite"} 0.0
+kubelet_http_inflight_requests{long_running="false",method="GET",path="metrics",server_type="readwrite"} 1.0
+kubelet_http_inflight_requests{long_running="false",method="GET",path="metrics/cadvisor",server_type="readwrite"} 0.0
+kubelet_http_inflight_requests{long_running="false",method="GET",path="metrics/probes",server_type="readwrite"} 0.0
+kubelet_http_inflight_requests{long_running="false",method="GET",path="metrics/resource",server_type="readwrite"} 0.0
+kubelet_http_inflight_requests{long_running="false",method="GET",path="portForward",server_type="readwrite"} 1.0
+# HELP kubelet_http_requests_duration_seconds [ALPHA] Duration in seconds to serve http requests
+# TYPE kubelet_http_requests_duration_seconds histogram
+kubelet_http_requests_duration_seconds{long_running="false",method="GET",path="containerLogs",server_type="readwrite"} {count:4,sum:0.026381209000000003,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-66:3,7:1,5:1],positive_buckets:[1,0,1,1,1],bucket:[0.005:2,0.01:3,0.025:4,0.05:4,0.1:4,0.25:4,0.5:4,1:4,2.5:4,5:4,10:4,+Inf:4]} st@1794947626.432200405
+kubelet_http_requests_duration_seconds{long_running="false",method="GET",path="metrics",server_type="readwrite"} {count:521,sum:44.57111690800004,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-36:30],positive_buckets:[1,22,47,73,87,66,62,34,25,18,10,13,9,4,4,5,3,9,4,2,2,3,2,5,3,0,2,3,1,2],bucket:[0.005:0,0.01:0,0.025:0,0.05:32,0.1:440,0.25:500,0.5:519,1:521,2.5:521,5:521,10:521,+Inf:521]} st@1794947585.128793081
+kubelet_http_requests_duration_seconds{long_running="false",method="GET",path="metrics/cadvisor",server_type="readwrite"} {count:519,sum:52.263771943000016,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-32:25],positive_buckets:[2,14,62,106,113,60,58,26,19,9,9,6,4,5,2,2,9,4,1,1,1,2,2,1,1],bucket:[0.005:0,0.01:0,0.025:0,0.05:0,0.1:380,0.25:506,0.5:519,1:519,2.5:519,5:519,10:519,+Inf:519]} st@1794947585.241214964
+kubelet_http_requests_duration_seconds{long_running="false",method="GET",path="metrics/probes",server_type="readwrite"} {count:482,sum:1.318400221,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-80:29,7:7,7:1],positive_buckets:[1,1,4,14,29,24,60,61,55,45,44,27,16,24,17,11,7,7,2,2,2,6,3,3,2,2,3,1,3,1,1,1,1,0,0,1,1],bucket:[0.005:450,0.01:473,0.025:478,0.05:481,0.1:482,0.25:482,0.5:482,1:482,2.5:482,5:482,10:482,+Inf:482]} st@1794947585.381679831
+kubelet_http_requests_duration_seconds{long_running="false",method="GET",path="metrics/resource",server_type="readwrite"} {count:476,sum:28.62164387100001,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-39:28],positive_buckets:[1,4,49,98,81,73,35,34,20,15,14,12,6,2,5,2,6,1,1,2,3,5,0,1,1,2,2,1],bucket:[0.005:0,0.01:0,0.025:0,0.05:266,0.1:442,0.25:470,0.5:476,1:476,2.5:476,5:476,10:476,+Inf:476]} st@1794947585.330475537
+kubelet_http_requests_duration_seconds{long_running="false",method="GET",path="portForward",server_type="readwrite"} {count:8,sum:651.3608841179998,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-55:1,62:1,34:1,3:7,12:1],positive_buckets:[1,1,1,1,0,0,1,0,0,2,1],bucket:[0.005:0,0.01:1,0.025:1,0.05:1,0.1:1,0.25:1,0.5:1,1:1,2.5:2,5:2,10:2,+Inf:8]} st@1794947791.35675183
+# HELP kubelet_http_requests_total [ALPHA] Number of the http requests received since the server started
+# TYPE kubelet_http_requests_total counter
+kubelet_http_requests_total{long_running="false",method="GET",path="containerLogs",server_type="readwrite"} 4.0 st@1794947626.425031161
+kubelet_http_requests_total{long_running="false",method="GET",path="metrics",server_type="readwrite"} 522.0 st@1794947585.069255242
+kubelet_http_requests_total{long_running="false",method="GET",path="metrics/cadvisor",server_type="readwrite"} 519.0 st@1794947585.166441326
+kubelet_http_requests_total{long_running="false",method="GET",path="metrics/probes",server_type="readwrite"} 482.0 st@1794947585.380338265
+kubelet_http_requests_total{long_running="false",method="GET",path="metrics/resource",server_type="readwrite"} 476.0 st@1794947585.284901906
+kubelet_http_requests_total{long_running="false",method="GET",path="portForward",server_type="readwrite"} 9.0 st@1794947652.082091153
+# HELP kubelet_image_manager_ensure_image_requests_total [ALPHA] Number of ensure-image requests processed by the kubelet.
+# TYPE kubelet_image_manager_ensure_image_requests_total counter
+kubelet_image_manager_ensure_image_requests_total{present_locally="false",pull_policy="ifnotpresent",pull_required="true"} 3.0 st@1794947551.421465773
+kubelet_image_manager_ensure_image_requests_total{present_locally="true",pull_policy="ifnotpresent",pull_required="false"} 5.0 st@1794947466.221731691
+kubelet_image_manager_ensure_image_requests_total{present_locally="unknown",pull_policy="always",pull_required="true"} 1.0 st@1794947543.133134324
+# HELP kubelet_image_pull_duration_seconds [ALPHA] Duration in seconds to pull an image.
+# TYPE kubelet_image_pull_duration_seconds histogram
+kubelet_image_pull_duration_seconds{image_size_in_bytes="100MB-500MB"} {count:1,sum:54.488,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[47:1],positive_buckets:[1],bucket:[1:0,5:0,10:0,20:0,30:0,60:1,120:1,180:1,240:1,300:1,360:1,480:1,600:1,900:1,1200:1,1800:1,2700:1,3600:1,+Inf:1]} st@1794947551.41957222
+kubelet_image_pull_duration_seconds{image_size_in_bytes="10MB-100MB"} {count:2,sum:103.389,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[46:1],positive_buckets:[2],bucket:[1:0,5:0,10:0,20:0,30:0,60:2,120:2,180:2,240:2,300:2,360:2,480:2,600:2,900:2,1200:2,1800:2,2700:2,3600:2,+Inf:2]} st@1794947556.054750712
+kubelet_image_pull_duration_seconds{image_size_in_bytes="500MB-1GB"} {count:1,sum:50.01,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[46:1],positive_buckets:[1],bucket:[1:0,5:0,10:0,20:0,30:0,60:1,120:1,180:1,240:1,300:1,360:1,480:1,600:1,900:1,1200:1,1800:1,2700:1,3600:1,+Inf:1]} st@1794947543.130854216
+# HELP kubelet_image_volume_mounted_errors_total [BETA] Number of failed image volume mounts.
+# TYPE kubelet_image_volume_mounted_errors_total counter
+kubelet_image_volume_mounted_errors_total 0.0 st@1794947459.613137465
+# HELP kubelet_image_volume_mounted_succeed_total [BETA] Number of successful image volume mounts.
+# TYPE kubelet_image_volume_mounted_succeed_total counter
+kubelet_image_volume_mounted_succeed_total 0.0 st@1794947459.613132189
+# HELP kubelet_image_volume_requested_total [BETA] Number of requested image volumes.
+# TYPE kubelet_image_volume_requested_total counter
+kubelet_image_volume_requested_total 0.0 st@1794947459.613126233
+# HELP kubelet_imagemanager_image_mustpull_checks_total [ALPHA] Counter for how many times kubelet checked whether credentials need to be re-verified to access an image
+# TYPE kubelet_imagemanager_image_mustpull_checks_total counter
+kubelet_imagemanager_image_mustpull_checks_total{result="credentialPolicyAllowed"} 5.0 st@1794947466.221690003
+# HELP kubelet_imagemanager_inmemory_pulledrecords_usage_percent [ALPHA] The ImagePulledRecords in-memory cache usage in percent.
+# TYPE kubelet_imagemanager_inmemory_pulledrecords_usage_percent gauge
+kubelet_imagemanager_inmemory_pulledrecords_usage_percent 0.0
+# HELP kubelet_imagemanager_inmemory_pullintents_usage_percent [ALPHA] The ImagePullIntents in-memory cache usage in percent.
+# TYPE kubelet_imagemanager_inmemory_pullintents_usage_percent gauge
+kubelet_imagemanager_inmemory_pullintents_usage_percent 0.0
+# HELP kubelet_imagemanager_ondisk_pulledrecords [ALPHA] Number of ImagePulledRecords stored on disk.
+# TYPE kubelet_imagemanager_ondisk_pulledrecords gauge
+kubelet_imagemanager_ondisk_pulledrecords 4.0
+# HELP kubelet_imagemanager_ondisk_pullintents [ALPHA] Number of ImagePullIntents stored on disk.
+# TYPE kubelet_imagemanager_ondisk_pullintents gauge
+kubelet_imagemanager_ondisk_pullintents 0.0
+# HELP kubelet_lifecycle_handler_http_fallbacks_total [ALPHA] The number of times lifecycle handlers successfully fell back to http from https.
+# TYPE kubelet_lifecycle_handler_http_fallbacks_total counter
+kubelet_lifecycle_handler_http_fallbacks_total 0.0 st@1794947459.613061814
+# HELP kubelet_managed_ephemeral_containers [ALPHA] Current number of ephemeral containers in pods managed by this kubelet.
+# TYPE kubelet_managed_ephemeral_containers gauge
+kubelet_managed_ephemeral_containers 0.0
+# HELP kubelet_memory_manager_pinning_errors_total [ALPHA] The number of memory pages allocations which required pinning that failed.
+# TYPE kubelet_memory_manager_pinning_errors_total counter
+kubelet_memory_manager_pinning_errors_total 0.0 st@1794947459.612959556
+# HELP kubelet_memory_manager_pinning_requests_total [ALPHA] The number of memory pages allocations which required pinning.
+# TYPE kubelet_memory_manager_pinning_requests_total counter
+kubelet_memory_manager_pinning_requests_total 0.0 st@1794947459.612953657
+# HELP kubelet_memory_qos_node_memory_low_bytes [ALPHA] Total cgroup v2 memory.low in bytes for Burstable pods. This memory is soft-reserved and may be reclaimed under extreme pressure.
+# TYPE kubelet_memory_qos_node_memory_low_bytes gauge
+kubelet_memory_qos_node_memory_low_bytes 0.0
+# HELP kubelet_memory_qos_node_memory_min_bytes [ALPHA] Total cgroup v2 memory.min in bytes for Guaranteed pods. This memory is hard-reserved and never reclaimed by the kernel.
+# TYPE kubelet_memory_qos_node_memory_min_bytes gauge
+kubelet_memory_qos_node_memory_min_bytes 0.0
+# HELP kubelet_metrics_provider [ALPHA] Metrics provider used by kubelet to collect container stats. Values can be 'cadvisor' and 'cri'
+# TYPE kubelet_metrics_provider gauge
+kubelet_metrics_provider{provider="cadvisor"} 1.0
+# HELP kubelet_mirror_pods [ALPHA] The number of mirror pods the kubelet will try to create (one per admitted static pod)
+# TYPE kubelet_mirror_pods gauge
+kubelet_mirror_pods 4.0
+# HELP kubelet_node_name [ALPHA] The node's name. The count is always 1.
+# TYPE kubelet_node_name gauge
+kubelet_node_name{node="kubernetes-mixin-control-plane"} 1.0
+# HELP kubelet_node_startup_duration_seconds [ALPHA] Duration in seconds of node startup in total.
+# TYPE kubelet_node_startup_duration_seconds gauge
+kubelet_node_startup_duration_seconds 0.0
+# HELP kubelet_node_startup_post_registration_duration_seconds [ALPHA] Duration in seconds of node startup after registration.
+# TYPE kubelet_node_startup_post_registration_duration_seconds gauge
+kubelet_node_startup_post_registration_duration_seconds 0.0
+# HELP kubelet_node_startup_pre_kubelet_duration_seconds [ALPHA] Duration in seconds of node startup before kubelet starts.
+# TYPE kubelet_node_startup_pre_kubelet_duration_seconds gauge
+kubelet_node_startup_pre_kubelet_duration_seconds 0.0
+# HELP kubelet_node_startup_pre_registration_duration_seconds [ALPHA] Duration in seconds of node startup before registration.
+# TYPE kubelet_node_startup_pre_registration_duration_seconds gauge
+kubelet_node_startup_pre_registration_duration_seconds 0.0
+# HELP kubelet_node_startup_registration_duration_seconds [ALPHA] Duration in seconds of node startup during registration.
+# TYPE kubelet_node_startup_registration_duration_seconds gauge
+kubelet_node_startup_registration_duration_seconds 0.0
+# HELP kubelet_orphan_pod_cleaned_volumes [ALPHA] The total number of orphaned Pods whose volumes were cleaned in the last periodic sweep.
+# TYPE kubelet_orphan_pod_cleaned_volumes gauge
+kubelet_orphan_pod_cleaned_volumes 0.0
+# HELP kubelet_orphan_pod_cleaned_volumes_errors [ALPHA] The number of orphaned Pods whose volumes failed to be cleaned in the last periodic sweep.
+# TYPE kubelet_orphan_pod_cleaned_volumes_errors gauge
+kubelet_orphan_pod_cleaned_volumes_errors 0.0
+# HELP kubelet_orphaned_runtime_pods_total [ALPHA] Number of pods that have been detected in the container runtime without being already known to the pod worker. This typically indicates the kubelet was restarted while a pod was force deleted in the API or in the local configuration, which is unusual.
+# TYPE kubelet_orphaned_runtime_pods_total counter
+kubelet_orphaned_runtime_pods_total 0.0 st@1794947459.612705751
+# HELP kubelet_pleg_discard_events [ALPHA] The number of discard events in PLEG.
+# TYPE kubelet_pleg_discard_events counter
+kubelet_pleg_discard_events 0.0 st@1794947459.612457746
+# HELP kubelet_pleg_last_seen_seconds [ALPHA] Timestamp in seconds when PLEG was last seen active.
+# TYPE kubelet_pleg_last_seen_seconds gauge
+kubelet_pleg_last_seen_seconds 1.794950012e+09
+# HELP kubelet_pleg_pod_relist_duration_seconds [ALPHA] Duration in seconds for relisting a single pod in PLEG.
+# TYPE kubelet_pleg_pod_relist_duration_seconds histogram
+kubelet_pleg_pod_relist_duration_seconds {count:9,sum:0.09073770699999999,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-61:10,4:1,3:1],positive_buckets:[1,1,0,1,0,2,0,0,1,1,1,1],bucket:[0.005:1,0.01:6,0.025:9,0.05:9,0.1:9,0.25:9,0.5:9,1:9,2.5:9,5:9,10:9,+Inf:9]} st@1794947459.612477031
+# HELP kubelet_pleg_relist_duration_seconds [ALPHA] Duration in seconds for relisting pods in PLEG.
+# TYPE kubelet_pleg_relist_duration_seconds histogram
+kubelet_pleg_relist_duration_seconds {count:2543,sum:9.162888357000016,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-72:31,3:1],positive_buckets:[3,16,60,178,365,433,399,340,217,139,95,59,58,47,26,25,22,9,14,4,4,5,4,6,2,4,2,1,3,0,2,1],bucket:[0.005:2298,0.01:2507,0.025:2541,0.05:2543,0.1:2543,0.25:2543,0.5:2543,1:2543,2.5:2543,5:2543,10:2543,+Inf:2543]} st@1794947459.612447741
+# HELP kubelet_pleg_relist_interval_seconds [ALPHA] Interval in seconds between relisting in PLEG.
+# TYPE kubelet_pleg_relist_interval_seconds histogram
+kubelet_pleg_relist_interval_seconds {count:2542,sum:2552.9386820349987,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[1:1],positive_buckets:[2542],bucket:[0.005:0,0.01:0,0.025:0,0.05:0,0.1:0,0.25:0,0.5:0,1:0,2.5:2542,5:2542,10:2542,+Inf:2542]} st@1794947459.612464305
+# HELP kubelet_pod_in_progress_resizes [ALPHA] Number of in-progress resizes for pods.
+# TYPE kubelet_pod_in_progress_resizes gauge
+kubelet_pod_in_progress_resizes 0.0
+# HELP kubelet_pod_level_resources_admission_total [ALPHA] Total number of pods admitted during Kubelet admission, categorized by resource configuration mode (pod_and_container_level, pod_level, container_level, or empty for unconfigured/BestEffort) and QoS class.
+# TYPE kubelet_pod_level_resources_admission_total counter
+kubelet_pod_level_resources_admission_total{config_mode="",qos_class="besteffort"} 6.0 st@1794947465.425197105
+kubelet_pod_level_resources_admission_total{config_mode="container_level",qos_class="burstable"} 6.0 st@1794947459.756505412
+kubelet_pod_level_resources_admission_total{config_mode="container_level",qos_class="guaranteed"} 1.0 st@1794947465.440545326
+# HELP kubelet_pod_start_duration_seconds [ALPHA] Duration in seconds from kubelet seeing a pod for the first time to the pod starting to run
+# TYPE kubelet_pod_start_duration_seconds histogram
+kubelet_pod_start_duration_seconds {count:22,sum:236.76202046,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-56:5,4:4,3:1,18:1,32:2,7:4,21:2],positive_buckets:[1,0,1,1,1,1,1,1,1,1,4,1,2,1,0,0,1,2,2],bucket:[0.5:13,1:13,2:13,3:16,4:16,5:16,6:17,8:18,10:18,20:18,30:18,45:18,60:22,120:22,180:22,240:22,300:22,360:22,480:22,600:22,900:22,1200:22,1800:22,2700:22,3600:22,+Inf:22]} st@1794947459.612086608
+# HELP kubelet_pod_start_sli_duration_seconds [ALPHA] Duration in seconds to start a pod, excluding time to pull images and run init containers, measured from pod creation timestamp to when all its containers are reported as started and observed via watch
+# TYPE kubelet_pod_start_sli_duration_seconds histogram
+kubelet_pod_start_sli_duration_seconds {count:5,sum:101.135087875,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[8:4,27:5],positive_buckets:[1,0,0,1,1,1,0,0,1],bucket:[0.5:0,1:0,2:1,3:2,4:2,5:2,6:2,8:2,10:2,20:2,30:4,45:5,60:5,120:5,180:5,240:5,300:5,360:5,480:5,600:5,900:5,1200:5,1800:5,2700:5,3600:5,+Inf:5]} st@1794947494.303000158
+# HELP kubelet_pod_start_total_duration_seconds [ALPHA] Duration in seconds to start a pod since creation, including time to pull images and run init containers, measured from pod creation timestamp to when all its containers are reported as started and observed via watch
+# TYPE kubelet_pod_start_total_duration_seconds histogram
+kubelet_pod_start_total_duration_seconds {count:9,sum:324.764816077,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[14:1,9:1,14:9],positive_buckets:[1,1,1,1,0,0,1,0,0,1,3],bucket:[0.5:0,1:0,2:0,3:0,4:1,5:1,6:1,8:2,10:2,20:2,30:4,45:5,60:9,120:9,180:9,240:9,300:9,360:9,480:9,600:9,900:9,1200:9,1800:9,2700:9,3600:9,+Inf:9]} st@1794947468.237244666
+# HELP kubelet_pod_status_sync_duration_seconds [ALPHA] Duration in seconds to sync a pod status update. Measures time from detection of a change to pod status until the API is successfully updated for that pod, even if multiple intevening changes to pod status occur.
+# TYPE kubelet_pod_status_sync_duration_seconds histogram
+kubelet_pod_status_sync_duration_seconds {count:52,sum:682.9379999999999,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-47:12,5:1,26:7,4:6,3:1,3:4,4:3,14:4,3:1],positive_buckets:[1,1,1,1,0,1,1,0,1,0,0,1,1,1,2,0,1,1,1,2,1,0,2,4,1,5,2,1,0,0,1,2,6,2,3,2,1,1,1],bucket:[0.01:0,0.05:8,0.1:9,0.5:9,1:13,5:32,10:34,20:44,30:44,45:44,60:49,+Inf:52]} st@1794947459.612407195
+# HELP kubelet_pod_watch_events_dropped_total [ALPHA] Cumulative number of pod watch events dropped.
+# TYPE kubelet_pod_watch_events_dropped_total counter
+kubelet_pod_watch_events_dropped_total 0.0 st@1794947459.613224192
+# HELP kubelet_pod_worker_duration_seconds [ALPHA] Duration in seconds to sync a single pod. Broken down by operation type: create, update, or sync
+# TYPE kubelet_pod_worker_duration_seconds histogram
+kubelet_pod_worker_duration_seconds{operation_type="create"} {count:13,sum:237.23287836199998,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-13:4,21:2,7:4,21:2],positive_buckets:[3,0,0,1,1,2,1,0,0,1,2,2],bucket:[0.005:0,0.01:0,0.025:0,0.05:0,0.1:0,0.25:0,0.5:4,1:4,2.5:4,5:7,10:9,+Inf:13]} st@1794947460.072341597
+kubelet_pod_worker_duration_seconds{operation_type="sync"} {count:458,sum:9.65669801199999,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-83:28,30:1,3:1,9:13],positive_buckets:[1,0,1,5,10,11,24,36,53,54,47,38,47,34,19,17,9,10,12,6,1,1,1,1,3,1,1,1,1,1,1,1,0,1,0,2,1,0,1,0,0,4,1],bucket:[0.005:437,0.01:444,0.025:444,0.05:444,0.1:444,0.25:446,0.5:449,1:457,2.5:458,5:458,10:458,+Inf:458]} st@1794947460.694904484
+kubelet_pod_worker_duration_seconds{operation_type="update"} {count:4,sum:5.3544906789999995,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[1:6],positive_buckets:[1,0,1,0,1,1],bucket:[0.005:0,0.01:0,0.025:0,0.05:0,0.1:0,0.25:0,0.5:0,1:0,2.5:4,5:4,10:4,+Inf:4]} st@1794947461.674472509
+# HELP kubelet_pod_worker_start_duration_seconds [ALPHA] Duration in seconds from kubelet seeing a pod to starting a worker.
+# TYPE kubelet_pod_worker_start_duration_seconds histogram
+kubelet_pod_worker_start_duration_seconds {count:13,sum:0.7654869130000002,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-57:6,4:4,3:1,18:1],positive_buckets:[1,0,0,2,0,1,1,1,1,1,1,4],bucket:[0.005:0,0.01:3,0.025:8,0.05:9,0.1:9,0.25:13,0.5:13,1:13,2.5:13,5:13,10:13,+Inf:13]} st@1794947459.612391147
+# HELP kubelet_restarted_pods_total [ALPHA] Number of pods that have been restarted because they were deleted and recreated with the same UID while the kubelet was watching them (common for static pods, extremely uncommon for API pods)
+# TYPE kubelet_restarted_pods_total counter
+kubelet_restarted_pods_total{static=""} 0.0 st@1794947461.661457368
+kubelet_restarted_pods_total{static="true"} 0.0 st@1794947461.661454916
+# HELP kubelet_run_podsandbox_duration_seconds [ALPHA] Duration in seconds of the run_podsandbox operations. Broken down by RuntimeClass.Handler.
+# TYPE kubelet_run_podsandbox_duration_seconds histogram
+kubelet_run_podsandbox_duration_seconds{runtime_handler=""} {count:9,sum:6.1794990510000005,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-12:10,7:1],positive_buckets:[1,0,1,1,0,0,1,0,1,3,1],bucket:[0.005:0,0.01:0,0.025:0,0.05:0,0.1:0,0.25:0,0.5:3,1:8,2.5:9,5:9,10:9,+Inf:9]} st@1794947466.219335972
+# HELP kubelet_running_containers [ALPHA] Number of containers currently running
+# TYPE kubelet_running_containers gauge
+kubelet_running_containers{container_state="created"} 1.0
+kubelet_running_containers{container_state="running"} 13.0
+# HELP kubelet_running_pods [ALPHA] Number of pods that have a running pod sandbox
+# TYPE kubelet_running_pods gauge
+kubelet_running_pods 13.0
+# HELP kubelet_runtime_operations_duration_seconds [ALPHA] Duration in seconds of runtime operations. Broken down by operation type.
+# TYPE kubelet_runtime_operations_duration_seconds histogram
+kubelet_runtime_operations_duration_seconds{operation_type="container_status"} {count:3399,sum:6.204436147999991,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-85:50],positive_buckets:[3,4,11,37,75,131,210,256,365,392,358,313,254,197,161,142,101,73,56,46,35,30,30,25,16,13,13,6,13,5,5,5,2,3,0,1,1,0,2,1,1,0,0,1,0,3,1,1,0,1],bucket:[0.005:3317,0.0125:3387,0.03125:3396,0.078125:3399,0.1953125:3399,0.48828125:3399,1.220703125:3399,3.0517578125:3399,7.62939453125:3399,19.073486328125:3399,47.6837158203125:3399,119.20928955078125:3399,298.0232238769531:3399,745.0580596923828:3399,+Inf:3399]} st@1794947459.619902065
+kubelet_runtime_operations_duration_seconds{operation_type="create_container"} {count:9,sum:11.007769083,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-33:2,3:3,28:3,5:1,5:1],positive_buckets:[1,1,1,0,1,1,1,1,1,1],bucket:[0.005:0,0.0125:0,0.03125:0,0.078125:2,0.1953125:4,0.48828125:4,1.220703125:4,3.0517578125:8,7.62939453125:9,19.073486328125:9,47.6837158203125:9,119.20928955078125:9,298.0232238769531:9,745.0580596923828:9,+Inf:9]} st@1794947467.715678759
+kubelet_runtime_operations_duration_seconds{operation_type="exec_sync"} {count:248,sum:47.628125113,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-22:16],positive_buckets:[2,22,86,59,35,13,11,8,4,3,3,0,1,0,0,1],bucket:[0.005:0,0.0125:0,0.03125:0,0.078125:0,0.1953125:175,0.48828125:247,1.220703125:248,3.0517578125:248,7.62939453125:248,19.073486328125:248,47.6837158203125:248,119.20928955078125:248,298.0232238769531:248,745.0580596923828:248,+Inf:248]} st@1794947543.794277701
+kubelet_runtime_operations_duration_seconds{operation_type="image_fs_info"} {count:256,sum:0.27998471700000016,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-88:28],positive_buckets:[1,0,0,1,3,18,34,33,47,43,17,15,13,7,8,3,2,1,1,0,1,2,3,0,1,1,0,1],bucket:[0.005:256,0.0125:256,0.03125:256,0.078125:256,0.1953125:256,0.48828125:256,1.220703125:256,3.0517578125:256,7.62939453125:256,19.073486328125:256,47.6837158203125:256,119.20928955078125:256,298.0232238769531:256,745.0580596923828:256,+Inf:256]} st@1794947459.715942338
+kubelet_runtime_operations_duration_seconds{operation_type="image_status"} {count:21,sum:0.037349885,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-85:20,4:3],positive_buckets:[2,0,1,0,2,1,3,2,0,2,0,0,1,1,1,0,1,0,0,2,1,0,1],bucket:[0.005:20,0.0125:21,0.03125:21,0.078125:21,0.1953125:21,0.48828125:21,1.220703125:21,3.0517578125:21,7.62939453125:21,19.073486328125:21,47.6837158203125:21,119.20928955078125:21,298.0232238769531:21,745.0580596923828:21,+Inf:21]} st@1794947466.221661997
+kubelet_runtime_operations_duration_seconds{operation_type="list_container_stats"} {count:1772,sum:99.15327978499991,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-52:1,4:1,5:33],positive_buckets:[1,1,3,7,68,258,331,273,203,146,110,68,59,43,35,19,17,12,14,14,8,10,10,12,12,2,3,10,7,3,3,6,1,1,2],bucket:[0.005:0,0.0125:1,0.03125:12,0.078125:1594,0.1953125:1734,0.48828125:1772,1.220703125:1772,3.0517578125:1772,7.62939453125:1772,19.073486328125:1772,47.6837158203125:1772,119.20928955078125:1772,298.0232238769531:1772,745.0580596923828:1772,+Inf:1772]} st@1794947459.733007106
+kubelet_runtime_operations_duration_seconds{operation_type="list_containers"} {count:5962,sum:10.899039970999986,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-88:55],positive_buckets:[1,0,0,1,5,15,31,97,220,419,674,656,731,632,543,407,322,230,161,127,113,87,95,64,52,36,39,25,20,27,26,15,13,10,13,6,8,8,4,7,1,4,2,3,2,1,2,3,1,1,0,1,0,0,1],bucket:[0.005:5777,0.0125:5932,0.03125:5959,0.078125:5962,0.1953125:5962,0.48828125:5962,1.220703125:5962,3.0517578125:5962,7.62939453125:5962,19.073486328125:5962,47.6837158203125:5962,119.20928955078125:5962,298.0232238769531:5962,745.0580596923828:5962,+Inf:5962]} st@1794947459.614350986
+kubelet_runtime_operations_duration_seconds{operation_type="list_images"} {count:95,sum:0.15560724999999992,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-80:18],positive_buckets:[1,0,3,9,9,22,18,16,6,2,1,3,1,2,0,1,0,1],bucket:[0.005:95,0.0125:95,0.03125:95,0.078125:95,0.1953125:95,0.48828125:95,1.220703125:95,3.0517578125:95,7.62939453125:95,19.073486328125:95,47.6837158203125:95,119.20928955078125:95,298.0232238769531:95,745.0580596923828:95,+Inf:95]} st@1794947459.615890778
+kubelet_runtime_operations_duration_seconds{operation_type="list_podsandbox"} {count:5671,sum:10.524532886999975,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-87:49,3:3,3:1],positive_buckets:[1,1,3,5,23,48,94,160,215,343,598,738,737,659,493,405,245,197,153,99,83,67,50,44,39,23,22,12,12,13,8,11,8,8,5,3,9,5,7,5,2,2,1,3,2,2,2,1,1,1,1,1,1],bucket:[0.005:5541,0.0125:5636,0.03125:5666,0.078125:5670,0.1953125:5671,0.48828125:5671,1.220703125:5671,3.0517578125:5671,7.62939453125:5671,19.073486328125:5671,47.6837158203125:5671,119.20928955078125:5671,298.0232238769531:5671,745.0580596923828:5671,+Inf:5671]} st@1794947459.61575576
+kubelet_runtime_operations_duration_seconds{operation_type="podsandbox_status"} {count:22,sum:0.036062428,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-86:12,3:6,6:1],positive_buckets:[1,0,1,2,1,3,2,3,1,0,0,2,2,0,1,0,0,1,2],bucket:[0.005:20,0.0125:22,0.03125:22,0.078125:22,0.1953125:22,0.48828125:22,1.220703125:22,3.0517578125:22,7.62939453125:22,19.073486328125:22,47.6837158203125:22,119.20928955078125:22,298.0232238769531:22,745.0580596923828:22,+Inf:22]} st@1794947459.658234236
+kubelet_runtime_operations_duration_seconds{operation_type="port_forward"} {count:9,sum:0.012702472999999999,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-85:9,17:1],positive_buckets:[1,1,3,0,0,1,0,0,2,1],bucket:[0.005:8,0.0125:9,0.03125:9,0.078125:9,0.1953125:9,0.48828125:9,1.220703125:9,3.0517578125:9,7.62939453125:9,19.073486328125:9,47.6837158203125:9,119.20928955078125:9,298.0232238769531:9,745.0580596923828:9,+Inf:9]} st@1794947652.087373932
+kubelet_runtime_operations_duration_seconds{operation_type="pull_image"} {count:4,sum:65.564989997,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[12:1,5:1,6:1,20:1],positive_buckets:[1,1,1,1],bucket:[0.005:0,0.0125:0,0.03125:0,0.078125:0,0.1953125:0,0.48828125:0,1.220703125:0,3.0517578125:1,7.62939453125:2,19.073486328125:3,47.6837158203125:3,119.20928955078125:4,298.0232238769531:4,745.0580596923828:4,+Inf:4]} st@1794947543.128519355
+kubelet_runtime_operations_duration_seconds{operation_type="run_podsandbox"} {count:9,sum:6.1795920120000005,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-12:10,7:1],positive_buckets:[1,0,1,1,0,0,1,0,1,3,1],bucket:[0.005:0,0.0125:0,0.03125:0,0.078125:0,0.1953125:0,0.48828125:3,1.220703125:8,3.0517578125:9,7.62939453125:9,19.073486328125:9,47.6837158203125:9,119.20928955078125:9,298.0232238769531:9,745.0580596923828:9,+Inf:9]} st@1794947466.219356644
+kubelet_runtime_operations_duration_seconds{operation_type="start_container"} {count:9,sum:7.232320197,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-10:9,14:1],positive_buckets:[1,3,1,0,1,0,0,1,1,1],bucket:[0.005:0,0.0125:0,0.03125:0,0.078125:0,0.1953125:0,0.48828125:4,1.220703125:8,3.0517578125:9,7.62939453125:9,19.073486328125:9,47.6837158203125:9,119.20928955078125:9,298.0232238769531:9,745.0580596923828:9,+Inf:9]} st@1794947468.209738719
+kubelet_runtime_operations_duration_seconds{operation_type="status"} {count:814,sum:1.362224462,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-84:31,9:1],positive_buckets:[1,0,1,3,11,37,98,115,86,94,86,84,63,34,21,15,12,14,9,5,7,3,2,1,3,1,2,2,2,0,1,1],bucket:[0.005:802,0.0125:813,0.03125:814,0.078125:814,0.1953125:814,0.48828125:814,1.220703125:814,3.0517578125:814,7.62939453125:814,19.073486328125:814,47.6837158203125:814,119.20928955078125:814,298.0232238769531:814,745.0580596923828:814,+Inf:814]} st@1794947459.615530966
+kubelet_runtime_operations_duration_seconds{operation_type="update_runtime_config"} {count:1,sum:0.000977889,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-79:1],positive_buckets:[1],bucket:[0.005:1,0.0125:1,0.03125:1,0.078125:1,0.1953125:1,0.48828125:1,1.220703125:1,3.0517578125:1,7.62939453125:1,19.073486328125:1,47.6837158203125:1,119.20928955078125:1,298.0232238769531:1,745.0580596923828:1,+Inf:1]} st@1794947464.218685825
+kubelet_runtime_operations_duration_seconds{operation_type="version"} {count:554,sum:0.6073282320000003,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-89:34],positive_buckets:[2,6,14,20,33,35,40,70,43,68,45,37,22,19,18,22,11,7,10,4,6,2,2,3,6,3,2,1,0,1,0,1,0,1],bucket:[0.005:551,0.0125:554,0.03125:554,0.078125:554,0.1953125:554,0.48828125:554,1.220703125:554,3.0517578125:554,7.62939453125:554,19.073486328125:554,47.6837158203125:554,119.20928955078125:554,298.0232238769531:554,745.0580596923828:554,+Inf:554]} st@1794947459.816649264
+# HELP kubelet_runtime_operations_errors_total [ALPHA] Cumulative number of runtime operation errors by operation type.
+# TYPE kubelet_runtime_operations_errors_total counter
+kubelet_runtime_operations_errors_total{operation_type="container_status"} 0.0 st@1794947459.61989575
+kubelet_runtime_operations_errors_total{operation_type="create_container"} 0.0 st@1794947467.715668646
+kubelet_runtime_operations_errors_total{operation_type="exec_sync"} 5.0 st@1794947543.79426957
+kubelet_runtime_operations_errors_total{operation_type="image_fs_info"} 0.0 st@1794947459.715934807
+kubelet_runtime_operations_errors_total{operation_type="image_status"} 0.0 st@1794947466.221653183
+kubelet_runtime_operations_errors_total{operation_type="list_container_stats"} 0.0 st@1794947459.732999577
+kubelet_runtime_operations_errors_total{operation_type="list_containers"} 0.0 st@1794947459.614344845
+kubelet_runtime_operations_errors_total{operation_type="list_images"} 0.0 st@1794947459.615886651
+kubelet_runtime_operations_errors_total{operation_type="list_podsandbox"} 0.0 st@1794947459.615748543
+kubelet_runtime_operations_errors_total{operation_type="podsandbox_status"} 0.0 st@1794947459.658228533
+kubelet_runtime_operations_errors_total{operation_type="port_forward"} 0.0 st@1794947652.087367138
+kubelet_runtime_operations_errors_total{operation_type="pull_image"} 0.0 st@1794947543.128507509
+kubelet_runtime_operations_errors_total{operation_type="run_podsandbox"} 0.0 st@1794947466.219326981
+kubelet_runtime_operations_errors_total{operation_type="start_container"} 0.0 st@1794947468.209720131
+kubelet_runtime_operations_errors_total{operation_type="status"} 0.0 st@1794947459.615521224
+kubelet_runtime_operations_errors_total{operation_type="update_runtime_config"} 0.0 st@1794947464.218677148
+kubelet_runtime_operations_errors_total{operation_type="version"} 0.0 st@1794947459.816639584
+# HELP kubelet_runtime_operations_total [ALPHA] Cumulative number of runtime operations by operation type.
+# TYPE kubelet_runtime_operations_total counter
+kubelet_runtime_operations_total{operation_type="container_status"} 3399.0 st@1794947459.619899577
+kubelet_runtime_operations_total{operation_type="create_container"} 9.0 st@1794947467.715675557
+kubelet_runtime_operations_total{operation_type="exec_sync"} 248.0 st@1794947543.794274575
+kubelet_runtime_operations_total{operation_type="image_fs_info"} 256.0 st@1794947459.715939835
+kubelet_runtime_operations_total{operation_type="image_status"} 21.0 st@1794947466.22165967
+kubelet_runtime_operations_total{operation_type="list_container_stats"} 1772.0 st@1794947459.733004453
+kubelet_runtime_operations_total{operation_type="list_containers"} 5963.0 st@1794947459.614348683
+kubelet_runtime_operations_total{operation_type="list_images"} 95.0 st@1794947459.615889131
+kubelet_runtime_operations_total{operation_type="list_podsandbox"} 5671.0 st@1794947459.615752713
+kubelet_runtime_operations_total{operation_type="podsandbox_status"} 22.0 st@1794947459.658231824
+kubelet_runtime_operations_total{operation_type="port_forward"} 9.0 st@1794947652.087371218
+kubelet_runtime_operations_total{operation_type="pull_image"} 4.0 st@1794947543.128516194
+kubelet_runtime_operations_total{operation_type="run_podsandbox"} 9.0 st@1794947466.219354166
+kubelet_runtime_operations_total{operation_type="start_container"} 9.0 st@1794947468.209729817
+kubelet_runtime_operations_total{operation_type="status"} 814.0 st@1794947459.615527861
+kubelet_runtime_operations_total{operation_type="update_runtime_config"} 1.0 st@1794947464.218682508
+kubelet_runtime_operations_total{operation_type="version"} 554.0 st@1794947459.816647065
+# HELP kubelet_sleep_action_terminated_early_total [ALPHA] The number of times lifecycle sleep handler got terminated before it finishes
+# TYPE kubelet_sleep_action_terminated_early_total counter
+kubelet_sleep_action_terminated_early_total 0.0 st@1794947459.613068097
+# HELP kubelet_started_containers_total [ALPHA] Cumulative number of containers started
+# TYPE kubelet_started_containers_total counter
+kubelet_started_containers_total{container_type="container"} 9.0 st@1794947466.220581289
+# HELP kubelet_started_pods_errors_total [ALPHA] Cumulative number of errors when starting pods
+# TYPE kubelet_started_pods_errors_total counter
+kubelet_started_pods_errors_total 0.0 st@1794947459.612819538
+# HELP kubelet_started_pods_total [ALPHA] Cumulative number of pods started
+# TYPE kubelet_started_pods_total counter
+kubelet_started_pods_total 9.0 st@1794947459.612809093
+# HELP kubelet_started_user_namespaced_pods_errors_total [ALPHA] Cumulative number of errors when starting pods with user namespaces. This metric will only be collected on Linux.
+# TYPE kubelet_started_user_namespaced_pods_errors_total counter
+kubelet_started_user_namespaced_pods_errors_total 0.0 st@1794947459.612799564
+# HELP kubelet_started_user_namespaced_pods_total [ALPHA] Cumulative number of pods with user namespaces started. This metric will only be collected on Linux.
+# TYPE kubelet_started_user_namespaced_pods_total counter
+kubelet_started_user_namespaced_pods_total 0.0 st@1794947459.612786643
+# HELP kubelet_topology_manager_admission_duration_ms [ALPHA] Duration in milliseconds to serve a pod admission request.
+# TYPE kubelet_topology_manager_admission_duration_ms histogram
+kubelet_topology_manager_admission_duration_ms {count:13,sum:0,schema:3,zero_threshold:2.938735877055719e-39,zero_count:13,bucket:[0.05:13,0.1:13,0.2:13,0.4:13,0.8:13,1.6:13,3.2:13,6.4:13,12.8:13,25.6:13,51.2:13,102.4:13,204.8:13,409.6:13,819.2:13,+Inf:13]} st@1794947459.612998769
+# HELP kubelet_topology_manager_admission_errors_total [ALPHA] The number of admission request failures where resources could not be aligned.
+# TYPE kubelet_topology_manager_admission_errors_total counter
+kubelet_topology_manager_admission_errors_total 0.0 st@1794947459.612991133
+# HELP kubelet_topology_manager_admission_requests_total [ALPHA] The number of admission requests where resources have to be aligned.
+# TYPE kubelet_topology_manager_admission_requests_total counter
+kubelet_topology_manager_admission_requests_total 13.0 st@1794947459.612982685
+# HELP kubelet_volume_metric_collection_duration_seconds [ALPHA] Duration in seconds to calculate volume stats
+# TYPE kubelet_volume_metric_collection_duration_seconds histogram
+kubelet_volume_metric_collection_duration_seconds{metric_source="du"} {count:34108,sum:2.0952757360000027,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-135:101],positive_buckets:[1330,1423,1292,1504,2348,3685,4132,3616,3363,2763,1741,1132,851,706,592,534,419,370,291,250,188,146,122,81,68,61,42,58,42,36,38,29,32,38,39,38,33,42,36,49,51,38,38,44,44,38,33,20,22,14,10,12,9,16,10,9,7,8,9,7,7,4,4,4,4,3,3,2,3,1,2,5,0,2,2,1,0,5,0,3,5,4,2,4,4,1,3,2,1,2,0,1,3,2,10,2,3,2,0,1,2],bucket:[0.005:34045,0.01:34063,0.025:34086,0.05:34108,0.1:34108,0.25:34108,0.5:34108,1:34108,2.5:34108,5:34108,10:34108,+Inf:34108]} st@1794947459.741801953
+# HELP kubelet_websocket_streaming_requests_total [BETA] Total number of WebSocket streaming requests (exec/attach/portforward) received by the kubelet.
+# TYPE kubelet_websocket_streaming_requests_total counter
+kubelet_websocket_streaming_requests_total{subresource="portforward"} 9.0 st@1794947652.087392792
+# HELP kubelet_working_pods [ALPHA] Number of pods the kubelet is actually running, broken down by lifecycle phase, whether the pod is desired, orphaned, or runtime only (also orphaned), and whether the pod is static. An orphaned pod has been removed from local configuration or force deleted in the API and consumes resources that are not otherwise visible.
+# TYPE kubelet_working_pods gauge
+kubelet_working_pods{config="desired",lifecycle="sync",static=""} 9.0
+kubelet_working_pods{config="desired",lifecycle="sync",static="true"} 4.0
+kubelet_working_pods{config="desired",lifecycle="terminated",static=""} 0.0
+kubelet_working_pods{config="desired",lifecycle="terminated",static="true"} 0.0
+kubelet_working_pods{config="desired",lifecycle="terminating",static=""} 0.0
+kubelet_working_pods{config="desired",lifecycle="terminating",static="true"} 0.0
+kubelet_working_pods{config="orphan",lifecycle="sync",static=""} 0.0
+kubelet_working_pods{config="orphan",lifecycle="sync",static="true"} 0.0
+kubelet_working_pods{config="orphan",lifecycle="terminated",static=""} 0.0
+kubelet_working_pods{config="orphan",lifecycle="terminated",static="true"} 0.0
+kubelet_working_pods{config="orphan",lifecycle="terminating",static=""} 0.0
+kubelet_working_pods{config="orphan",lifecycle="terminating",static="true"} 0.0
+kubelet_working_pods{config="runtime_only",lifecycle="sync",static="unknown"} 0.0
+kubelet_working_pods{config="runtime_only",lifecycle="terminated",static="unknown"} 0.0
+kubelet_working_pods{config="runtime_only",lifecycle="terminating",static="unknown"} 0.0
+# HELP kubernetes_build_info [BETA] A metric with a constant '1' value labeled by major, minor, git version, git commit, git tree state, build date, Go version, and compiler from which Kubernetes was built, and platform on which it is running.
+# TYPE kubernetes_build_info gauge
+kubernetes_build_info{build_date="2026-11-17T20:24:16Z",compiler="gc",git_commit="$Format:%H$",git_tree_state="",git_version="v0.0.0-master+$Format:%H$",go_version="go1.27.4",major="",minor="",platform="linux/amd64"} 1.0
+# HELP kubernetes_feature_enabled [BETA] This metric records the data about the stage and enablement of a k8s feature.
+# TYPE kubernetes_feature_enabled gauge
+kubernetes_feature_enabled{name="APIResponseCompression",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="APIServerIdentity",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="APIServerWebhookAuthenticationToken",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="APIServingWithRoutine",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="AllAlpha",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="AllBeta",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="AllocatorPoolBufferCap",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="AllowDNSOnlyNodeCSR",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="AllowInsecureKubeletCertificateSigningRequests",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="AllowParsingUserUIDFromCertAuth",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="AllowServiceExternalIPs",stage=""} 1.0
+kubernetes_feature_enabled{name="AllowUnsafeMalformedObjectDeletion",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="AtomicFIFO",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="AtomicWriteVolumeUserFields",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="AuthorizePodWebsocketUpgradeCreatePermission",stage=""} 1.0
+kubernetes_feature_enabled{name="CBORServingAndStorage",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CPUManagerPolicyAlphaOptions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CPUManagerPolicyBetaOptions",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="CPUManagerPolicyOptions",stage=""} 1.0
+kubernetes_feature_enabled{name="CRDObservedGenerationTracking",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="CRIListStreaming",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="CSIGlobalMountReconstruction",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CSIServiceAccountTokenSecrets",stage=""} 1.0
+kubernetes_feature_enabled{name="CSIVolumeHealth",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CertificateSigningRequestMLDSA",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="CgroupOptions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ChangeContainerStatusOnKubeletRestart",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="ClearingNominatedNodeNameAfterBinding",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ClientsAllowCARotation",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ClientsAllowCBOR",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ClientsAllowConnectionPool",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ClientsAllowConnectionPoolFailureAvoidance",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ClientsAllowTLSCacheGC",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ClientsPreferCBOR",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CloudControllerManagerWatchBasedRoutesReconciliation",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="CloudControllerManagerWebhook",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CloudNodeAdditionalLabelsReconciliation",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ClusterTrustBundle",stage=""} 1.0
+kubernetes_feature_enabled{name="ClusterTrustBundleProjection",stage=""} 1.0
+kubernetes_feature_enabled{name="ComponentFlagz",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ComponentStatusz",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="CompositePodGroup",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="ConcurrentWatchObjectDecode",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ConditionalAuthorization",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ConsistentGetFromCache",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ConsistentListFromCacheSkipTimeoutFallback",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ConstrainedImpersonation",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ContainerCheckpoint",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ContainerRestartRules",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ContainerStopSignals",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ContextualLogging",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="CoordinatedLeaderElection",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="CrossNamespaceVolumeDataSource",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="CustomCPUCFSQuotaPeriod",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAAdminAccess",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAConsumableCapacity",stage=""} 1.0
+kubernetes_feature_enabled{name="DRADerivedAttributes",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRADeviceBindingConditions",stage=""} 1.0
+kubernetes_feature_enabled{name="DRADeviceCompatibilityGroups",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRADeviceTaintRules",stage=""} 1.0
+kubernetes_feature_enabled{name="DRADeviceTaints",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAExtendedResource",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAExtendedResourceCapacity",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRAFractionalCapacityRange",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAListTypeAttributes",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DRANodeAllocatableResources",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="DRAOptionalNodeOperations",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DRAPartitionableDevices",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAPartitionableDevicesType",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRAPreemption",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRAPrioritizedList",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAResourceClaimDeviceStatus",stage=""} 1.0
+kubernetes_feature_enabled{name="DRAResourceClaimGranularStatusAuthorization",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DRAResourcePoolStatus",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRASchedulerFilterTimeout",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DRASharedConsumableCapacity",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DRAWorkloadResourceClaims",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="DeclarativeValidation",stage=""} 1.0
+kubernetes_feature_enabled{name="DeclarativeValidationBeta",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DeclarativeValidationTakeover",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="DefaultPodSysctls",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DeploymentReplicaSetTerminatingReplicas",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DetectCacheInconsistency",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="DisableCPUQuotaWithExclusiveCPUs",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="DisableNodeKubeProxyVersion",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="DynamicContainers",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="DynamicNodeLocalEphemeralVolumes",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="EmptyDirVolumeMode",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="EnvFiles",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="EtcdRangeStream",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="EventedPLEG",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="EvictionRequestAPI",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ExcludeAdmissionWebhookVirtualResources",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ExtendWebSocketsToKubelet",stage=""} 1.0
+kubernetes_feature_enabled{name="ExternalServiceAccountTokenSigner",stage=""} 1.0
+kubernetes_feature_enabled{name="GRPCContainerProbeTLS",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="GenericWorkload",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="GitRepoVolumeDriver",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="GracefulNodeShutdown",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="GracefulNodeShutdownBasedOnPodPriority",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="H2CContainerProbe",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="HPAConfigurableTolerance",stage=""} 1.0
+kubernetes_feature_enabled{name="HPAGeneration",stage=""} 1.0
+kubernetes_feature_enabled{name="HPAOptimizedSelectorStore",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="HPAScaleToZero",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="HostnameOverride",stage=""} 1.0
+kubernetes_feature_enabled{name="HugepageAwareEviction",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ImageMaximumGCAge",stage=""} 1.0
+kubernetes_feature_enabled{name="ImageVolume",stage=""} 1.0
+kubernetes_feature_enabled{name="ImageVolumeWithDigest",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="InOrderInformers",stage=""} 1.0
+kubernetes_feature_enabled{name="InOrderInformersBatchProcess",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="InPlaceNodeResourceResize",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="InPlacePodLevelResourcesVerticalScaling",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="InPlacePodVerticalScalingExclusiveCPUs",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="InPlacePodVerticalScalingExclusiveMemory",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="InPlacePodVerticalScalingInitContainers",stage=""} 1.0
+kubernetes_feature_enabled{name="InPlacePodVerticalScalingMemoryBackedVolumes",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="InPlacePodVerticalScalingSchedulerPreemption",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="InformerResourceVersion",stage=""} 1.0
+kubernetes_feature_enabled{name="InterPodAffinityHostnameFastPath",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="KMSv1",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="KubeAPIServerWorkloadsTrust",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="KubeProxyIPVS",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="KubeProxyNFTablesLocalhostNodePorts",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="KubeletAllocatedPodsEndpoint",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="KubeletCgroupDriverFromCRI",stage=""} 1.0
+kubernetes_feature_enabled{name="KubeletCrashLoopBackOffMax",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="KubeletEnsureSecretPulledImages",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="KubeletFineGrainedAuthz",stage=""} 1.0
+kubernetes_feature_enabled{name="KubeletInUserNamespace",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="KubeletPSI",stage=""} 1.0
+kubernetes_feature_enabled{name="KubeletPodResourcesDynamicResources",stage=""} 1.0
+kubernetes_feature_enabled{name="KubeletPodResourcesGet",stage=""} 1.0
+kubernetes_feature_enabled{name="KubeletPodResourcesListUseActivePods",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="KubeletRegistrationGetOnExistsOnly",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="KubeletSeparateDiskGC",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="KubeletServiceAccountTokenForCredentialProviders",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ListFromCacheSnapshot",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="LocalStorageCapacityIsolationFSQuotaMonitoring",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="LoggingAlphaOptions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="LoggingBetaOptions",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ManagedFieldsOptOut",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ManagedFieldsOptOutClient",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ManifestBasedAdmissionControlConfig",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MatchLabelKeysInPodTopologySpread",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MatchLabelKeysInPodTopologySpreadSelectorMerge",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MaxUnavailableStatefulSet",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MemoryQoS",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MutableCSINodeAllocatableCount",stage=""} 1.0
+kubernetes_feature_enabled{name="MutablePVNodeAffinity",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="MutablePodResourcesForSuspendedJobs",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MutableSchedulingDirectivesForSuspendedJobs",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="MutatingAdmissionPolicy",stage=""} 1.0
+kubernetes_feature_enabled{name="NFTablesNetlink",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="NativeHistograms",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="NetworkIsolatedPods",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="NodeControllerLeaseCircuitBreaker",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="NodeDeclaredFeatures",stage=""} 1.0
+kubernetes_feature_enabled{name="NodeInclusionPolicyInPodTopologySpread",stage=""} 1.0
+kubernetes_feature_enabled{name="NodeLifecycleConditions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="NodeLogQuery",stage=""} 1.0
+kubernetes_feature_enabled{name="NominatedNodeNameForExpectation",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="OpenAPIEnums",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="OpenAPIV2LazyBuild",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="OpportunisticBatching",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PLEGOnDemandRelist",stage=""} 1.0
+kubernetes_feature_enabled{name="PersistentVolumeClaimUnusedSinceTime",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodAndContainerStatsFromCRI",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="PodCertificateMLDSA",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="PodCertificateRequest",stage=""} 1.0
+kubernetes_feature_enabled{name="PodDeletionCost",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodFailurePolicyName",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="PodLevelResourceManagers",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="PodLevelResources",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodLevelResourcesFixDefaulting",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodLevelResourcesFixKubeletQOSClass",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodLogsQuerySplitStreams",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="PodObservedGenerationTracking",stage=""} 1.0
+kubernetes_feature_enabled{name="PodReadyToStartContainersCondition",stage=""} 1.0
+kubernetes_feature_enabled{name="PodTopologyLabelsAdmission",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PodsAPI",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="PortForwardWebsockets",stage=""} 1.0
+kubernetes_feature_enabled{name="ProcMountType",stage=""} 1.0
+kubernetes_feature_enabled{name="QOSReserved",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ReduceDefaultCrashLoopBackOffDecay",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="RelaxedServiceNameValidation",stage=""} 1.0
+kubernetes_feature_enabled{name="ReloadKubeletClientCAFile",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ReloadKubeletServerCertificateFile",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="RemoteRequestHeaderUID",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="RequestCostAggregation",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="ResourceHealthStatus",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ResourceHealthStatusMessage",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="RestartAllContainersOnContainerExits",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="RotateKubeletServerCertificate",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="RuntimeClassInImageCriApi",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="SELinuxChangePolicy",stage=""} 1.0
+kubernetes_feature_enabled{name="SELinuxMount",stage=""} 1.0
+kubernetes_feature_enabled{name="SELinuxMountReadWriteOncePod",stage=""} 1.0
+kubernetes_feature_enabled{name="SchedulerAsyncAPICalls",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="SchedulerAsyncPreemption",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="SchedulerPopFromBackoffQ",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="SchedulerPreQueueingHints",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="SecurityProfileOCI",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="SeparateCacheWatchRPC",stage="DEPRECATED"} 0.0
+kubernetes_feature_enabled{name="ServiceAccountNodeAudienceRestriction",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="ServiceAccountTokenMLDSA",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="ServiceCIDRStatusFieldWiping",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="ShardedListAndWatch",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="SizeBasedListCostEstimate",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StaleControllerConsistencyDaemonSet",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StaleControllerConsistencyHPA",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StaleControllerConsistencyJob",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StaleControllerConsistencyReplicaSet",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StaleControllerConsistencyStatefulSet",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StatefulSetRecreateStrategy",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StatefulSetSemanticRevisionComparison",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StorageCapacityScoring",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StorageNamespaceIndex",stage="DEPRECATED"} 1.0
+kubernetes_feature_enabled{name="StorageVersionAPI",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="StorageVersionHash",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StorageVersionMigrator",stage=""} 1.0
+kubernetes_feature_enabled{name="StrictIPCIDRValidation",stage=""} 1.0
+kubernetes_feature_enabled{name="StructuredAuthenticationConfigurationEgressSelector",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="StructuredAuthenticationConfigurationJWKSMetrics",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="TaintTolerationComparisonOperators",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="TokenRequestServiceAccountUIDValidation",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="TopologyAwareWorkloadScheduling",stage="BETA"} 0.0
+kubernetes_feature_enabled{name="TopologyManagerPolicyAlphaOptions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="TopologyManagerPolicyBetaOptions",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="TopologyManagerPolicyOptions",stage=""} 1.0
+kubernetes_feature_enabled{name="TranslateStreamCloseWebsocketRequests",stage=""} 1.0
+kubernetes_feature_enabled{name="UnauthenticatedHTTP2DOSMitigation",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="UnknownVersionInteroperabilityProxy",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="UnlockWhileProcessingFIFO",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="UserNamespacesHostNetworkSupport",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="UserNamespacesSupport",stage=""} 1.0
+kubernetes_feature_enabled{name="VolumeAttributesClass",stage=""} 1.0
+kubernetes_feature_enabled{name="VolumeBindMountOptions",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="VolumeLimitScaling",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WatchCacheInitializationPostStartHook",stage=""} 1.0
+kubernetes_feature_enabled{name="WatchCacheStallResume",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WatchFromStorageWithoutPrevKV",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WatchList",stage=""} 1.0
+kubernetes_feature_enabled{name="WatchListClient",stage=""} 1.0
+kubernetes_feature_enabled{name="WatchListClientConcurrentDecoding",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WatchListCompression",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WebhookRoundTripLoadBalancing",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WindowsCPUAndMemoryAffinity",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WindowsGracefulNodeShutdown",stage="BETA"} 1.0
+kubernetes_feature_enabled{name="WorkloadWithDeployment",stage="ALPHA"} 0.0
+kubernetes_feature_enabled{name="WorkloadWithJob",stage="BETA"} 0.0
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 248.72
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1e+06
+# HELP process_network_receive_bytes_total Number of bytes received by the process over the network.
+# TYPE process_network_receive_bytes_total counter
+process_network_receive_bytes_total 1.715257806e+09
+# HELP process_network_transmit_bytes_total Number of bytes sent by the process over the network.
+# TYPE process_network_transmit_bytes_total counter
+process_network_transmit_bytes_total 9.09942724e+08
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 28.0
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 1.06123264e+08
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.79494745931e+09
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 1.421832192e+09
+# HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
+# TYPE process_virtual_memory_max_bytes gauge
+process_virtual_memory_max_bytes 1.8446744073709552e+19
+# HELP reconstruct_volume_operations_errors_total [ALPHA] The number of volumes that failed reconstruction from the operating system during kubelet startup.
+# TYPE reconstruct_volume_operations_errors_total counter
+reconstruct_volume_operations_errors_total 0.0 st@1794947459.614826846
+# HELP reconstruct_volume_operations_total [ALPHA] The number of volumes that were attempted to be reconstructed from the operating system during kubelet startup. This includes both successful and failed reconstruction.
+# TYPE reconstruct_volume_operations_total counter
+reconstruct_volume_operations_total 0.0 st@1794947459.61481365
+# HELP registered_metrics_total [BETA] The count of registered metrics broken by stability level and deprecation version.
+# TYPE registered_metrics_total counter
+registered_metrics_total{deprecated_version="",stability_level="ALPHA"} 168.0 st@1794947459.479017435
+registered_metrics_total{deprecated_version="",stability_level="BETA"} 23.0 st@1794947459.478705664
+registered_metrics_total{deprecated_version="",stability_level="INTERNAL"} 2.0 st@1794947459.480603042
+registered_metrics_total{deprecated_version="",stability_level="STABLE"} 2.0 st@1794947459.612174946
+# HELP rest_client_exec_plugin_certificate_rotation_age [ALPHA] Histogram of the number of seconds the last auth exec plugin client certificate lived before being rotated. If auth exec plugin client certificates are unused, histogram will contain no data.
+# TYPE rest_client_exec_plugin_certificate_rotation_age histogram
+rest_client_exec_plugin_certificate_rotation_age {count:0,sum:0,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,bucket:[600:0,1800:0,3600:0,14400:0,86400:0,604800:0,2.592e+06:0,7.776e+06:0,1.5552e+07:0,3.1104e+07:0,1.24416e+08:0,+Inf:0]} st@1794947459.520534522
+# HELP rest_client_exec_plugin_ttl_seconds [ALPHA] Gauge of the shortest TTL (time-to-live) of the client certificate(s) managed by the auth exec plugin. The value is in seconds until certificate expiry (negative if already expired). If auth exec plugins are unused or manage no TLS certificates, the value will be +INF.
+# TYPE rest_client_exec_plugin_ttl_seconds gauge
+rest_client_exec_plugin_ttl_seconds +Inf
+# HELP rest_client_rate_limiter_duration_seconds [ALPHA] Client side rate limiter latency in seconds. Broken down by verb, and host.
+# TYPE rest_client_rate_limiter_duration_seconds histogram
+rest_client_rate_limiter_duration_seconds{host="192.168.8.2:6443",verb="DELETE"} {count:1,sum:2.58e-06,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-148:1],positive_buckets:[1],bucket:[0.005:1,0.025:1,0.1:1,0.25:1,0.5:1,1:1,2:1,4:1,8:1,15:1,30:1,60:1,+Inf:1]} st@1794947459.693410258
+rest_client_rate_limiter_duration_seconds{host="192.168.8.2:6443",verb="GET"} {count:56,sum:0.00021604699999999997,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-162:1,9:12,6:1,17:1],positive_buckets:[1,1,4,1,3,8,8,14,3,4,4,1,1,2,1],bucket:[0.005:56,0.025:56,0.1:56,0.25:56,0.5:56,1:56,2:56,4:56,8:56,15:56,30:56,60:56,+Inf:56]} st@1794947459.600800148
+rest_client_rate_limiter_duration_seconds{host="192.168.8.2:6443",verb="PATCH"} {count:59,sum:0.00018661500000000003,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-156:18,3:1],positive_buckets:[1,1,2,1,3,2,3,2,5,8,5,5,6,6,3,3,1,1,1],bucket:[0.005:59,0.025:59,0.1:59,0.25:59,0.5:59,1:59,2:59,4:59,8:59,15:59,30:59,60:59,+Inf:59]} st@1794947461.950835829
+rest_client_rate_limiter_duration_seconds{host="192.168.8.2:6443",verb="POST"} {count:75,sum:0.00018011999999999998,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-159:19,8:1],positive_buckets:[1,0,0,4,5,4,10,7,9,8,3,2,4,3,4,6,2,0,2,1],bucket:[0.005:75,0.025:75,0.1:75,0.25:75,0.5:75,1:75,2:75,4:75,8:75,15:75,30:75,60:75,+Inf:75]} st@1794947459.612275909
+# HELP rest_client_request_duration_seconds [ALPHA] Request latency in seconds. Broken down by verb, and host.
+# TYPE rest_client_request_duration_seconds histogram
+rest_client_request_duration_seconds{host="192.168.8.2:6443",verb="DELETE"} {count:1,sum:0.008686261,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-54:1],positive_buckets:[1],bucket:[0.005:0,0.025:1,0.1:1,0.25:1,0.5:1,1:1,2:1,4:1,8:1,15:1,30:1,60:1,+Inf:1]} st@1794947459.702079638
+rest_client_request_duration_seconds{host="192.168.8.2:6443",verb="GET"} {count:58,sum:0.7272888150000002,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-69:21,3:1,7:2,4:4],positive_buckets:[1,1,0,1,1,1,5,6,3,4,7,6,5,2,1,1,2,0,0,3,1,1,1,1,1,0,0,3],bucket:[0.005:19,0.025:52,0.1:58,0.25:58,0.5:58,1:58,2:58,4:58,8:58,15:58,30:58,60:58,+Inf:58]} st@1794947459.605444059
+rest_client_request_duration_seconds{host="192.168.8.2:6443",verb="PATCH"} {count:71,sum:1.3838120359999992,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-52:16,14:1],positive_buckets:[3,9,4,7,8,12,4,8,1,3,3,1,5,1,0,1,1],bucket:[0.005:0,0.025:60,0.1:70,0.25:71,0.5:71,1:71,2:71,4:71,8:71,15:71,30:71,60:71,+Inf:71]} st@1794947459.846644212
+rest_client_request_duration_seconds{host="192.168.8.2:6443",verb="POST"} {count:76,sum:0.9458018090000001,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-70:29,3:1,12:1],positive_buckets:[1,1,0,1,2,4,3,0,0,1,3,1,3,3,5,5,2,4,6,2,2,6,5,2,0,1,7,3,1,1,1],bucket:[0.005:13,0.025:74,0.1:75,0.25:76,0.5:76,1:76,2:76,4:76,8:76,15:76,30:76,60:76,+Inf:76]} st@1794947459.62210207
+rest_client_request_duration_seconds{host="192.168.8.2:6443",verb="PUT"} {count:249,sum:2.5547322490000006,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-60:25,18:1],positive_buckets:[2,7,30,40,41,30,23,14,14,8,10,7,1,8,2,1,1,3,2,1,1,1,0,0,1,1],bucket:[0.005:0,0.025:242,0.1:248,0.25:249,0.5:249,1:249,2:249,4:249,8:249,15:249,30:249,60:249,+Inf:249]} st@1794947469.841221551
+# HELP rest_client_request_size_bytes [ALPHA] Request size in bytes. Broken down by verb and host.
+# TYPE rest_client_request_size_bytes histogram
+rest_client_request_size_bytes{host="192.168.8.2:6443",verb="DELETE"} {count:1,sum:47,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[45:1],positive_buckets:[1],bucket:[64:1,256:1,512:1,1024:1,4096:1,16384:1,65536:1,262144:1,1.048576e+06:1,4.194304e+06:1,1.6777216e+07:1,+Inf:1]} st@1794947459.702004158
+rest_client_request_size_bytes{host="192.168.8.2:6443",verb="GET"} {count:58,sum:0,schema:3,zero_threshold:2.938735877055719e-39,zero_count:58,bucket:[64:58,256:58,512:58,1024:58,4096:58,16384:58,65536:58,262144:58,1.048576e+06:58,4.194304e+06:58,1.6777216e+07:58,+Inf:58]} st@1794947459.605358407
+rest_client_request_size_bytes{host="192.168.8.2:6443",verb="PATCH"} {count:71,sum:65606,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[57:4,6:25],positive_buckets:[4,0,0,3,1,0,8,8,0,0,1,1,7,0,0,1,2,3,3,5,10,1,1,4,5,1,1,0,1],bucket:[64:0,256:7,512:24,1024:39,4096:71,16384:71,65536:71,262144:71,1.048576e+06:71,4.194304e+06:71,1.6777216e+07:71,+Inf:71]} st@1794947459.846485807
+rest_client_request_size_bytes{host="192.168.8.2:6443",verb="POST"} {count:76,sum:46067,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[58:17,10:1,3:6],positive_buckets:[3,2,2,1,0,0,1,0,1,4,24,6,6,10,3,3,1,2,2,0,0,3,0,2],bucket:[64:0,256:9,512:63,1024:67,4096:76,16384:76,65536:76,262144:76,1.048576e+06:76,4.194304e+06:76,1.6777216e+07:76,+Inf:76]} st@1794947459.622004782
+rest_client_request_size_bytes{host="192.168.8.2:6443",verb="PUT"} {count:249,sum:134854,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[73:1],positive_buckets:[249],bucket:[64:0,256:0,512:0,1024:249,4096:249,16384:249,65536:249,262144:249,1.048576e+06:249,4.194304e+06:249,1.6777216e+07:249,+Inf:249]} st@1794947469.841111746
+# HELP rest_client_requests_total [ALPHA] Number of HTTP requests, partitioned by status code, method, and host.
+# TYPE rest_client_requests_total counter
+rest_client_requests_total{code="200",host="192.168.8.2:6443",method="DELETE"} 1.0 st@1794947459.702029929
+rest_client_requests_total{code="200",host="192.168.8.2:6443",method="GET"} 105.0 st@1794947459.605374048
+rest_client_requests_total{code="200",host="192.168.8.2:6443",method="PATCH"} 71.0 st@1794947459.846512925
+rest_client_requests_total{code="200",host="192.168.8.2:6443",method="PUT"} 249.0 st@1794947469.841139246
+rest_client_requests_total{code="201",host="192.168.8.2:6443",method="POST"} 67.0 st@1794947459.622047865
+rest_client_requests_total{code="404",host="192.168.8.2:6443",method="GET"} 1.0 st@1794947459.622188664
+rest_client_requests_total{code="409",host="192.168.8.2:6443",method="POST"} 9.0 st@1794947459.7712616
+# HELP rest_client_response_size_bytes [ALPHA] Response size in bytes. Broken down by verb and host.
+# TYPE rest_client_response_size_bytes histogram
+rest_client_response_size_bytes{host="192.168.8.2:6443",verb="DELETE"} {count:1,sum:62,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[48:1],positive_buckets:[1],bucket:[64:1,256:1,512:1,1024:1,4096:1,16384:1,65536:1,262144:1,1.048576e+06:1,4.194304e+06:1,1.6777216e+07:1,+Inf:1]} st@1794947459.702089461
+rest_client_response_size_bytes{host="192.168.8.2:6443",verb="GET"} {count:58,sum:318642,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[61:1,14:1,16:12],positive_buckets:[1,2,1,1,4,0,4,2,10,3,12,8,4,6],bucket:[64:0,256:1,512:1,1024:3,4096:9,16384:58,65536:58,262144:58,1.048576e+06:58,4.194304e+06:58,1.6777216e+07:58,+Inf:58]} st@1794947459.605457893
+rest_client_response_size_bytes{host="192.168.8.2:6443",verb="PATCH"} {count:71,sum:378362,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[76:3,17:9],positive_buckets:[4,2,1,3,1,11,9,4,15,11,5,5],bucket:[64:0,256:0,512:0,1024:7,4096:10,16384:71,65536:71,262144:71,1.048576e+06:71,4.194304e+06:71,1.6777216e+07:71,+Inf:71]} st@1794947459.84665198
+rest_client_response_size_bytes{host="192.168.8.2:6443",verb="POST"} {count:76,sum:58965,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[59:4,10:7,6:3],positive_buckets:[1,2,4,2,1,0,8,15,29,4,2,5,2,1],bucket:[64:0,256:9,512:9,1024:68,4096:76,16384:76,65536:76,262144:76,1.048576e+06:76,4.194304e+06:76,1.6777216e+07:76,+Inf:76]} st@1794947459.62211405
+rest_client_response_size_bytes{host="192.168.8.2:6443",verb="PUT"} {count:249,sum:134855,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[73:1],positive_buckets:[249],bucket:[64:0,256:0,512:0,1024:249,4096:249,16384:249,65536:249,262144:249,1.048576e+06:249,4.194304e+06:249,1.6777216e+07:249,+Inf:249]} st@1794947469.841248503
+# HELP rest_client_transport_cache_entries [ALPHA] Number of transport entries in the internal cache.
+# TYPE rest_client_transport_cache_entries gauge
+rest_client_transport_cache_entries 0.0
+# HELP rest_client_transport_cert_rotation_gc_calls_total [ALPHA] Number of times a cert rotation goroutine cancel func is called via GC cleanup of the associated transport
+# TYPE rest_client_transport_cert_rotation_gc_calls_total counter
+rest_client_transport_cert_rotation_gc_calls_total 0.0 st@1794947459.520598135
+# HELP storage_operation_duration_seconds [BETA] Storage operation duration
+# TYPE storage_operation_duration_seconds histogram
+storage_operation_duration_seconds{migrated="false",operation_name="verify_controller_attached_volume",status="success",volume_plugin="kubernetes.io/configmap"} {count:5,sum:0.0016751359999999998,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-104:1,10:1,8:1],positive_buckets:[1,3,1],bucket:[0.1:5,0.25:5,0.5:5,1:5,2.5:5,5:5,10:5,15:5,25:5,50:5,120:5,300:5,600:5,+Inf:5]} st@1794947465.460674333
+storage_operation_duration_seconds{migrated="false",operation_name="verify_controller_attached_volume",status="success",volume_plugin="kubernetes.io/empty-dir"} {count:6,sum:0.002223668,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-94:5,3:1],positive_buckets:[1,1,1,1,1,1],bucket:[0.1:6,0.25:6,0.5:6,1:6,2.5:6,5:6,10:6,15:6,25:6,50:6,120:6,300:6,600:6,+Inf:6]} st@1794947492.301867901
+storage_operation_duration_seconds{migrated="false",operation_name="verify_controller_attached_volume",status="success",volume_plugin="kubernetes.io/host-path"} {count:26,sum:0.006820719999999999,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-114:12,6:10,7:1],positive_buckets:[2,1,1,0,0,1,1,3,0,1,2,2,1,0,3,0,0,2,1,1,1,1,2],bucket:[0.1:26,0.25:26,0.5:26,1:26,2.5:26,5:26,10:26,15:26,25:26,50:26,120:26,300:26,600:26,+Inf:26]} st@1794947459.816424396
+storage_operation_duration_seconds{migrated="false",operation_name="verify_controller_attached_volume",status="success",volume_plugin="kubernetes.io/projected"} {count:8,sum:0.002494749,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-101:16],positive_buckets:[1,0,0,1,0,1,1,0,1,0,0,1,1,0,0,1],bucket:[0.1:8,0.25:8,0.5:8,1:8,2.5:8,5:8,10:8,15:8,25:8,50:8,120:8,300:8,600:8,+Inf:8]} st@1794947465.460365933
+storage_operation_duration_seconds{migrated="false",operation_name="volume_apply_access_control",status="success",volume_plugin="kubernetes.io/empty-dir"} {count:1,sum:0.000235423,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-96:1],positive_buckets:[1],bucket:[0.1:1,0.25:1,0.5:1,1:1,2.5:1,5:1,10:1,15:1,25:1,50:1,120:1,300:1,600:1,+Inf:1]} st@1794947503.356095708
+storage_operation_duration_seconds{migrated="false",operation_name="volume_apply_access_control",status="success",volume_plugin="kubernetes.io/projected"} {count:1,sum:0.000556076,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-86:1],positive_buckets:[1],bucket:[0.1:1,0.25:1,0.5:1,1:1,2.5:1,5:1,10:1,15:1,25:1,50:1,120:1,300:1,600:1,+Inf:1]} st@1794947503.360166303
+storage_operation_duration_seconds{migrated="false",operation_name="volume_mount",status="success",volume_plugin="kubernetes.io/configmap"} {count:182,sum:0.202076516,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-89:26,4:2],positive_buckets:[1,1,3,5,11,12,12,22,25,16,10,12,10,13,7,3,4,1,3,3,1,1,2,0,0,2,1,1],bucket:[0.1:182,0.25:182,0.5:182,1:182,2.5:182,5:182,10:182,15:182,25:182,50:182,120:182,300:182,600:182,+Inf:182]} st@1794947465.566264825
+storage_operation_duration_seconds{migrated="false",operation_name="volume_mount",status="success",volume_plugin="kubernetes.io/empty-dir"} {count:6,sum:0.030407283,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-82:1,8:1,15:2],positive_buckets:[1,1,3,1],bucket:[0.1:6,0.25:6,0.5:6,1:6,2.5:6,5:6,10:6,15:6,25:6,50:6,120:6,300:6,600:6,+Inf:6]} st@1794947492.403880758
+storage_operation_duration_seconds{migrated="false",operation_name="volume_mount",status="success",volume_plugin="kubernetes.io/host-path"} {count:26,sum:0.016618416,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-105:1,3:1,4:9,3:7,5:1,6:1],positive_buckets:[1,1,3,1,2,1,0,2,2,1,2,2,2,0,1,2,0,1,1,1],bucket:[0.1:26,0.25:26,0.5:26,1:26,2.5:26,5:26,10:26,15:26,25:26,50:26,120:26,300:26,600:26,+Inf:26]} st@1794947459.918150707
+storage_operation_duration_seconds{migrated="false",operation_name="volume_mount",status="success",volume_plugin="kubernetes.io/projected"} {count:289,sum:0.6058371710000005,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-86:24,3:1,7:1,8:4],positive_buckets:[1,3,7,14,25,46,32,36,21,23,19,15,6,2,9,3,3,2,2,0,2,2,0,4,2,1,4,0,1,4],bucket:[0.1:289,0.25:289,0.5:289,1:289,2.5:289,5:289,10:289,15:289,25:289,50:289,120:289,300:289,600:289,+Inf:289]} st@1794947465.596294869
+# HELP volume_manager_total_volumes [ALPHA] Number of volumes in Volume Manager
+# TYPE volume_manager_total_volumes gauge
+volume_manager_total_volumes{plugin_name="kubernetes.io/configmap",state="actual_state_of_world"} 5.0
+volume_manager_total_volumes{plugin_name="kubernetes.io/configmap",state="desired_state_of_world"} 5.0
+volume_manager_total_volumes{plugin_name="kubernetes.io/empty-dir",state="actual_state_of_world"} 6.0
+volume_manager_total_volumes{plugin_name="kubernetes.io/empty-dir",state="desired_state_of_world"} 6.0
+volume_manager_total_volumes{plugin_name="kubernetes.io/host-path",state="actual_state_of_world"} 26.0
+volume_manager_total_volumes{plugin_name="kubernetes.io/host-path",state="desired_state_of_world"} 26.0
+volume_manager_total_volumes{plugin_name="kubernetes.io/projected",state="actual_state_of_world"} 8.0
+volume_manager_total_volumes{plugin_name="kubernetes.io/projected",state="desired_state_of_world"} 8.0
+# HELP volume_operation_total_seconds [BETA] Storage operation end to end duration in seconds
+# TYPE volume_operation_total_seconds histogram
+volume_operation_total_seconds{operation_name="overall_volume_mount",plugin_name="kubernetes.io/configmap"} {count:182,sum:81.027166418,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-84:14,3:48,69:1],positive_buckets:[1,0,1,2,0,1,1,1,3,1,1,0,0,1,1,2,1,0,1,0,0,1,0,0,1,0,0,2,0,5,0,1,4,1,1,0,3,3,5,2,2,4,2,7,4,4,5,16,10,7,7,7,8,7,9,31,0,1,0,2,0,1,1],bucket:[0.1:151,0.25:181,0.5:181,1:181,2.5:181,5:181,10:181,15:181,25:181,50:181,120:182,300:182,600:182,+Inf:182]} st@1794947465.566093299
+volume_operation_total_seconds{operation_name="overall_volume_mount",plugin_name="kubernetes.io/empty-dir"} {count:6,sum:0.9054070970000001,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-22:2],positive_buckets:[2,4],bucket:[0.1:0,0.25:6,0.5:6,1:6,2.5:6,5:6,10:6,15:6,25:6,50:6,120:6,300:6,600:6,+Inf:6]} st@1794947492.403844847
+volume_operation_total_seconds{operation_name="overall_volume_mount",plugin_name="kubernetes.io/host-path"} {count:26,sum:3.110652072,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-26:8],positive_buckets:[14,6,0,0,2,1,0,3],bucket:[0.1:0,0.25:26,0.5:26,1:26,2.5:26,5:26,10:26,15:26,25:26,50:26,120:26,300:26,600:26,+Inf:26]} st@1794947459.918129323
+volume_operation_total_seconds{operation_name="overall_volume_mount",plugin_name="kubernetes.io/projected"} {count:289,sum:86.25631056399995,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-81:10,3:43,3:5,67:1],positive_buckets:[2,0,3,5,2,1,4,5,2,4,1,1,0,3,0,2,0,0,1,1,1,1,2,1,2,2,5,2,1,3,4,3,0,1,10,4,5,8,5,3,13,5,7,6,18,19,12,14,8,8,19,15,37,2,0,2,2,1,1],bucket:[0.1:249,0.25:288,0.5:288,1:288,2.5:288,5:288,10:288,15:288,25:288,50:288,120:289,300:289,600:289,+Inf:289]} st@1794947465.596257221
+# HELP workqueue_adds_total [BETA] Total number of adds handled by workqueue
+# TYPE workqueue_adds_total counter
+workqueue_adds_total{name="DynamicCABundle-client-ca-bundle"} 2.0 st@1794947459.527329863
+workqueue_adds_total{name="DynamicCABundle-kubelet-server-cert-files"} 1.0 st@1794947459.598615244
+workqueue_adds_total{name="DynamicServingCertificateController"} 43.0 st@1794947459.599208081
+workqueue_adds_total{name="kubelet_log_rotate_manager"} 3274.0 st@1794947459.590626014
+workqueue_adds_total{name="podcertificate_projection"} 0.0 st@1794947459.59949239
+# HELP workqueue_depth [BETA] Current depth of workqueue
+# TYPE workqueue_depth gauge
+workqueue_depth{name="DynamicCABundle-client-ca-bundle"} 0.0
+workqueue_depth{name="DynamicCABundle-kubelet-server-cert-files"} 0.0
+workqueue_depth{name="DynamicServingCertificateController"} 0.0
+workqueue_depth{name="kubelet_log_rotate_manager"} 0.0
+workqueue_depth{name="podcertificate_projection"} 0.0
+# HELP workqueue_longest_running_processor_seconds [BETA] How many seconds has the longest running processor for workqueue been running.
+# TYPE workqueue_longest_running_processor_seconds gauge
+workqueue_longest_running_processor_seconds{name="DynamicCABundle-client-ca-bundle"} 0.0
+workqueue_longest_running_processor_seconds{name="DynamicCABundle-kubelet-server-cert-files"} 0.0
+workqueue_longest_running_processor_seconds{name="DynamicServingCertificateController"} 0.0
+workqueue_longest_running_processor_seconds{name="kubelet_log_rotate_manager"} 0.0
+workqueue_longest_running_processor_seconds{name="podcertificate_projection"} 0.0
+# HELP workqueue_queue_duration_seconds [BETA] How long in seconds an item stays in workqueue before being requested.
+# TYPE workqueue_queue_duration_seconds histogram
+workqueue_queue_duration_seconds{name="DynamicCABundle-client-ca-bundle"} {count:2,sum:0.00018140000000000002,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-112:1,8:1],positive_buckets:[1,1],bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:1,0.001:2,0.01:2,0.1:2,1:2,10:2,+Inf:2]} st@1794947459.527335028
+workqueue_queue_duration_seconds{name="DynamicCABundle-kubelet-server-cert-files"} {count:1,sum:0.000136027,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-102:1],positive_buckets:[1],bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:0,0.001:1,0.01:1,0.1:1,1:1,10:1,+Inf:1]} st@1794947459.598618809
+workqueue_queue_duration_seconds{name="DynamicServingCertificateController"} {count:43,sum:0.0010347719999999998,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-132:16,3:4,12:1],positive_buckets:[1,0,3,6,4,7,6,1,6,3,1,0,0,1,0,1,1,0,0,1,1],bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:42,0.001:43,0.01:43,0.1:43,1:43,10:43,+Inf:43]} st@1794947459.599215255
+workqueue_queue_duration_seconds{name="kubelet_log_rotate_manager"} {count:3274,sum:37.62839211100007,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-129:34,8:1,8:48,4:11],positive_buckets:[2,3,1,4,5,7,9,9,18,10,17,33,25,26,26,10,20,10,6,2,3,1,1,0,0,1,0,1,2,0,0,2,0,1,1,2,5,19,20,31,34,31,28,29,25,29,35,46,38,51,44,48,65,70,70,90,87,89,104,132,112,139,149,181,170,211,207,161,121,105,79,49,25,20,7,13,12,10,1,5,3,1,2,3,3,1,0,2,0,1,1,1,0,1],bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:248,0.001:256,0.01:1570,0.1:3263,1:3274,10:3274,+Inf:3274]} st@1794947459.590630459
+workqueue_queue_duration_seconds{name="podcertificate_projection"} {count:0,sum:0,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:0,0.001:0,0.01:0,0.1:0,1:0,10:0,+Inf:0]} st@1794947459.599494578
+# HELP workqueue_retries_total [BETA] Total number of retries handled by workqueue
+# TYPE workqueue_retries_total counter
+workqueue_retries_total{name="DynamicCABundle-client-ca-bundle"} 0.0 st@1794947459.527440921
+workqueue_retries_total{name="DynamicCABundle-kubelet-server-cert-files"} 0.0 st@1794947459.598646172
+workqueue_retries_total{name="DynamicServingCertificateController"} 0.0 st@1794947459.599267866
+workqueue_retries_total{name="kubelet_log_rotate_manager"} 0.0 st@1794947459.590667249
+workqueue_retries_total{name="podcertificate_projection"} 0.0 st@1794947459.599529795
+# HELP workqueue_unfinished_work_seconds [BETA] How many seconds of work has done that is in progress and hasn't been observed by work_duration. Large values indicate stuck threads. One can deduce the number of stuck threads by observing the rate at which this increases.
+# TYPE workqueue_unfinished_work_seconds gauge
+workqueue_unfinished_work_seconds{name="DynamicCABundle-client-ca-bundle"} 0.0
+workqueue_unfinished_work_seconds{name="DynamicCABundle-kubelet-server-cert-files"} 0.0
+workqueue_unfinished_work_seconds{name="DynamicServingCertificateController"} 0.0
+workqueue_unfinished_work_seconds{name="kubelet_log_rotate_manager"} 0.0
+workqueue_unfinished_work_seconds{name="podcertificate_projection"} 0.0
+# HELP workqueue_work_duration_seconds [BETA] How long in seconds processing an item from workqueue takes.
+# TYPE workqueue_work_duration_seconds histogram
+workqueue_work_duration_seconds{name="DynamicCABundle-client-ca-bundle"} {count:2,sum:0.000403905,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-99:3],positive_buckets:[1,0,1],bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:0,0.001:2,0.01:2,0.1:2,1:2,10:2,+Inf:2]} st@1794947459.527397896
+workqueue_work_duration_seconds{name="DynamicCABundle-kubelet-server-cert-files"} {count:1,sum:0.000432823,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-89:1],positive_buckets:[1],bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:0,0.001:1,0.01:1,0.1:1,1:1,10:1,+Inf:1]} st@1794947459.5986263
+workqueue_work_duration_seconds{name="DynamicServingCertificateController"} {count:43,sum:0.0009757160000000001,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-128:12,3:1,4:1],positive_buckets:[4,4,10,7,6,2,1,2,3,1,0,1,1,1],bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:43,0.001:43,0.01:43,0.1:43,1:43,10:43,+Inf:43]} st@1794947459.599249064
+workqueue_work_duration_seconds{name="kubelet_log_rotate_manager"} {count:3274,sum:6.153028729000004,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,positive_spans:[-84:49],positive_buckets:[3,5,28,59,96,171,247,298,394,347,323,269,209,171,143,111,83,50,46,40,27,33,28,13,11,16,7,11,5,6,5,3,3,0,1,1,0,2,1,1,0,0,1,0,1,3,1,0,1],bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:0,0.001:232,0.01:3258,0.1:3274,1:3274,10:3274,+Inf:3274]} st@1794947459.590636835
+workqueue_work_duration_seconds{name="podcertificate_projection"} {count:0,sum:0,schema:3,zero_threshold:2.938735877055719e-39,zero_count:0,bucket:[1e-08:0,1e-07:0,1e-06:0,9.999999999999999e-06:0,9.999999999999999e-05:0,0.001:0,0.01:0,0.1:0,1:0,10:0,+Inf:0]} st@1794947459.599498699
+# EOF

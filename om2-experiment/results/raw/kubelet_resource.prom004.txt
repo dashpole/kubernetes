@@ -1,0 +1,135 @@
+# HELP container_cpu_usage_seconds_total [STABLE] Cumulative cpu time consumed by the container in core-seconds
+# TYPE container_cpu_usage_seconds_total counter
+container_cpu_usage_seconds_total{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-4wmcc"} 7.161168 1794950009859
+container_cpu_usage_seconds_total{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-tgrqq"} 7.098874 1794950003480
+container_cpu_usage_seconds_total{container="etcd",namespace="kube-system",pod="etcd-kubernetes-mixin-control-plane"} 141.573168 1794950005927
+container_cpu_usage_seconds_total{container="kindnet-cni",namespace="kube-system",pod="kindnet-rds6p"} 3.815972 1794950003891
+container_cpu_usage_seconds_total{container="kube-apiserver",namespace="kube-system",pod="kube-apiserver-kubernetes-mixin-control-plane"} 529.107891 1794950010490
+container_cpu_usage_seconds_total{container="kube-controller-manager",namespace="kube-system",pod="kube-controller-manager-kubernetes-mixin-control-plane"} 105.716835 1794950003529
+container_cpu_usage_seconds_total{container="kube-proxy",namespace="kube-system",pod="kube-proxy-phxl8"} 9.492145 1794950001685
+container_cpu_usage_seconds_total{container="kube-scheduler",namespace="kube-system",pod="kube-scheduler-kubernetes-mixin-control-plane"} 58.744519 1794950005979
+container_cpu_usage_seconds_total{container="kube-state-metrics",namespace="default",pod="kube-state-metrics-c9c9b49cd-wtj8w"} 7.699811 1794950001960
+container_cpu_usage_seconds_total{container="lgtm",namespace="default",pod="lgtm-98c8568-nhg45"} 314.752235 1794950003094
+container_cpu_usage_seconds_total{container="local-path-provisioner",namespace="local-path-storage",pod="local-path-provisioner-7b47d68bb4-482nb"} 1.186461 1794949999272
+container_cpu_usage_seconds_total{container="node-exporter",namespace="default",pod="prometheus-node-exporter-x69p9"} 45.084752 1794950000507
+container_cpu_usage_seconds_total{container="opentelemetry-collector",namespace="default",pod="otel-collector-deployment-opentelemetry-collector-6968b676gxw2l"} 43.916964 1794950003142
+# HELP container_memory_working_set_bytes [STABLE] Current memory usage of the container in bytes: committed memory on Windows, working set on other platforms
+# TYPE container_memory_working_set_bytes gauge
+container_memory_working_set_bytes{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-4wmcc"} 1.3856768e+07 1794950009859
+container_memory_working_set_bytes{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-tgrqq"} 1.513472e+07 1794950003480
+container_memory_working_set_bytes{container="etcd",namespace="kube-system",pod="etcd-kubernetes-mixin-control-plane"} 5.947392e+07 1794950005927
+container_memory_working_set_bytes{container="kindnet-cni",namespace="kube-system",pod="kindnet-rds6p"} 1.3139968e+07 1794950003891
+container_memory_working_set_bytes{container="kube-apiserver",namespace="kube-system",pod="kube-apiserver-kubernetes-mixin-control-plane"} 2.69119488e+08 1794950010490
+container_memory_working_set_bytes{container="kube-controller-manager",namespace="kube-system",pod="kube-controller-manager-kubernetes-mixin-control-plane"} 9.7099776e+07 1794950003529
+container_memory_working_set_bytes{container="kube-proxy",namespace="kube-system",pod="kube-proxy-phxl8"} 2.4162304e+07 1794950001685
+container_memory_working_set_bytes{container="kube-scheduler",namespace="kube-system",pod="kube-scheduler-kubernetes-mixin-control-plane"} 4.8267264e+07 1794950005979
+container_memory_working_set_bytes{container="kube-state-metrics",namespace="default",pod="kube-state-metrics-c9c9b49cd-wtj8w"} 2.6177536e+07 1794950001960
+container_memory_working_set_bytes{container="lgtm",namespace="default",pod="lgtm-98c8568-nhg45"} 8.13019136e+08 1794950003094
+container_memory_working_set_bytes{container="local-path-provisioner",namespace="local-path-storage",pod="local-path-provisioner-7b47d68bb4-482nb"} 9.363456e+06 1794949999272
+container_memory_working_set_bytes{container="node-exporter",namespace="default",pod="prometheus-node-exporter-x69p9"} 1.1780096e+07 1794950000507
+container_memory_working_set_bytes{container="opentelemetry-collector",namespace="default",pod="otel-collector-deployment-opentelemetry-collector-6968b676gxw2l"} 1.77004544e+08 1794950003142
+# HELP container_start_time_seconds [STABLE] Start time of the container since unix epoch in seconds
+# TYPE container_start_time_seconds gauge
+container_start_time_seconds{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-4wmcc"} 1.7949474938351996e+09
+container_start_time_seconds{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-tgrqq"} 1.7949474937902524e+09
+container_start_time_seconds{container="etcd",namespace="kube-system",pod="etcd-kubernetes-mixin-control-plane"} 1.79494745230785e+09
+container_start_time_seconds{container="kindnet-cni",namespace="kube-system",pod="kindnet-rds6p"} 1.7949474699760373e+09
+container_start_time_seconds{container="kube-apiserver",namespace="kube-system",pod="kube-apiserver-kubernetes-mixin-control-plane"} 1.794947452074978e+09
+container_start_time_seconds{container="kube-controller-manager",namespace="kube-system",pod="kube-controller-manager-kubernetes-mixin-control-plane"} 1.7949474519596977e+09
+container_start_time_seconds{container="kube-proxy",namespace="kube-system",pod="kube-proxy-phxl8"} 1.7949474677043192e+09
+container_start_time_seconds{container="kube-scheduler",namespace="kube-system",pod="kube-scheduler-kubernetes-mixin-control-plane"} 1.7949474517903845e+09
+container_start_time_seconds{container="kube-state-metrics",namespace="default",pod="kube-state-metrics-c9c9b49cd-wtj8w"} 1.7949475561679428e+09
+container_start_time_seconds{container="lgtm",namespace="default",pod="lgtm-98c8568-nhg45"} 1.7949475431864705e+09
+container_start_time_seconds{container="local-path-provisioner",namespace="local-path-storage",pod="local-path-provisioner-7b47d68bb4-482nb"} 1.7949474965426402e+09
+container_start_time_seconds{container="node-exporter",namespace="default",pod="prometheus-node-exporter-x69p9"} 1.794947558795531e+09
+container_start_time_seconds{container="opentelemetry-collector",namespace="default",pod="otel-collector-deployment-opentelemetry-collector-6968b676gxw2l"} 1.7949475514817371e+09
+# HELP container_swap_limit_bytes [ALPHA] Current amount of the container swap limit in bytes. Reported only on non-windows systems
+# TYPE container_swap_limit_bytes gauge
+container_swap_limit_bytes{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-4wmcc"} 0 1794950009859
+container_swap_limit_bytes{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-tgrqq"} 0 1794950003480
+container_swap_limit_bytes{container="etcd",namespace="kube-system",pod="etcd-kubernetes-mixin-control-plane"} 0 1794950005927
+container_swap_limit_bytes{container="kindnet-cni",namespace="kube-system",pod="kindnet-rds6p"} 0 1794950003891
+container_swap_limit_bytes{container="kube-apiserver",namespace="kube-system",pod="kube-apiserver-kubernetes-mixin-control-plane"} 0 1794950010490
+container_swap_limit_bytes{container="kube-controller-manager",namespace="kube-system",pod="kube-controller-manager-kubernetes-mixin-control-plane"} 0 1794950003529
+container_swap_limit_bytes{container="kube-proxy",namespace="kube-system",pod="kube-proxy-phxl8"} 0 1794950001685
+container_swap_limit_bytes{container="kube-scheduler",namespace="kube-system",pod="kube-scheduler-kubernetes-mixin-control-plane"} 0 1794950005979
+container_swap_limit_bytes{container="kube-state-metrics",namespace="default",pod="kube-state-metrics-c9c9b49cd-wtj8w"} 0 1794950001960
+container_swap_limit_bytes{container="lgtm",namespace="default",pod="lgtm-98c8568-nhg45"} 0 1794950003094
+container_swap_limit_bytes{container="local-path-provisioner",namespace="local-path-storage",pod="local-path-provisioner-7b47d68bb4-482nb"} 0 1794949999272
+container_swap_limit_bytes{container="node-exporter",namespace="default",pod="prometheus-node-exporter-x69p9"} 0 1794950000507
+container_swap_limit_bytes{container="opentelemetry-collector",namespace="default",pod="otel-collector-deployment-opentelemetry-collector-6968b676gxw2l"} 0 1794950003142
+# HELP container_swap_usage_bytes [ALPHA] Current amount of the container swap usage in bytes. Reported only on non-windows systems
+# TYPE container_swap_usage_bytes gauge
+container_swap_usage_bytes{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-4wmcc"} 0 1794950009859
+container_swap_usage_bytes{container="coredns",namespace="kube-system",pod="coredns-697c8f47cc-tgrqq"} 0 1794950003480
+container_swap_usage_bytes{container="etcd",namespace="kube-system",pod="etcd-kubernetes-mixin-control-plane"} 0 1794950005927
+container_swap_usage_bytes{container="kindnet-cni",namespace="kube-system",pod="kindnet-rds6p"} 0 1794950003891
+container_swap_usage_bytes{container="kube-apiserver",namespace="kube-system",pod="kube-apiserver-kubernetes-mixin-control-plane"} 0 1794950010490
+container_swap_usage_bytes{container="kube-controller-manager",namespace="kube-system",pod="kube-controller-manager-kubernetes-mixin-control-plane"} 0 1794950003529
+container_swap_usage_bytes{container="kube-proxy",namespace="kube-system",pod="kube-proxy-phxl8"} 0 1794950001685
+container_swap_usage_bytes{container="kube-scheduler",namespace="kube-system",pod="kube-scheduler-kubernetes-mixin-control-plane"} 0 1794950005979
+container_swap_usage_bytes{container="kube-state-metrics",namespace="default",pod="kube-state-metrics-c9c9b49cd-wtj8w"} 0 1794950001960
+container_swap_usage_bytes{container="lgtm",namespace="default",pod="lgtm-98c8568-nhg45"} 0 1794950003094
+container_swap_usage_bytes{container="local-path-provisioner",namespace="local-path-storage",pod="local-path-provisioner-7b47d68bb4-482nb"} 0 1794949999272
+container_swap_usage_bytes{container="node-exporter",namespace="default",pod="prometheus-node-exporter-x69p9"} 0 1794950000507
+container_swap_usage_bytes{container="opentelemetry-collector",namespace="default",pod="otel-collector-deployment-opentelemetry-collector-6968b676gxw2l"} 0 1794950003142
+# HELP node_cpu_usage_seconds_total [STABLE] Cumulative cpu time consumed by the node in core-seconds
+# TYPE node_cpu_usage_seconds_total counter
+node_cpu_usage_seconds_total 1877.651186 1794950009630
+# HELP node_memory_working_set_bytes [STABLE] Current memory usage of the node in bytes: committed memory on Windows, working set on other platforms
+# TYPE node_memory_working_set_bytes gauge
+node_memory_working_set_bytes 2.247532544e+09 1794950009630
+# HELP node_swap_usage_bytes [ALPHA] Current swap usage of the node in bytes. Reported only on non-windows systems
+# TYPE node_swap_usage_bytes gauge
+node_swap_usage_bytes 0 1794950009630
+# HELP pod_cpu_usage_seconds_total [STABLE] Cumulative cpu time consumed by the pod in core-seconds
+# TYPE pod_cpu_usage_seconds_total counter
+pod_cpu_usage_seconds_total{namespace="default",pod="kube-state-metrics-c9c9b49cd-wtj8w"} 7.804682 1794949999940
+pod_cpu_usage_seconds_total{namespace="default",pod="lgtm-98c8568-nhg45"} 314.837781 1794950002636
+pod_cpu_usage_seconds_total{namespace="default",pod="otel-collector-deployment-opentelemetry-collector-6968b676gxw2l"} 43.983748 1794950001541
+pod_cpu_usage_seconds_total{namespace="default",pod="prometheus-node-exporter-x69p9"} 45.196044 1794950010782
+pod_cpu_usage_seconds_total{namespace="kube-system",pod="coredns-697c8f47cc-4wmcc"} 7.286946 1794950009375
+pod_cpu_usage_seconds_total{namespace="kube-system",pod="coredns-697c8f47cc-tgrqq"} 7.220229 1794950003720
+pod_cpu_usage_seconds_total{namespace="kube-system",pod="etcd-kubernetes-mixin-control-plane"} 141.57047 1794950003778
+pod_cpu_usage_seconds_total{namespace="kube-system",pod="kindnet-rds6p"} 3.933565 1794950007709
+pod_cpu_usage_seconds_total{namespace="kube-system",pod="kube-apiserver-kubernetes-mixin-control-plane"} 527.319172 1794949998036
+pod_cpu_usage_seconds_total{namespace="kube-system",pod="kube-controller-manager-kubernetes-mixin-control-plane"} 105.657018 1794950000566
+pod_cpu_usage_seconds_total{namespace="kube-system",pod="kube-proxy-phxl8"} 9.572924 1794950012679
+pod_cpu_usage_seconds_total{namespace="kube-system",pod="kube-scheduler-kubernetes-mixin-control-plane"} 58.743963 1794949998791
+pod_cpu_usage_seconds_total{namespace="local-path-storage",pod="local-path-provisioner-7b47d68bb4-482nb"} 1.307894 1794950001483
+# HELP pod_memory_working_set_bytes [STABLE] Current memory usage of the pod in bytes: committed memory on Windows, working set on other platforms
+# TYPE pod_memory_working_set_bytes gauge
+pod_memory_working_set_bytes{namespace="default",pod="kube-state-metrics-c9c9b49cd-wtj8w"} 2.6529792e+07 1794949999940
+pod_memory_working_set_bytes{namespace="default",pod="lgtm-98c8568-nhg45"} 8.1412096e+08 1794950002636
+pod_memory_working_set_bytes{namespace="default",pod="otel-collector-deployment-opentelemetry-collector-6968b676gxw2l"} 1.7702912e+08 1794950001541
+pod_memory_working_set_bytes{namespace="default",pod="prometheus-node-exporter-x69p9"} 1.1583488e+07 1794950010782
+pod_memory_working_set_bytes{namespace="kube-system",pod="coredns-697c8f47cc-4wmcc"} 1.421312e+07 1794950009375
+pod_memory_working_set_bytes{namespace="kube-system",pod="coredns-697c8f47cc-tgrqq"} 1.5478784e+07 1794950003720
+pod_memory_working_set_bytes{namespace="kube-system",pod="etcd-kubernetes-mixin-control-plane"} 5.9285504e+07 1794950003778
+pod_memory_working_set_bytes{namespace="kube-system",pod="kindnet-rds6p"} 1.3221888e+07 1794950007709
+pod_memory_working_set_bytes{namespace="kube-system",pod="kube-apiserver-kubernetes-mixin-control-plane"} 2.69471744e+08 1794949998036
+pod_memory_working_set_bytes{namespace="kube-system",pod="kube-controller-manager-kubernetes-mixin-control-plane"} 9.7337344e+07 1794950000566
+pod_memory_working_set_bytes{namespace="kube-system",pod="kube-proxy-phxl8"} 2.4723456e+07 1794950012679
+pod_memory_working_set_bytes{namespace="kube-system",pod="kube-scheduler-kubernetes-mixin-control-plane"} 4.8877568e+07 1794949998791
+pod_memory_working_set_bytes{namespace="local-path-storage",pod="local-path-provisioner-7b47d68bb4-482nb"} 9.711616e+06 1794950001483
+# HELP pod_swap_usage_bytes [ALPHA] Current amount of the pod swap usage in bytes. Reported only on non-windows systems
+# TYPE pod_swap_usage_bytes gauge
+pod_swap_usage_bytes{namespace="default",pod="kube-state-metrics-c9c9b49cd-wtj8w"} 0 1794949999940
+pod_swap_usage_bytes{namespace="default",pod="lgtm-98c8568-nhg45"} 0 1794950002636
+pod_swap_usage_bytes{namespace="default",pod="otel-collector-deployment-opentelemetry-collector-6968b676gxw2l"} 0 1794950001541
+pod_swap_usage_bytes{namespace="default",pod="prometheus-node-exporter-x69p9"} 0 1794950010782
+pod_swap_usage_bytes{namespace="kube-system",pod="coredns-697c8f47cc-4wmcc"} 0 1794950009375
+pod_swap_usage_bytes{namespace="kube-system",pod="coredns-697c8f47cc-tgrqq"} 0 1794950003720
+pod_swap_usage_bytes{namespace="kube-system",pod="etcd-kubernetes-mixin-control-plane"} 0 1794950003778
+pod_swap_usage_bytes{namespace="kube-system",pod="kindnet-rds6p"} 0 1794950007709
+pod_swap_usage_bytes{namespace="kube-system",pod="kube-apiserver-kubernetes-mixin-control-plane"} 0 1794949998036
+pod_swap_usage_bytes{namespace="kube-system",pod="kube-controller-manager-kubernetes-mixin-control-plane"} 0 1794950000566
+pod_swap_usage_bytes{namespace="kube-system",pod="kube-proxy-phxl8"} 0 1794950012679
+pod_swap_usage_bytes{namespace="kube-system",pod="kube-scheduler-kubernetes-mixin-control-plane"} 0 1794949998791
+pod_swap_usage_bytes{namespace="local-path-storage",pod="local-path-provisioner-7b47d68bb4-482nb"} 0 1794950001483
+# HELP resource_scrape_error [STABLE] 1 if there was an error while getting container metrics, 0 otherwise
+# TYPE resource_scrape_error gauge
+resource_scrape_error 0
+# HELP scrape_error [ALPHA] 1 if there was an error while getting container metrics, 0 otherwise
+# TYPE scrape_error gauge
+scrape_error 0

@@ -1,0 +1,82 @@
+{
+  "prometheus_version": "prometheus, version  (branch: , revision: f52b059137e73cc05ebfc7024d3b46beee657b15)\n  build user:       \n  build date:       \n  go version:       go1.27.3\n  platform:         linux/amd64\n  tags:             unknown",
+  "instances": {
+    "004": {
+      "enable_feature": "",
+      "global": {
+        "scrape_interval": "5s",
+        "evaluation_interval": "5s",
+        "scrape_native_histograms": false,
+        "always_scrape_classic_histograms": false
+      },
+      "scrape_protocols_configured": [
+        [
+          "PrometheusText0.0.4"
+        ]
+      ]
+    },
+    "om1": {
+      "enable_feature": "",
+      "global": {
+        "scrape_interval": "5s",
+        "evaluation_interval": "5s",
+        "scrape_native_histograms": false,
+        "always_scrape_classic_histograms": false
+      },
+      "scrape_protocols_configured": [
+        [
+          "OpenMetricsText1.0.0",
+          "PrometheusText0.0.4"
+        ]
+      ]
+    },
+    "om2": {
+      "enable_feature": "openmetrics2",
+      "global": {
+        "scrape_interval": "5s",
+        "evaluation_interval": "5s",
+        "scrape_native_histograms": false,
+        "always_scrape_classic_histograms": false
+      },
+      "scrape_protocols_configured": [
+        [
+          "OpenMetricsText2.0.0-rc",
+          "OpenMetricsText1.0.0",
+          "PrometheusText0.0.4"
+        ]
+      ]
+    },
+    "om2-nh": {
+      "enable_feature": "openmetrics2",
+      "global": {
+        "scrape_interval": "5s",
+        "evaluation_interval": "5s",
+        "scrape_native_histograms": true,
+        "always_scrape_classic_histograms": true
+      },
+      "scrape_protocols_configured": [
+        [
+          "OpenMetricsText2.0.0-rc",
+          "OpenMetricsText1.0.0",
+          "PrometheusText0.0.4"
+        ]
+      ]
+    },
+    "om2-nh-default": {
+      "enable_feature": "openmetrics2",
+      "global": {
+        "scrape_interval": "5s",
+        "evaluation_interval": "5s",
+        "scrape_native_histograms": true,
+        "always_scrape_classic_histograms": false
+      },
+      "scrape_protocols_configured": [
+        [
+          "OpenMetricsText2.0.0-rc",
+          "OpenMetricsText1.0.0",
+          "PrometheusText0.0.4"
+        ]
+      ]
+    }
+  }
+}

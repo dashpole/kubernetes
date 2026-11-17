@@ -1,0 +1,432 @@
+{
+  "004": [
+    {
+      "job": "cadvisor",
+      "scrapePool": "cadvisor",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.112496033
+    },
+    {
+      "job": "kube-apiserver",
+      "scrapePool": "kube-apiserver",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.217735938
+    },
+    {
+      "job": "kube-apiserver-slis",
+      "scrapePool": "kube-apiserver-slis",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.003761576
+    },
+    {
+      "job": "kube-controller-manager",
+      "scrapePool": "kube-controller-manager",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.0373433
+    },
+    {
+      "job": "kube-proxy",
+      "scrapePool": "kube-proxy",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.021109507
+    },
+    {
+      "job": "kube-scheduler",
+      "scrapePool": "kube-scheduler",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.035697596
+    },
+    {
+      "job": "kube-scheduler-resources",
+      "scrapePool": "kube-scheduler-resources",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.012877266
+    },
+    {
+      "job": "kube-state-metrics",
+      "scrapePool": "kube-state-metrics",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.018218343
+    },
+    {
+      "job": "kubelet",
+      "scrapePool": "kubelet",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.106051819
+    },
+    {
+      "job": "kubelet-probes",
+      "scrapePool": "kubelet-probes",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.015417975
+    },
+    {
+      "job": "kubelet-resource",
+      "scrapePool": "kubelet-resource",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.061609372
+    },
+    {
+      "job": "node-exporter",
+      "scrapePool": "node-exporter",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.204647788
+    }
+  ],
+  "om1": [
+    {
+      "job": "cadvisor",
+      "scrapePool": "cadvisor",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.114878408
+    },
+    {
+      "job": "kube-apiserver",
+      "scrapePool": "kube-apiserver",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.2315837
+    },
+    {
+      "job": "kube-apiserver-slis",
+      "scrapePool": "kube-apiserver-slis",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.00371169
+    },
+    {
+      "job": "kube-controller-manager",
+      "scrapePool": "kube-controller-manager",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.037851345
+    },
+    {
+      "job": "kube-proxy",
+      "scrapePool": "kube-proxy",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.016491957
+    },
+    {
+      "job": "kube-scheduler",
+      "scrapePool": "kube-scheduler",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.032605443
+    },
+    {
+      "job": "kube-scheduler-resources",
+      "scrapePool": "kube-scheduler-resources",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.013522506
+    },
+    {
+      "job": "kube-state-metrics",
+      "scrapePool": "kube-state-metrics",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.01639242
+    },
+    {
+      "job": "kubelet",
+      "scrapePool": "kubelet",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.102501676
+    },
+    {
+      "job": "kubelet-probes",
+      "scrapePool": "kubelet-probes",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.011069892
+    },
+    {
+      "job": "kubelet-resource",
+      "scrapePool": "kubelet-resource",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.06626761
+    },
+    {
+      "job": "node-exporter",
+      "scrapePool": "node-exporter",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.134495958
+    }
+  ],
+  "om2": [
+    {
+      "job": "cadvisor",
+      "scrapePool": "cadvisor",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.110527008
+    },
+    {
+      "job": "kube-apiserver",
+      "scrapePool": "kube-apiserver",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.160860861
+    },
+    {
+      "job": "kube-apiserver-slis",
+      "scrapePool": "kube-apiserver-slis",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.003594325
+    },
+    {
+      "job": "kube-controller-manager",
+      "scrapePool": "kube-controller-manager",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.034507405
+    },
+    {
+      "job": "kube-proxy",
+      "scrapePool": "kube-proxy",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.018365274
+    },
+    {
+      "job": "kube-scheduler",
+      "scrapePool": "kube-scheduler",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.028639957
+    },
+    {
+      "job": "kube-scheduler-resources",
+      "scrapePool": "kube-scheduler-resources",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.012676676
+    },
+    {
+      "job": "kube-state-metrics",
+      "scrapePool": "kube-state-metrics",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.015830998
+    },
+    {
+      "job": "kubelet",
+      "scrapePool": "kubelet",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.104806013
+    },
+    {
+      "job": "kubelet-probes",
+      "scrapePool": "kubelet-probes",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.010476119
+    },
+    {
+      "job": "kubelet-resource",
+      "scrapePool": "kubelet-resource",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.062295608
+    },
+    {
+      "job": "node-exporter",
+      "scrapePool": "node-exporter",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.188016139
+    }
+  ],
+  "om2-nh": [
+    {
+      "job": "cadvisor",
+      "scrapePool": "cadvisor",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.102400481
+    },
+    {
+      "job": "kube-apiserver",
+      "scrapePool": "kube-apiserver",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.138944978
+    },
+    {
+      "job": "kube-apiserver-slis",
+      "scrapePool": "kube-apiserver-slis",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.004450083
+    },
+    {
+      "job": "kube-controller-manager",
+      "scrapePool": "kube-controller-manager",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.030011868
+    },
+    {
+      "job": "kube-proxy",
+      "scrapePool": "kube-proxy",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.011982504
+    },
+    {
+      "job": "kube-scheduler",
+      "scrapePool": "kube-scheduler",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.017302942
+    },
+    {
+      "job": "kube-scheduler-resources",
+      "scrapePool": "kube-scheduler-resources",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.018065474
+    },
+    {
+      "job": "kube-state-metrics",
+      "scrapePool": "kube-state-metrics",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.017607137
+    },
+    {
+      "job": "kubelet",
+      "scrapePool": "kubelet",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.066694197
+    },
+    {
+      "job": "kubelet-probes",
+      "scrapePool": "kubelet-probes",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.00845289
+    },
+    {
+      "job": "kubelet-resource",
+      "scrapePool": "kubelet-resource",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.049894953
+    },
+    {
+      "job": "node-exporter",
+      "scrapePool": "node-exporter",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.085169391
+    }
+  ],
+  "om2-nh-default": [
+    {
+      "job": "cadvisor",
+      "scrapePool": "cadvisor",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.098962249
+    },
+    {
+      "job": "kube-apiserver",
+      "scrapePool": "kube-apiserver",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.095846181
+    },
+    {
+      "job": "kube-apiserver-slis",
+      "scrapePool": "kube-apiserver-slis",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.004369604
+    },
+    {
+      "job": "kube-controller-manager",
+      "scrapePool": "kube-controller-manager",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.034697883
+    },
+    {
+      "job": "kube-proxy",
+      "scrapePool": "kube-proxy",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.00812269
+    },
+    {
+      "job": "kube-scheduler",
+      "scrapePool": "kube-scheduler",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.020794053
+    },
+    {
+      "job": "kube-scheduler-resources",
+      "scrapePool": "kube-scheduler-resources",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.011932012
+    },
+    {
+      "job": "kube-state-metrics",
+      "scrapePool": "kube-state-metrics",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.009013034
+    },
+    {
+      "job": "kubelet",
+      "scrapePool": "kubelet",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.063670841
+    },
+    {
+      "job": "kubelet-probes",
+      "scrapePool": "kubelet-probes",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.008950325
+    },
+    {
+      "job": "kubelet-resource",
+      "scrapePool": "kubelet-resource",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.059641549
+    },
+    {
+      "job": "node-exporter",
+      "scrapePool": "node-exporter",
+      "health": "up",
+      "lastError": "",
+      "lastScrapeDuration": 0.076668535
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+rule_files:
+- ./kubernetes-mixin/prometheus_alerts.yaml
+- ./kubernetes-mixin/prometheus_rules.yaml
+scrape_configs:
+- job_name: kube-apiserver
+  metrics_path: /metrics
+  scheme: https
+  scrape_protocols: &id001
+  - OpenMetricsText1.0.0
+  - PrometheusText0.0.4
+  static_configs:
+  - targets:
+    - 127.0.0.1:37155
+    labels:
+      instance: kubernetes-mixin-control-plane
+  tls_config: &id002
+    ca_file: ./certs/ca.crt
+    cert_file: ./certs/client.crt
+    key_file: ./certs/client.key
+- job_name: kube-apiserver-slis
+  metrics_path: /metrics/slis
+  scheme: https
+  scrape_protocols: *id001
+  static_configs:
+  - targets:
+    - 127.0.0.1:37155
+    labels:
+      instance: kubernetes-mixin-control-plane
+  tls_config: *id002
+- job_name: kubelet
+  metrics_path: /api/v1/nodes/kubernetes-mixin-control-plane/proxy/metrics
+  scheme: https
+  scrape_protocols: *id001
+  static_configs:
+  - targets:
+    - 127.0.0.1:37155
+    labels:
+      instance: kubernetes-mixin-control-plane
+  tls_config: *id002
+- job_name: cadvisor
+  metrics_path: /api/v1/nodes/kubernetes-mixin-control-plane/proxy/metrics/cadvisor
+  scheme: https
+  scrape_protocols: *id001
+  static_configs:
+  - targets:
+    - 127.0.0.1:37155
+    labels:
+      instance: kubernetes-mixin-control-plane
+  tls_config: *id002
+- job_name: kubelet-resource
+  metrics_path: /api/v1/nodes/kubernetes-mixin-control-plane/proxy/metrics/resource
+  scheme: https
+  scrape_protocols: *id001
+  static_configs:
+  - targets:
+    - 127.0.0.1:37155
+    labels:
+      instance: kubernetes-mixin-control-plane
+  tls_config: *id002
+- job_name: kubelet-probes
+  metrics_path: /api/v1/nodes/kubernetes-mixin-control-plane/proxy/metrics/probes
+  scheme: https
+  scrape_protocols: *id001
+  static_configs:
+  - targets:
+    - 127.0.0.1:37155
+    labels:
+      instance: kubernetes-mixin-control-plane
+  tls_config: *id002
+- job_name: kube-scheduler
+  metrics_path: /api/v1/namespaces/kube-system/pods/https:kube-scheduler-kubernetes-mixin-control-plane:10259/proxy/metrics
+  scheme: https
+  scrape_protocols: *id001
+  static_configs:
+  - targets:
+    - 127.0.0.1:37155
+    labels:
+      instance: kubernetes-mixin-control-plane
+  tls_config: *id002
+- job_name: kube-scheduler-resources
+  metrics_path: /api/v1/namespaces/kube-system/pods/https:kube-scheduler-kubernetes-mixin-control-plane:10259/proxy/metrics/resources
+  scheme: https
+  scrape_protocols: *id001
+  static_configs:
+  - targets:
+    - 127.0.0.1:37155
+    labels:
+      instance: kubernetes-mixin-control-plane
+  tls_config: *id002
+- job_name: kube-controller-manager
+  metrics_path: /api/v1/namespaces/kube-system/pods/https:kube-controller-manager-kubernetes-mixin-control-plane:10257/proxy/metrics
+  scheme: https
+  scrape_protocols: *id001
+  static_configs:
+  - targets:
+    - 127.0.0.1:37155
+    labels:
+      instance: kubernetes-mixin-control-plane
+  tls_config: *id002
+- job_name: kube-proxy
+  metrics_path: /metrics
+  scheme: http
+  scrape_protocols: *id001
+  static_configs:
+  - targets:
+    - 127.0.0.1:10249
+    labels:
+      instance: kubernetes-mixin-control-plane
+- job_name: kube-state-metrics
+  metrics_path: /api/v1/namespaces/default/services/kube-state-metrics:8080/proxy/metrics
+  scheme: https
+  scrape_protocols: *id001
+  static_configs:
+  - targets:
+    - 127.0.0.1:37155
+    labels:
+      instance: kubernetes-mixin-control-plane
+  tls_config: *id002
+- job_name: node-exporter
+  metrics_path: /api/v1/namespaces/default/services/prometheus-node-exporter:9100/proxy/metrics
+  scheme: https
+  scrape_protocols: *id001
+  static_configs:
+  - targets:
+    - 127.0.0.1:37155
+    labels:
+      instance: kubernetes-mixin-control-plane
+  tls_config: *id002
