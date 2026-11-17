@@ -478,7 +478,7 @@ github.com/peterbourgon/diskv/v3
 # github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2
 ## explicit
 github.com/pmezard/go-difflib/difflib
-# github.com/prometheus/client_golang v1.25.0
+# github.com/prometheus/client_golang v1.24.2-0.20261113202007-c86c2471ded9
 ## explicit; go 1.26.0
 github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil
 github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil/header

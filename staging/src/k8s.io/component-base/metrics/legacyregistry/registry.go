@@ -61,7 +61,10 @@ func init() {
 // already instrumented with InstrumentHandler (using "prometheus" as handler
 // name).
 func Handler() http.Handler {
-	return promhttp.InstrumentMetricHandler(prometheus.DefaultRegisterer, promhttp.HandlerFor(defaultRegistry, promhttp.HandlerOpts{ProcessStartTime: processStart}))
+	return promhttp.InstrumentMetricHandler(prometheus.DefaultRegisterer, promhttp.HandlerFor(defaultRegistry, promhttp.HandlerOpts{
+		ProcessStartTime:  processStart,
+		EnableOpenMetrics: true,
+	}))
 }
 
 // HandlerWithReset returns an HTTP handler for the DefaultGatherer but invokes

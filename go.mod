@@ -185,7 +185,7 @@ require (
 	github.com/opencontainers/runtime-spec v1.3.0 // indirect
 	github.com/pandatix/go-abnf v0.5.5 // indirect
 	github.com/peterbourgon/diskv/v3 v3.0.1 // indirect
-	github.com/prometheus/client_golang v1.25.0 // indirect
+	github.com/prometheus/client_golang v1.24.2-0.20261113202007-c86c2471ded9 // indirect
 	github.com/prometheus/procfs v0.22.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.10.2 // indirect

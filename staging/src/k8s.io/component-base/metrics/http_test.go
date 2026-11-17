@@ -20,6 +20,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	apimachineryversion "k8s.io/apimachinery/pkg/version"
@@ -65,5 +66,81 @@ func TestResetHandler(t *testing.T) {
 				t.Errorf("Got '%s' as the response body, but want '%v'", body, tc.expectedBody)
 			}
 		})
+	}
+}
+
+func TestHandlerOpenMetricsNegotiation(t *testing.T) {
+	registry := newKubeRegistry(apimachineryversion.Info{
+		Major:      "1",
+		Minor:      "17",
+		GitVersion: "v1.17.1-alpha-1.12345",
+	})
+	counter := NewCounter(&CounterOpts{
+		Name:           "test_openmetrics_requests_total",
+		Help:           "Test counter for OpenMetrics negotiation.",
+		StabilityLevel: ALPHA,
+	})
+	registry.MustRegister(counter)
+	counter.Inc()
+
+	handlers := map[string]http.Handler{
+		"HandlerFor":       HandlerFor(registry, HandlerOpts{}),
+		"HandlerWithReset": HandlerWithReset(registry, HandlerOpts{}),
+	}
+	testCases := []struct {
+		name               string
+		accept             string
+		wantContentTypeSub string
+		wantEOF            bool
+	}{
+		{
+			name:               "OpenMetrics 2.0-rc",
+			accept:             "application/openmetrics-text;version=2.0.0-rc;charset=utf-8",
+			wantContentTypeSub: "application/openmetrics-text; version=2.0.0-rc",
+			wantEOF:            true,
+		},
+		{
+			name:               "OpenMetrics 1.0.0",
+			accept:             "application/openmetrics-text;version=1.0.0;charset=utf-8",
+			wantContentTypeSub: "application/openmetrics-text; version=1.0.0",
+			wantEOF:            true,
+		},
+		{
+			name:               "Prometheus 0.0.4 fallback",
+			accept:             "text/plain;version=0.0.4",
+			wantContentTypeSub: "text/plain; version=0.0.4",
+			wantEOF:            false,
+		},
+	}
+
+	for handlerName, handler := range handlers {
+		for _, tc := range testCases {
+			t.Run(handlerName+"/"+tc.name, func(t *testing.T) {
+				req, err := http.NewRequest(http.MethodGet, "http://sample.com/metrics", nil)
+				if err != nil {
+					t.Fatalf("Error creating http request: %v", err)
+				}
+				req.Header.Set("Accept", tc.accept)
+				rec := httptest.NewRecorder()
+				handler.ServeHTTP(rec, req)
+
+				res := rec.Result()
+				if res.StatusCode != http.StatusOK {
+					t.Fatalf("got status %d, want %d", res.StatusCode, http.StatusOK)
+				}
+				gotCT := res.Header.Get("Content-Type")
+				if !strings.Contains(gotCT, tc.wantContentTypeSub) {
+					t.Errorf("got Content-Type %q, want substring %q", gotCT, tc.wantContentTypeSub)
+				}
+				body, err := io.ReadAll(res.Body)
+				if err != nil {
+					t.Fatalf("Error reading response body: %v", err)
+				}
+				gotEOF := strings.HasSuffix(string(body), "# EOF\n")
+				if gotEOF != tc.wantEOF {
+					t.Errorf("got EOF=%v, want %v (body=%q)", gotEOF, tc.wantEOF, string(body))
+				}
+			})
+		}
 	}
 }

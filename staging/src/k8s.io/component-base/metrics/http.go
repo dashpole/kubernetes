@@ -58,9 +58,10 @@ const (
 // zero value of HandlerOpts is a reasonable default.
 type HandlerOpts promhttp.HandlerOpts
 
-func (ho *HandlerOpts) toPromhttpHandlerOpts() promhttp.HandlerOpts {
+func (ho HandlerOpts) toPromhttpHandlerOpts() promhttp.HandlerOpts {
 	ho.ProcessStartTime = processStartedAt
-	return promhttp.HandlerOpts(*ho)
+	ho.EnableOpenMetrics = true
+	return promhttp.HandlerOpts(ho)
 }
 
 // HandlerFor returns an uninstrumented http.Handler for the provided
